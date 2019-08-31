@@ -21,7 +21,7 @@ class InfoView extends React.Component {
 
     return (
       <Auxiliary>
-        {loading && <div className="gx-loader-view gx-loader-position">
+        {loading && <div className="gx-loader-view gx-loader-pos">
           <CircularProgress/>
         </div>}
         {error && message.error(<span id="message-id">{error}</span>)}

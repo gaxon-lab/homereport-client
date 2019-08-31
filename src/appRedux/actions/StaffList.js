@@ -1,5 +1,11 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT} from "../../constants/ActionTypes";
-import {ADD_NEW_STAFF, DELETE_STAFF, EDIT_STAFF_DETAILS, GET_STAFF_LIST} from "../../constants/StaffList";
+import {
+  ADD_NEW_STAFF,
+  BULK_DELETE_SUPPORT_STAFF,
+  DELETE_STAFF,
+  EDIT_STAFF_DETAILS,
+  GET_STAFF_LIST
+} from "../../constants/StaffList";
 import axios from 'util/Api'
 
 export const onGetStaff = (currentPage, itemsPerPage, filterText, updatingContent) => {
@@ -96,6 +102,29 @@ export const onEditStaffMember = (staffMember, updatingContent) => {
     });
   }
 };
+
+export const onBulkDeleteStaff = (staffIds) => {
+  console.log("staffids", staffIds)
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post('/staffs/delete', staffIds).then(({data}) => {
+      console.log("deleted date", data);
+      if (data.success) {
+        dispatch({type: BULK_DELETE_SUPPORT_STAFF, payload: staffIds.ids});
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SHOW_MESSAGE, payload: "The Selected Staffs have been deleted successfully"});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
 
 // export const onChangeStaffStatus = (staffId, status, updatingContent, context) => {
 //   const {messages} = context.props.intl;

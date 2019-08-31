@@ -134,33 +134,11 @@ export const showErrorMessage = (error) => {
 export const getUserProfile = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.get('/user/profile',).then(({data}) => {
+    axios.get('/current/user/detail',).then(({data}) => {
       console.info("getUserProfile: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: USER_DATA, payload: data.data});
-      } else if (data.message) {
-        dispatch({type: FETCH_ERROR, payload: data.message});
-      } else {
-        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
-      }
-    }).catch(function (error) {
-      dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
-    });
-  }
-};
-
-export const updateUserProfile = (profile, context) => {
-  const {messages} = context.props.intl;
-  return (dispatch) => {
-    dispatch({type: FETCH_START});
-    axios.post('/user/profile', profile).then(({data}) => {
-      console.info("updateUserProfile: ", data);
-      if (data.success) {
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({type: USER_DATA, payload: data.data});
-        dispatch({type: SHOW_MESSAGE, payload: messages["action.auth.profile"]});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {
@@ -208,6 +186,37 @@ export const onSetNewPassword = (token, data, history) => {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: SHOW_MESSAGE, payload: "The password has been updated successfully"});
         history.replace("/signin");
+      } else if (data.message) {
+        console.info("payload: data.errors[0]", data.message);
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        console.info("payload: data.errors[0]", data.errors[0]);
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onUpdateUserProfile = ({first_name, last_name, profile_pic, password, password_confirmation}) => {
+  console.log("data",first_name, last_name, profile_pic, password, password_confirmation)
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post('/current/user/update', {
+        first_name: first_name,
+        last_name: last_name,
+        profile_pic: profile_pic,
+        password: password,
+        password_confirmation: password_confirmation
+      }
+    ).then(({data}) => {
+      console.info("data:", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SHOW_MESSAGE, payload: "The Personal details have been updated successfully"});
+        dispatch({type: USER_DATA, payload: data.data});
       } else if (data.message) {
         console.info("payload: data.errors[0]", data.message);
         dispatch({type: FETCH_ERROR, payload: data.message});

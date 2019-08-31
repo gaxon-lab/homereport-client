@@ -101,7 +101,7 @@ class App extends Component {
   }
 
   render() {
-    const {match, location, layoutType, navStyle, locale, authUser, initURL, token} = this.props;
+    const {match, location, layoutType, navStyle, locale, initURL, token} = this.props;
 
     if (location.pathname === '/') {
       if (token === null) {
@@ -140,8 +140,8 @@ class App extends Component {
 
 const mapStateToProps = ({settings, auth}) => {
   const {locale, navStyle, layoutType} = settings;
-  const {authUser, initURL, token} = auth;
-  return {locale, navStyle, layoutType, authUser, initURL, token}
+  const { initURL, token} = auth;
+  return {locale, navStyle, layoutType,  initURL, token}
 };
 export default connect(mapStateToProps, {
   setInitUrl,

@@ -8,7 +8,7 @@ import StaffRow from "./StaffRow";
 import {onAddStaffMember, onDeleteStaff, onEditStaffMember, onGetStaff} from "../../appRedux/actions/StaffList";
 import AddNewStaff from "./AddNewStaff";
 import InfoView from "../../components/InfoView";
-import {fetchError, fetchStart, fetchSuccess} from "../../appRedux/actions";
+import {fetchError, fetchStart, fetchSuccess, onBulkDeleteStaff} from "../../appRedux/actions";
 
 
 const ButtonGroup = Button.Group;
@@ -26,7 +26,8 @@ class Staff extends Component {
       currentPage: 1,
       showAddStaff: false,
       selectedStaff: null,
-      isAddStaff: false
+      isAddStaff: false,
+      bulkSelectedStaff: []
     };
   };
 
@@ -125,31 +126,13 @@ class Staff extends Component {
     });
   };
 
-  // onShowBulkDeleteConfirm = () => {
-  //   if (this.state.selectedStaff.length !== 0) {
-  //     confirm({
-  //       title: messages["staff.message.delete"],
-  //       onOk: () => {
-  //         this.props.onBulkDeleteStaff({ids: this.state.selectedStaff}, null, this);
-  //         this.setState({selectedRowKeys: [], selectedStaff: []});
-  //       }
-  //     })
-  //   } else {
-  //     Modal.info({
-  //       title: messages["staff.message.selectFirst"],
-  //       onOk() {
-  //       },
-  //     });
-  //   }
-  // };
-
   onSelectOption = () => {
     const menu = (
       <Menu>
-        <Menu.Item key="1">
-          Archive
-        </Menu.Item>
-        <Menu.Item key="3">
+        {/*<Menu.Item key="1">*/}
+        {/*  Archive*/}
+        {/*</Menu.Item>*/}
+        <Menu.Item key="3" onClick={this.onShowBulkDeleteConfirm}>
           Delete
         </Menu.Item>
       </Menu>
@@ -159,6 +142,24 @@ class Staff extends Component {
         Bulk Actions <Icon type="down"/>
       </Button>
     </Dropdown>
+  };
+
+  onShowBulkDeleteConfirm = () => {
+    if (this.state.bulkSelectedStaff.length !== 0) {
+      confirm({
+        title: "Are you sure you want to delete selected Staff(s)?",
+        onOk: () => {
+          this.props.onBulkDeleteStaff({ids: this.state.bulkSelectedStaff});
+          this.setState({selectedRowKeys: [], bulkSelectedStaff: []});
+        }
+      })
+    } else {
+      Modal.info({
+        title: "Please select staff First!",
+        onOk() {
+        },
+      });
+    }
   };
 
   onPageChange = page => {
@@ -185,14 +186,14 @@ class Staff extends Component {
 
   render() {
     const {isAddStaff, selectedRowKeys, selectedStaff} = this.state;
-    const staffList = this.props.staffList;
+    // const staffList = this.props.staffList;
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         const ids = selectedRows.map(selectedRow => {
           return selectedRow.id
         });
-        this.setState({selectedStaff: ids, selectedRowKeys: selectedRowKeys})
+        this.setState({bulkSelectedStaff: ids, selectedRowKeys: selectedRowKeys})
       }
     };
 
@@ -233,7 +234,7 @@ class Staff extends Component {
             </div>
           </div>
           <Table rowKey="id" rowSelection={rowSelection} columns={StaffRow(this)}
-                 dataSource={staffList}
+                 dataSource={this.props.staffList}
                  loading={this.props.updatingContent}
                  pagination={{
                    pageSize: this.state.itemNumbers,
@@ -276,6 +277,7 @@ export default connect(mapStateToProps, {
   onAddStaffMember,
   onDeleteStaff,
   onEditStaffMember,
+  onBulkDeleteStaff,
   fetchStart,
   fetchSuccess,
   fetchError

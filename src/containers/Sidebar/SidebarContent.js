@@ -6,17 +6,12 @@ import CustomScrollbars from "util/CustomScrollbars";
 import SidebarLogo from "./SidebarLogo";
 
 import Auxiliary from "util/Auxiliary";
-import UserProfile from "./UserProfile";
-import AppsNavigation from "./AppsNavigation";
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
 import {connect} from "react-redux";
-import Permissions from "../../util/Permissions";
-
-
 
 
 class SidebarContent extends Component {
@@ -35,17 +30,17 @@ class SidebarContent extends Component {
   };
 
   render() {
-    const {themeType, navStyle, pathname} = this.props;
+    const {themeType, pathname} = this.props;
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split('/')[1];
     return (
       <Auxiliary>
         <SidebarLogo/>
         <div className="gx-sidebar-content">
-          <div className={`gx-sidebar-notifications ${this.getNoHeaderClass(navStyle)}`}>
-            <UserProfile/>
-            <AppsNavigation/>
-          </div>
+          {/*<div className={`gx-sidebar-notifications ${this.getNoHeaderClass(navStyle)}`}>*/}
+          {/*  /!*<UserProfile/>*!/*/}
+          {/*  /!*<AppsNavigation/>*!/*/}
+          {/*</div>*/}
           <CustomScrollbars className="gx-layout-sider-scrollbar">
             <Menu
               defaultOpenKeys={[defaultOpenKeys]}

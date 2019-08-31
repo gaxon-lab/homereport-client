@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Input, Modal, Select, Table} from "antd";
+import {Breadcrumb, Button, Input, Select, Table} from "antd";
 import Widget from "../../components/Widget";
 import {Link} from "react-router-dom";
 import InfoView from "../../components/InfoView";
@@ -9,6 +9,7 @@ import {onGetQuotesList} from "../../appRedux/actions/QuoteRequests";
 
 const {Option} = Select;
 const Search = Input.Search;
+
 // const confirm = Modal.confirm;
 
 class QuoteRequests extends Component {
@@ -72,28 +73,6 @@ class QuoteRequests extends Component {
     </Select>
   };
 
-  // onShowBulkDeleteConfirm = () => {
-  //   const {messages} = this.props.intl;
-  //   const {selectedCustomers} = this.state;
-  //   if (selectedCustomers.length !== 0) {
-  //     confirm({
-  //       title: messages["customers.message.delete"],
-  //       onOk: () => {
-  //         const obj = {
-  //           ids: selectedCustomers
-  //         };
-  //         this.props.onDeleteCustomers(obj, this);
-  //         this.setState({selectedRowKeys: [], selectedCustomers: []});
-  //       }
-  //     })
-  //   } else {
-  //     Modal.info({
-  //       title: messages["customers.message.selectFirst"],
-  //       onOk() {
-  //       },
-  //     });
-  //   }
-  // };
 
   onPageChange = page => {
     const {filterText, itemNumbers} = this.state;

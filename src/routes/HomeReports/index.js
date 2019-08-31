@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Input, Modal, Select, Table} from "antd";
+import {Breadcrumb, Button, Input, Select, Table} from "antd";
 import Widget from "../../components/Widget";
 import {Link} from "react-router-dom";
 import InfoView from "../../components/InfoView";
@@ -9,7 +9,6 @@ import ReportsRow from "./ReportsRow";
 
 const {Option} = Select;
 const Search = Input.Search;
-const confirm = Modal.confirm;
 
 class HomeReports extends Component {
   constructor(props) {

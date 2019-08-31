@@ -1,5 +1,5 @@
 import {
-  ADD_NEW_STAFF,
+  ADD_NEW_STAFF, BULK_DELETE_SUPPORT_STAFF,
   DELETE_STAFF,
   EDIT_STAFF_DETAILS,
   GET_STAFF_LIST,
@@ -55,6 +55,14 @@ export default (state = initialState, action) => {
         ...state,
         staffList: state.staffList.filter(member => member.id !== action.payload),
         totalItems: state.totalItems - 1
+      };
+
+    case BULK_DELETE_SUPPORT_STAFF:
+      console.log("action.payload", action.payload)
+      return {
+        ...state,
+        staffList: state.staffList.filter(member => (action.payload.indexOf(member.id) === -1)),
+        totalItems: state.totalItems - action.payload.length
       };
 
     default:

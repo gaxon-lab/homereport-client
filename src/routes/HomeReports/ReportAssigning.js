@@ -22,13 +22,7 @@ class ReportAssigning extends Component {
   };
 
   onSelectStaff = (id) => {
-    const staff = this.props.staffList.find(staff => staff.id === id);
-    this.setState({assignedStaff: staff});
-    // if (this.props.reportId) {
-    //   this.props.onAssignStaff(this.props.reportId, id)
-    // } else {
-    //   this.props.onAssignStaff(id);
-    // }
+    this.props.onAssignStaff(id);
     this.onToggleStaffModal();
   };
 
@@ -95,10 +89,9 @@ class ReportAssigning extends Component {
           visible={showStaffModal}
           onCancel={this.onToggleStaffModal}
           footer={null}>
-
           <div>
             <Search value={filterStaffText} placeholder="Search Staff here"
-                    onChange={(e) => this.onFilterTextChange}/>
+                    onChange={(e) => this.onFilterTextChange(e)}/>
             {staffList.length > 0 ?
               <div>
                 {staffList.map(staff => {

@@ -6,6 +6,8 @@ import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
 import {onGetStaff} from "../../appRedux/actions/StaffList";
 import {onGetReportDetail, onNullifyCurrentReport} from "../../appRedux/actions/HomeReports";
+import {onAssignStaffToReport} from "../../appRedux/actions";
+
 
 const {TextArea} = Input;
 
@@ -29,8 +31,8 @@ class ReportDetail extends Component {
     this.props.onGetStaff(currentPage, itemsPerPage, filterText, updatingContent);
   };
 
-  onAssignStaff = () => {
-    console.log("staff assignment function")
+  onAssignStaff = (userId) => {
+    this.props.onAssignStaffToReport(this.props.currentReport.report_id, userId)
   };
 
   onMessageEnter = (e) => {
@@ -231,10 +233,10 @@ class ReportDetail extends Component {
 }
 
 const mapStateToProps = ({staff, homeReports}) => {
-  const {staffList, totalItems} = staff;
+  const {staffList} = staff;
   const {currentReport} = homeReports;
   return {staffList, currentReport};
 };
 
-export default connect(mapStateToProps, {onGetStaff, onGetReportDetail, onNullifyCurrentReport})(ReportDetail);
+export default connect(mapStateToProps, {onGetStaff, onGetReportDetail, onNullifyCurrentReport, onAssignStaffToReport})(ReportDetail);
 
