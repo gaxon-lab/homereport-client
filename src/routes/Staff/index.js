@@ -88,7 +88,7 @@ class Staff extends Component {
       okText: "Delete",
       cancelText: "Cancel",
       onOk: () => {
-        this.props.onDeleteStaff(id);
+        this.props.onBulkDeleteStaff({ids: [id]}, this);
       },
       onCancel() {
         console.log('Cancel');

@@ -5,11 +5,8 @@ import React from "react";
 const onShowRowDropdown = (currentCustomer, context) => {
   const menu = (
     <Menu>
-      <Menu.Item key="1">
+      <Menu.Item key="1" onClick={() => context.onSelectCustomer(currentCustomer)}>
         View Profile
-      </Menu.Item>
-      <Menu.Item key="2">
-        Properties
       </Menu.Item>
       <Menu.Item key="3" onClick={() => context.onShowCustomerQuotes(currentCustomer)}>
         Quote Requests
@@ -58,7 +55,11 @@ const CustomersRow = (context) => {
       dataIndex: 'quoteRequests',
       key: 'quoteRequests',
       render: (text, record) => {
-        return <span onClick={() => context.onShowCustomerQuotes(record)}>
+        return <span onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          context.onShowCustomerQuotes(record)
+        }}>
           <span className="gx-link" style={{textDecoration: "underline"}}>Quote Requests</span>
            <span className="gx-link"> [{record.quote_requests_count}]</span>
         </span>
@@ -69,7 +70,11 @@ const CustomersRow = (context) => {
       dataIndex: 'homeReports',
       key: 'homeReports',
       render: (text, record) => {
-        return <span onClick={() => context.onShowCustomerReports(record)}>
+        return <span onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          context.onShowCustomerReports(record)
+        }}>
           <span className="gx-link" style={{textDecoration: "underline"}}>Home Reports</span>
            <span className="gx-link"> [{record.reports_count}]</span>
         </span>

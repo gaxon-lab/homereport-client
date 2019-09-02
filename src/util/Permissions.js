@@ -5,6 +5,7 @@ class Permissions {
     this.permissions = userPermission;
   }
 
+
   static canManageStaff = () => {
       return this.permissions.filter((key) => key.name === "can manage staff").length > 0
   };

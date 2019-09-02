@@ -9,6 +9,7 @@ const App = ({match}) => (
       <Route path={`${match.url}dashboard`} component={asyncComponent(() => import('./Dashboard'))}/>
       <Route path={`${match.url}staff`} component={asyncComponent(() => import('./Staff'))}/>
       <Route path={`${match.url}customers`} component={asyncComponent(() => import('./Customers'))}/>
+      <Route path={`${match.url}customer-detail/:id`} component={asyncComponent(() => import('./Customers/CustomerDetail'))}/>
       <Route path={`${match.url}roles-permissions`} component={asyncComponent(() => import('./RolesAndPermissions'))}/>
       <Route path={`${match.url}quote-requests`} component={asyncComponent(() => import('./QuoteRequests'))}/>
       <Route path={`${match.url}quote-detail/:id`} component={asyncComponent(() => import('./QuoteRequests/QuoteDetail'))}/>

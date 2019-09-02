@@ -31,7 +31,6 @@ class ImageUpload extends Component {
         'Content-Type': "multipart/form-data"
       }
     }).then(({data}) => {
-      console.log("image data", data)
       if (data.success) {
         this.props.fetchSuccess();
         this.props.onAddImage(data.data)

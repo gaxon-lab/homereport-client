@@ -70,28 +70,6 @@ class HomeReports extends Component {
     </Select>
   };
 
-  // onShowBulkDeleteConfirm = () => {
-  //   const {messages} = this.props.intl;
-  //   const {selectedCustomers} = this.state;
-  //   if (selectedCustomers.length !== 0) {
-  //     confirm({
-  //       title: messages["customers.message.delete"],
-  //       onOk: () => {
-  //         const obj = {
-  //           ids: selectedCustomers
-  //         };
-  //         this.props.onDeleteCustomers(obj, this);
-  //         this.setState({selectedRowKeys: [], selectedCustomers: []});
-  //       }
-  //     })
-  //   } else {
-  //     Modal.info({
-  //       title: messages["customers.message.selectFirst"],
-  //       onOk() {
-  //       },
-  //     });
-  //   }
-  // };
 
   onPageChange = page => {
     const {filterText, itemNumbers} = this.state;
@@ -101,13 +79,11 @@ class HomeReports extends Component {
   };
 
   onSelectReport = record => {
-    console.log("record", record.id);
     this.props.history.push(`/report-detail/${record.report_id}`);
   };
 
   render() {
     const {reportsList, updatingContent} = this.props;
-    console.log("reportsList", reportsList)
     const {selectedRowKeys, filterText, itemNumbers, current} = this.state;
     const rowSelection = {
       selectedRowKeys,

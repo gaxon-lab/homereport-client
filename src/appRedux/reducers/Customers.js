@@ -1,7 +1,8 @@
 import {
+  GET_CUSTOMER_DETAIL,
   GET_CUSTOMER_QUOTES,
   GET_CUSTOMERS_LIST,
-  GET_CUSTOMERS_REPORTS,
+  GET_CUSTOMERS_REPORTS, NULLIFY_CUSTOMER_DETAIL,
   NULLIFY_CUSTOMER_QUOTES, NULLIFY_CUSTOMER_REPORTS
 } from "../../constants/Customers";
 
@@ -9,6 +10,7 @@ import {
 const initialState = {
   customersList: [],
   totalItems: null,
+  currentCustomer: null,
   customerQuotes: [],
   customerReports: []
 };
@@ -20,6 +22,18 @@ export default (state = initialState, action) => {
         ...state,
         customersList: action.payload.data,
         totalItems: action.payload.total
+      };
+
+    case GET_CUSTOMER_DETAIL:
+      return {
+        ...state,
+        currentCustomer: action.payload
+      };
+
+    case NULLIFY_CUSTOMER_DETAIL:
+      return {
+        ...state,
+        currentCustomer: null
       };
 
     case GET_CUSTOMER_QUOTES:

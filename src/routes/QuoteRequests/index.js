@@ -31,7 +31,6 @@ class QuoteRequests extends Component {
     this.props.onGetQuotesList(currentPage, itemsPerPage, filterText, updatingContent);
   };
 
-
   onFilterTextChange = (e) => {
     const {itemNumbers} = this.state;
     this.setState({filterText: e.target.value}, () => {
@@ -73,7 +72,6 @@ class QuoteRequests extends Component {
     </Select>
   };
 
-
   onPageChange = page => {
     const {filterText, itemNumbers} = this.state;
     this.setState({current: page}, () => {
@@ -82,7 +80,6 @@ class QuoteRequests extends Component {
   };
 
   onSelectRequest = record => {
-    console.log("record", record.id);
     this.props.history.push(`/quote-detail/${record.quote_request_id}`);
   };
 

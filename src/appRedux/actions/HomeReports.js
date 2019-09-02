@@ -33,7 +33,6 @@ export const onGetReportsList = (currentPage, itemsPerPage, filterText, updating
 };
 
 export const onGetReportDetail = (recordId) => {
-  console.log(" i am here")
   return (dispatch) => {
       dispatch({type: FETCH_START});
     axios.get(`/reports/${recordId}`).then(({data}) => {
@@ -59,9 +58,8 @@ export const onAssignStaffToReport  = (reportId, id) => {
     axios.post(`reports/${reportId}/assign`, {user_id:id} ).then(({data}) => {
       console.log("onAssignStaffToReport", data);
       if (data.success) {
-        onGetReportDetail(reportId)
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: SHOW_MESSAGE, payload: "The Report has been assigned to select staff successfully"});
+        dispatch({type: SHOW_MESSAGE, payload: "The Report has been assigned to selected staff successfully"});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

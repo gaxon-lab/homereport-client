@@ -10,7 +10,6 @@ import {
   USER_TOKEN_SET
 } from "../../constants/ActionTypes";
 
-console.log('token: ', localStorage.getItem('token'));
 const INIT_STATE = {
   token: localStorage.getItem('token'),
   initURL: '',

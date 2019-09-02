@@ -12,6 +12,7 @@ import {
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
 import {connect} from "react-redux";
+import Permissions from "../../util/Permissions";
 
 
 class SidebarContent extends Component {
@@ -58,13 +59,15 @@ class SidebarContent extends Component {
                   Customers</Link>
               </Menu.Item>
 
+              {/*{Permissions.canManageStaff() ?*/}
               <Menu.Item key="staff">
                 <Link to="/staff"><i className="icon icon-user"/>
                   Staff</Link>
               </Menu.Item>
+              {/*: null}*/}
 
               <Menu.Item key="quote">
-                <Link to="/quote-requests"><i className="icon icon-lock-screen"/>
+                <Link to="/quote-requests"><i className="icon icon-extra-components"/>
                   Quote Requests</Link>
               </Menu.Item>
 

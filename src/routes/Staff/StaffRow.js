@@ -31,8 +31,6 @@ const StaffRow = (context) => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => {
-        // const imageLink = record.profile_pic.length > 0 ? record.profile_pic[0].src : null;
-        // console.log("profile", imageLink)
         return <span className="gx-email gx-d-inline-block gx-mr-2">
              {record.profile_pic.length > 0 ?
                <Avatar className="gx-mr-3 gx-size-50" src={record.profile_pic[0].src}/> :
@@ -49,22 +47,6 @@ const StaffRow = (context) => {
         return <span className="gx-email gx-d-inline-block gx-mr-2">{record.email}</span>
       },
     },
-    // {
-    //   title: 'Department',
-    //   dataIndex: 'department',
-    //   key: 'department',
-    //   render: (text, record) => {
-    //     return <span className="gx-email gx-d-inline-block gx-mr-2">Department</span>
-    //   },
-    // },
-    // {
-    //   title: 'Designation',
-    //   dataIndex: 'designation',
-    //   key: 'designation',
-    //   render: (text, record) => {
-    //     return <span className="gx-email gx-d-inline-block gx-mr-2">Designation</span>
-    //   },
-    // },
     {
       title: 'STATUS',
       dataIndex: 'status',

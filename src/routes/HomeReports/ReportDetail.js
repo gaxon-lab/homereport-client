@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {onGetStaff} from "../../appRedux/actions/StaffList";
 import {onGetReportDetail, onNullifyCurrentReport} from "../../appRedux/actions/HomeReports";
 import {onAssignStaffToReport} from "../../appRedux/actions";
+import InfoView from "../../components/InfoView";
 
 
 const {TextArea} = Input;
@@ -24,7 +25,7 @@ class ReportDetail extends Component {
   componentDidMount() {
     const reportId = this.props.match.params.id;
     this.props.onGetReportDetail(reportId);
-    this.onGetStaffList();
+    this.onGetStaffList(1, 10);
   }
 
   onGetStaffList = (currentPage, itemsPerPage, filterText, updatingContent) => {
@@ -101,7 +102,6 @@ class ReportDetail extends Component {
   }
 
   render() {
-    console.log("currentReport", this.props.currentReport)
     const {staffList, currentReport, totalItems} = this.props;
     const {fileList, message} = this.state;
     const props = {
@@ -133,6 +133,7 @@ class ReportDetail extends Component {
         email: currentReport.customer_email
       }
     }
+
     return (
       <div className="gx-main-layout-content">
         {currentReport ?
@@ -150,28 +151,28 @@ class ReportDetail extends Component {
             <Row>
               <Col xl={16} lg={12} md={12} sm={12} xs={24}>
                 <Row>
-                  <Col span={6}>
+                  <Col span={8}>
                     <div className="gx-text-grey">Reference No.</div>
                     <div className="gx-text-blue gx-mt-2 gx-font-weight-medium">{currentReport.reference_no}</div>
                   </Col>
-                  <Col span={18}>
+                  <Col span={16}>
                     <div className="gx-text-grey">Quote Amount</div>
                     <div className="gx-mt-2 gx-font-weight-bold">${currentReport.quote_amount}</div>
                   </Col>
                 </Row>
                 <Row className="gx-mt-4">
-                  <Col span={6}>
+                  <Col span={8}>
                     <div className="gx-text-grey">Customer Detail</div>
                     <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.customer_name ? currentReport.customer_name : "NA"}</div>
                   </Col>
-                  <Col span={18}>
+                  <Col span={16}>
                     <div className="gx-text-grey">Contact Detail</div>
                     <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.day_time_tel} Day</div>
                     <div className="gx-mt-1 gx-font-weight-medium">{currentReport.evening_time_tel} Evening</div>
                   </Col>
                 </Row>
                 <Row className="gx-my-4">
-                  <Col span={6}>
+                  <Col span={8}>
                     <div className="gx-text-grey">Property</div>
                     <div className="gx-mt-2">
                       <p className="gx-mb-1 gx-font-weight-medium">{currentReport.address1}</p>
@@ -180,7 +181,7 @@ class ReportDetail extends Component {
                       <p className="gx-mb-1 gx-font-weight-medium"> Zip -{currentReport.postcode}</p>
                     </div>
                   </Col>
-                  <Col span={18}>
+                  <Col span={16}>
                     <p className="gx-text-grey">Estimated Price & Age</p>
                     <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.property_price_value}</div>
                     <div className=" gx-font-weight-medium">{currentReport.property_age_value}</div>
@@ -227,15 +228,16 @@ class ReportDetail extends Component {
                         disabled={message === ""}>Update Report</Button>
               </div> : null}
           </Widget> : null}
+          <InfoView/>
       </div>
     )
   }
 }
 
 const mapStateToProps = ({staff, homeReports}) => {
-  const {staffList} = staff;
+  const {staffList, totalItems} = staff;
   const {currentReport} = homeReports;
-  return {staffList, currentReport};
+  return {staffList, totalItems, currentReport};
 };
 
 export default connect(mapStateToProps, {onGetStaff, onGetReportDetail, onNullifyCurrentReport, onAssignStaffToReport})(ReportDetail);

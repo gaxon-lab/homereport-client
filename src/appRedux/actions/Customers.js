@@ -1,9 +1,10 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, UPDATING_CONTENT} from "../../constants/ActionTypes";
 import axios from 'util/Api'
 import {
+  GET_CUSTOMER_DETAIL,
   GET_CUSTOMER_QUOTES,
   GET_CUSTOMERS_LIST,
-  GET_CUSTOMERS_REPORTS,
+  GET_CUSTOMERS_REPORTS, NULLIFY_CUSTOMER_DETAIL,
   NULLIFY_CUSTOMER_QUOTES, NULLIFY_CUSTOMER_REPORTS
 } from "../../constants/Customers";
 
@@ -35,6 +36,26 @@ export const onGetCustomersList = (currentPage, itemsPerPage, filterText, updati
       console.info("Error****:", error.message);
     });
   }
+};
+
+export const onGetCustomerDetail = (customerId) => {
+  return (dispatch) => {
+  dispatch({type: FETCH_START});
+  axios.get(`/customers/${customerId}`).then(({data}) => {
+    console.info("onGetCustomerDetail: ", data);
+    if (data.success) {
+      dispatch({type: FETCH_SUCCESS});
+      dispatch({type: GET_CUSTOMER_DETAIL, payload: data.data});
+    } else if (data.message) {
+      dispatch({type: FETCH_ERROR, payload: data.message});
+    } else {
+      dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+    }
+  }).catch(function (error) {
+    dispatch({type: FETCH_ERROR, payload: error.message});
+    console.info("Error****:", error.message);
+  });
+}
 };
 
 export const onGetCustomerQuotes = (customerId) => {
@@ -74,6 +95,12 @@ export const onGetCustomerReports = (customerId) => {
       dispatch({type: FETCH_ERROR, payload: error.message});
       console.info("Error****:", error.message);
     });
+  }
+};
+
+export const onNullifyCustomerDetails = () => {
+  return {
+    type: NULLIFY_CUSTOMER_DETAIL
   }
 };
 

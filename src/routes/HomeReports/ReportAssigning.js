@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Avatar, Input, Modal, Pagination, Tag} from "antd";
 import PropTypes from "prop-types";
 
+const confirm = Modal.confirm;
+
 
 const Search = Input.Search;
 
@@ -21,21 +23,30 @@ class ReportAssigning extends Component {
     this.setState({showStaffModal: !this.state.showStaffModal})
   };
 
+  onClickOnStaff = (staff) => {
+    confirm({
+      title: `You have selected ${staff.first_name + " " + staff.last_name}, click on YES to confirm!`,
+      okText: "Yes",
+      cancelText: "Cancel",
+      onOk: () => {
+        this.onSelectStaff(staff.id);
+      }
+    });
+  };
+
   onSelectStaff = (id) => {
+    const staff = this.props.staffList.find(staff => staff.id === id);
+    staff.name = staff.first_name + " " + staff.last_name;
+    staff.image = staff.profile_pic.length > 0 ? staff.profile_pic[0].src : null;
+    this.setState({assignedStaff: staff});
     this.props.onAssignStaff(id);
     this.onToggleStaffModal();
   };
 
-  onFilterData = () => {
-    return this.props.staffList.filter(staff => {
-      const name = staff.first_name.toLowerCase() + " " + staff.last_name.toLowerCase();
-      return (name.includes(this.state.filterStaffText.toLowerCase())) ?
-        staff : null
-    })
-  };
-
   onPageChange = (page) => {
-    this.props.onGetStaffList(page, 10, this.state.filterStaffText, true)
+    this.setState({current: page}, () => {
+      this.props.onGetStaffList(this.state.current, 10, this.state.filterStaffText, true)
+    })
   };
 
   onFilterTextChange = (e) => {
@@ -46,8 +57,7 @@ class ReportAssigning extends Component {
 
   render() {
     const {showStaffModal, filterStaffText, assignedStaff, current} = this.state;
-    const {totalItems} = this.props;
-    const staffList = this.onFilterData();
+    const {totalItems, staffList} = this.props;
 
     return (
       <div className="gx-main-layout-content">
@@ -59,7 +69,7 @@ class ReportAssigning extends Component {
             </div>
             <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5">
               {assignedStaff.image ?
-                <Avatar className="gx-mr-3 gx-size-50" src={assignedStaff.image.src}/> :
+                <Avatar className="gx-mr-3 gx-size-50" src={assignedStaff.image}/> :
                 <Avatar className="gx-mr-3 gx-size-50"
                         style={{backgroundColor: '#f56a00'}}>{assignedStaff.name[0].toUpperCase()}</Avatar>}
               <div className="gx-media-body gx-mt-2">
@@ -95,10 +105,10 @@ class ReportAssigning extends Component {
             {staffList.length > 0 ?
               <div>
                 {staffList.map(staff => {
-                  return <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5"
-                              onClick={() => this.onSelectStaff(staff.id)} key={staff.id}>
-                    {staff.avatar ?
-                      <Avatar className="gx-mr-3 gx-size-50" src={staff.avatar.src}/> :
+                  return <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-3"
+                              onClick={() => this.onClickOnStaff(staff)} key={staff.id}>
+                    {staff.profile_pic.length > 0 ?
+                      <Avatar className="gx-mr-3 gx-size-50" src={staff.profile_pic[0].src}/> :
                       <Avatar className="gx-mr-3 gx-size-50"
                               style={{backgroundColor: '#f56a00'}}>{staff.first_name[0].toUpperCase()}</Avatar>}
                     <div className="gx-media-body">

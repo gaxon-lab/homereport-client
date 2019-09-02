@@ -7,7 +7,6 @@ import InfoView from "../../components/InfoView";
 class QuoteRequestModal extends Component {
 
   componentDidMount() {
-    console.log("tis.props.selectedCustomer", this.props.selectedCustomer)
     this.props.onGetCustomerQuotes(this.props.selectedCustomer.id)
   }
 
@@ -30,7 +29,10 @@ class QuoteRequestModal extends Component {
         dataIndex: 'property',
         key: 'property',
         render: (text, record) => {
-          return <span>Property Address</span>
+          return <div>
+            <div className="gx-mb-1">{record.address1}</div>
+            <div>{record.city}, Scotland - {record.postcode}</div>
+          </div>
         },
       },
       {
@@ -95,7 +97,7 @@ class QuoteRequestModal extends Component {
   };
 
   onSelectRequest = record => {
-    this.props.history.push(`/quote-detail/${record.id}`);
+    this.props.history.push(`/quote-detail/${record.quote_request_id}`);
   };
 
   render() {

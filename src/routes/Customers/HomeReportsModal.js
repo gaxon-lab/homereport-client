@@ -29,7 +29,10 @@ class HomeReportsModal extends Component {
         dataIndex: 'property',
         key: 'property',
         render: (text, record) => {
-          return <span>Property Address</span>
+          return <div>
+            <div className="gx-mb-1">{record.address1}</div>
+            <div>{record.city}, Scotland - {record.postcode}</div>
+          </div>
         },
       },
       {
@@ -94,7 +97,7 @@ class HomeReportsModal extends Component {
   };
 
   onSelectReport = record => {
-    this.props.history.push(`/report-detail/${record.id}`);
+    this.props.history.push(`/report-detail/${record.report_id}`);
   };
 
   render() {

@@ -47,7 +47,7 @@ class Customers extends Component {
 
   onShowCustomerReports = (record) => {
     this.setState({selectedCustomer: record, isShowHomeRecords: true})
-  }
+  };
 
   onToggleHomeRecords = () => {
     this.setState({isShowHomeRecords: !this.state.isShowHomeRecords})
@@ -94,34 +94,15 @@ class Customers extends Component {
     </Select>
   };
 
-  onShowBulkDeleteConfirm = () => {
-    const {messages} = this.props.intl;
-    const {selectedCustomers} = this.state;
-    if (selectedCustomers.length !== 0) {
-      confirm({
-        title: messages["customers.message.delete"],
-        onOk: () => {
-          const obj = {
-            ids: selectedCustomers
-          };
-          this.props.onDeleteCustomers(obj, this);
-          this.setState({selectedRowKeys: [], selectedCustomers: []});
-        }
-      })
-    } else {
-      Modal.info({
-        title: messages["customers.message.selectFirst"],
-        onOk() {
-        },
-      });
-    }
-  };
-
   onPageChange = page => {
     const {filterText, itemNumbers} = this.state;
     this.setState({current: page}, () => {
       this.onGetPaginatedData(this.state.current, itemNumbers, filterText, true)
     });
+  };
+
+  onSelectCustomer = record => {
+    this.props.history.push(`/customer-detail/${record.id}`);
   };
 
   render() {
@@ -171,7 +152,11 @@ class Customers extends Component {
                    showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
                    onChange: this.onPageChange
                  }}
-                 className="gx-table-responsive"/>
+                 className="gx-table-responsive"
+                 onRow={(record) => ({
+                   onClick: () => this.onSelectCustomer(record)
+                 })}
+          />
         </Widget>
         {isShowQuotes ? <QuoteRequestModal isShowQuotes={isShowQuotes}
                                            onToggleShowQuotes={this.onToggleShowQuotes}

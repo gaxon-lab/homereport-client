@@ -15,7 +15,6 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_STAFF_LIST:
-      console.log("action.payload", action.payload)
       return {
         ...state,
         staffList: action.payload.data,
@@ -58,7 +57,6 @@ export default (state = initialState, action) => {
       };
 
     case BULK_DELETE_SUPPORT_STAFF:
-      console.log("action.payload", action.payload)
       return {
         ...state,
         staffList: state.staffList.filter(member => (action.payload.indexOf(member.id) === -1)),

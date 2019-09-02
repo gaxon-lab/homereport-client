@@ -5,7 +5,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-      <Empty description={<h1>Stay Tuned, Data coming soon</h1>}/>
+      <Empty description={<span>Stay Tuned, Data coming soon</span>}/>
       </div>
     );
   }

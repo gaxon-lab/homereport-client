@@ -49,7 +49,6 @@ class Profile extends Component {
   };
 
   onAddImage = (profile_pic) => {
-    console.log("profile_pic", profile_pic)
     this.setState({profile_pic})
   };
 
@@ -63,7 +62,6 @@ class Profile extends Component {
   };
 
   render() {
-    console.log("state", this.props.authUser)
     const {getFieldDecorator} = this.props.form;
     const {first_name, last_name, email, avatar} = this.state;
 
