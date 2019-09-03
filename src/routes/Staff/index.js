@@ -196,6 +196,7 @@ class Staff extends Component {
         this.setState({bulkSelectedStaff: ids, selectedRowKeys: selectedRowKeys})
       }
     };
+console.log("permisions", this.props.userPermissions)
 
     return (
       <div className="gx-main-content">
@@ -255,6 +256,7 @@ class Staff extends Component {
                                    selectedStaff={selectedStaff}
                                    onAddStaffMember={this.props.onAddStaffMember}
                                    onEditStaffMember={this.props.onEditStaffMember}
+                                   userPermissions={this.props.userPermissions}
                                    fetchError={this.props.fetchError}
                                    fetchSuccess={this.props.fetchSuccess}
                                    fetchStart={this.props.fetchStart}/> : null}
@@ -265,10 +267,11 @@ class Staff extends Component {
 }
 
 
-const mapStateToProps = ({staff, common}) => {
+const mapStateToProps = ({staff, common, auth}) => {
   const {staffList, totalItems} = staff;
+  const {userPermissions} = auth;
   const {updatingContent} = common;
-  return {staffList, totalItems, updatingContent};
+  return {staffList, totalItems, updatingContent, userPermissions};
 };
 
 

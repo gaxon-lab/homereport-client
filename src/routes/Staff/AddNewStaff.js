@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Avatar, Button, Col, Form, Input, Modal, Radio, Row, Upload} from "antd";
+import {Avatar, Button, Checkbox, Col, Form, Input, Modal, Radio, Row, Upload} from "antd";
 import axios from 'util/Api'
 
 class AddNewStaff extends Component {
@@ -13,13 +13,18 @@ class AddNewStaff extends Component {
         password: "",
         fileList: [],
         status: 1,
-        profile_pic: null
+        profile_pic: null,
+        permissions: []
       }
     } else {
       const imageId = props.selectedStaff.profile_pic.length > 0 ? props.selectedStaff.profile_pic[0].id : null
       this.state = {...props.selectedStaff, fileList: [], profile_pic: imageId}
     }
   }
+
+  onSelectStaffPermissions = checkedList => {
+    this.setState({permissions: checkedList})
+  };
 
   onSubmitForm = () => {
     if (this.state.fileList.length > 0) {
@@ -94,9 +99,10 @@ class AddNewStaff extends Component {
 
 
   render() {
+    console.log("permissions status",this.state.permissions )
     const {getFieldDecorator} = this.props.form;
-    const {isAddStaff, onToggleAddStaff} = this.props;
-    const {first_name, last_name, email, password, fileList, status} = this.state;
+    const {isAddStaff, onToggleAddStaff, userPermissions} = this.props;
+    const {first_name, last_name, email, password, fileList, status, permissions} = this.state;
     const props = {
       onRemove: file => {
         this.setState(state => {
@@ -208,10 +214,24 @@ class AddNewStaff extends Component {
                     <Radio value={0}>Disabled</Radio>
                   </Radio.Group>
                 </Form.Item>
+                <Form.Item label="Permissions">
+                  <Checkbox.Group style={{width: '100%'}}
+                                  onChange={this.onSelectStaffPermissions}
+                                  value={permissions}>
+
+                      {userPermissions.map(permission => {
+                        return <div className="gx-mb-2">
+                        <Checkbox value={permission.name}>{permission.name}</Checkbox>
+                        </div>
+                      })
+                      }
+
+                  </Checkbox.Group>
+                </Form.Item>
               </Form>
             </Col>
             <Col xl={10} lg={12} md={12} sm={12} xs={24}>
-              <Upload {...props} >
+              <Upload {...props}>
                 <Avatar className="gx-mr-3 gx-mb-5 gx-size-150" src={this.getImageURL()}/>
               </Upload>
             </Col>

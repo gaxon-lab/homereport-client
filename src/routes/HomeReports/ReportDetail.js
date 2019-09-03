@@ -6,8 +6,10 @@ import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
 import {onGetStaff} from "../../appRedux/actions/StaffList";
 import {onGetReportDetail, onNullifyCurrentReport} from "../../appRedux/actions/HomeReports";
-import {onAssignStaffToReport} from "../../appRedux/actions";
+import {onAddNewComment, onAssignStaffToReport, onGetReportComments} from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
+import ConversationCell from "./ConversationCell";
+import moment from "moment";
 
 
 const {TextArea} = Input;
@@ -18,7 +20,7 @@ class ReportDetail extends Component {
     super(props);
     this.state = {
       fileList: [],
-      message: ''
+      comment: ''
     }
   }
 
@@ -26,6 +28,7 @@ class ReportDetail extends Component {
     const reportId = this.props.match.params.id;
     this.props.onGetReportDetail(reportId);
     this.onGetStaffList(1, 10);
+    this.props.onGetReportComments(reportId);
   }
 
   onGetStaffList = (currentPage, itemsPerPage, filterText, updatingContent) => {
@@ -37,7 +40,7 @@ class ReportDetail extends Component {
   };
 
   onMessageEnter = (e) => {
-    this.setState({message: e.target.value})
+    this.setState({comment: e.target.value})
   };
 
   onSubmitMessage = () => {
@@ -49,16 +52,14 @@ class ReportDetail extends Component {
   };
 
   onSendMessage = () => {
-    // const currentTicket = this.props.currentTicket;
-    // const attachments = this.state.attachments;
-    // if (this.state.message !== '') {
-    //   this.props.onSendNewMessage(currentTicket.id, {
-    //     message: this.state.message,
-    //     attachments: attachments
-    //   }, this);
-    //   setTimeout(() =>
-    //     this.setState({message: '', attachments: []}), 20)
-    // }
+    const currentReport = this.props.currentReport;
+    const comment = this.state.comment;
+    if (this.state.comment !== '') {
+      this.props.onAddNewComment(currentReport.report_id, {
+        comment: comment});
+      setTimeout(() =>
+        this.setState({comment: '', fileList: []}), 20)
+    }
   };
 
 
@@ -74,6 +75,7 @@ class ReportDetail extends Component {
   };
 
   imageUpload = (file) => {
+    this.onSendMessage();
     // this.props.fetchStart();
     // axios.post("/uploads/temporary/media", file, {
     //   headers: {
@@ -102,8 +104,8 @@ class ReportDetail extends Component {
   }
 
   render() {
-    const {staffList, currentReport, totalItems} = this.props;
-    const {fileList, message} = this.state;
+    const {staffList, currentReport, totalItems, reportComments} = this.props;
+    const {fileList, comment} = this.state;
     const props = {
       multiple: true,
       onRemove: file => {
@@ -125,8 +127,8 @@ class ReportDetail extends Component {
       fileList,
     };
     let assignedTo = null;
-    if(currentReport && currentReport.assigned_user_id) {
-       assignedTo = {
+    if (currentReport && currentReport.assigned_user_id) {
+      assignedTo = {
         id: currentReport.assigned_user_id,
         image: currentReport.assigned_user_image,
         name: currentReport.assigned_user_name,
@@ -163,7 +165,8 @@ class ReportDetail extends Component {
                 <Row className="gx-mt-4">
                   <Col span={8}>
                     <div className="gx-text-grey">Customer Detail</div>
-                    <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.customer_name ? currentReport.customer_name : "NA"}</div>
+                    <div
+                      className=" gx-mt-2 gx-font-weight-medium">{currentReport.customer_name ? currentReport.customer_name : "NA"}</div>
                   </Col>
                   <Col span={16}>
                     <div className="gx-text-grey">Contact Detail</div>
@@ -187,6 +190,7 @@ class ReportDetail extends Component {
                     <div className=" gx-font-weight-medium">{currentReport.property_age_value}</div>
                   </Col>
                 </Row>
+                <div className=""><i className="gx-font-weight-medium">Payment Date</i> : {moment(currentReport.report_created_at).format('LL')}</div>
               </Col>
               <Col xl={8} lg={12} md={12} sm={12} xs={24}>
                 <ReportAssigning staffList={staffList}
@@ -199,18 +203,18 @@ class ReportDetail extends Component {
             <Divider/>
             {currentReport.assigned_user_id ?
               <div>
-                <div className="gx-py-3">
-                  <h3 className="gx-mb-0 gx-mb-sm-1">Messages</h3>
+                <div className="gx-py-1">
+                  <h3 className="gx-mb-0 gx-mb-sm-1">Comments</h3>
                 </div>
-                {/*{ticketMessages.map((conversation, index) =>*/}
-                {/*  <ConversationCell key={index} conversation={conversation}/>*/}
-                {/*)}*/}
-                <div className="gx-py-3">
-                  <h3 className="gx-mb-0 gx-mb-sm-1">Update Report</h3>
-                </div>
+                {reportComments.length > 0 ?
+                <div>
+                  {reportComments.map((conversation, index) =>
+                    <ConversationCell key={index} conversation={conversation}/>
+                  )}
+                </div> : "No Comment yet, Write first comment!"}
+
                 <div className="gx-flex-column">
-                  <label className="gx-mr-2">Enter Details</label>
-                  <TextArea row={4} value={message} onKeyPress={(event) => {
+                  <TextArea row={4} placeholder="Add a comment..." value={comment} onKeyPress={(event) => {
                     if (event.charCode === 13 && !event.shiftKey) {
                       this.onSubmitMessage()
                     }
@@ -218,17 +222,17 @@ class ReportDetail extends Component {
                             onChange={(e) => this.onMessageEnter(e)}/>
                 </div>
                 <div className="gx-flex-column">
-                  <label>Upload Attachments</label>
+                  {/*<label>Upload Attachments</label>*/}
                   <Upload {...props} >
-                    <Input placeholder="Add Files here" className="gx-my-3"
+                    <Input placeholder="Add Files here" className="gx-my-3" readOnly
                            prefix={<i className="icon gx-icon-attachment"/>}/>
                   </Upload>
                 </div>
                 <Button type="primary" className="gx-my-3" onClick={this.onSubmitMessage}
-                        disabled={message === ""}>Update Report</Button>
+                        disabled={comment === ""}>Send Message</Button>
               </div> : null}
           </Widget> : null}
-          <InfoView/>
+        <InfoView/>
       </div>
     )
   }
@@ -236,9 +240,16 @@ class ReportDetail extends Component {
 
 const mapStateToProps = ({staff, homeReports}) => {
   const {staffList, totalItems} = staff;
-  const {currentReport} = homeReports;
-  return {staffList, totalItems, currentReport};
+  const {currentReport, reportComments} = homeReports;
+  return {staffList, totalItems, currentReport, reportComments};
 };
 
-export default connect(mapStateToProps, {onGetStaff, onGetReportDetail, onNullifyCurrentReport, onAssignStaffToReport})(ReportDetail);
+export default connect(mapStateToProps, {
+  onGetStaff,
+  onGetReportDetail,
+  onNullifyCurrentReport,
+  onAssignStaffToReport,
+  onGetReportComments,
+  onAddNewComment
+})(ReportDetail);
 

@@ -47,6 +47,7 @@ export class MainApp extends Component {
         return ""
     }
   };
+
   getNavStyles = (navStyle) => {
     switch (navStyle) {
       case NAV_STYLE_DEFAULT_HORIZONTAL :

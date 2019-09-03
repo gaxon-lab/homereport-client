@@ -70,7 +70,6 @@ class QuoteDetail extends Component {
                 </Col>
               </Row>
             </div>
-            <Divider/>
           </Widget> : null}
           <InfoView/>
       </div>

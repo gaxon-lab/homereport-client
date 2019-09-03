@@ -1,6 +1,12 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT} from "../../constants/ActionTypes";
 import axios from 'util/Api'
-import {GET_HOME_REPORTS, GET_REPORT_DETAIL, NULLIFY_CURRENT_REPORT} from "../../constants/HomeReports";
+import {
+  ADD_NEW_COMMENT,
+  GET_HOME_REPORTS,
+  GET_REPORT_COMMENTS,
+  GET_REPORT_DETAIL,
+  NULLIFY_CURRENT_REPORT
+} from "../../constants/HomeReports";
 
 export const onGetReportsList = (currentPage, itemsPerPage, filterText, updatingContent) => {
   return (dispatch) => {
@@ -77,3 +83,43 @@ export const onNullifyCurrentReport  = () => {
     type: NULLIFY_CURRENT_REPORT
   }
 }
+
+export const onGetReportComments = (reportId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.get(`/reports/${reportId}/comments`).then(({data}) => {
+      console.info("onGetReportComments: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: GET_REPORT_COMMENTS, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onAddNewComment = (reportId, message) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post(`/reports/${reportId}/comments/store`, message).then(({data}) => {
+      console.info("onAddNewComment: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: ADD_NEW_COMMENT, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};

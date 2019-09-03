@@ -71,8 +71,7 @@ export default (state = INIT_STATE, action) => {
     case UPDATE_USER_PERMISSION_DATA: {
       return {
         ...state,
-        userPermissions: action.payload.permissions,
-        userSettings: action.payload.settings,
+        userPermissions: action.payload,
       };
     }
 

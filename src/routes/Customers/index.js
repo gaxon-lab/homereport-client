@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Input, Modal, Select, Table} from "antd";
+import {Breadcrumb, Button, Input, Select, Table} from "antd";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
@@ -12,7 +12,6 @@ import HomeReportsModal from "./HomeReportsModal";
 
 const {Option} = Select;
 const Search = Input.Search;
-const confirm = Modal.confirm;
 
 
 class Customers extends Component {
