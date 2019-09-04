@@ -17,12 +17,17 @@ class QuoteDetail extends Component {
     this.props.onNullifyCurrentQuote();
   }
 
+  onGoBackToList = () => {
+    this.props.history.goBack()
+  };
+
   render() {
     const {currentQuote} = this.props;
     return (
       <div className="gx-main-layout-content">
         {currentQuote ?
           <Widget styleName="gx-card-filter">
+            <i className="icon icon-arrow-left gx-mb-3" onClick={this.onGoBackToList}/>
             <h2 className="gx-text">Quote Requests</h2>
             <Breadcrumb className="gx-mb-4">
               <Breadcrumb.Item>

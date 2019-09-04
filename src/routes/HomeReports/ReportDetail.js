@@ -101,6 +101,10 @@ class ReportDetail extends Component {
     // });
   };
 
+  onGoBackToList = () => {
+    this.props.history.goBack()
+  };
+
   componentWillUnmount() {
     this.props.onNullifyCurrentReport();
     clearInterval(this.timeInterval);
@@ -143,6 +147,7 @@ class ReportDetail extends Component {
       <div className="gx-main-layout-content">
         {currentReport ?
           <Widget styleName="gx-card-filter">
+            <i className="icon icon-arrow-left gx-mb-3" onClick={this.onGoBackToList}/>
             <h2 className="gx-text">Home Report Detail</h2>
             <Breadcrumb className="gx-mb-4">
               <Breadcrumb.Item>
