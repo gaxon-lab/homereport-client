@@ -78,7 +78,6 @@ class QuoteDetail extends Component {
           </Widget> : null}
           <InfoView/>
       </div>
-
     )
   }
 }

@@ -179,7 +179,7 @@ class Staff extends Component {
   };
 
   onDropdownChange = (value) => {
-    this.setState({itemNumbers: value, current: 1}, () => {
+    this.setState({itemNumbers: value, currentPage: 1}, () => {
       this.onGetStaffDataPaginated(this.state.currentPage, this.state.itemNumbers, this.state.filterText, true)
     })
   };
