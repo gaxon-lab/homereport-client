@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
     case GET_REPORT_COMMENTS:
       return {
         ...state,
-        reportComments: action.payload.data
+        reportComments: action.payload
       };
 
     case ADD_NEW_COMMENT:

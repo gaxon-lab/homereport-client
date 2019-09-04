@@ -76,11 +76,6 @@ class SidebarContent extends Component {
                   Home Reports</Link>
               </Menu.Item>
 
-              <Menu.Item key="roles-permissions">
-                <Link to="/roles-permissions/all"><i className="icon icon-lock-screen"/>
-                  Roles & Permissions</Link>
-              </Menu.Item>
-
             </Menu>
           </CustomScrollbars>
         </div>

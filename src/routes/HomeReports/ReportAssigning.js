@@ -23,6 +23,11 @@ class ReportAssigning extends Component {
     this.setState({showStaffModal: !this.state.showStaffModal})
   };
 
+  onCloseModal = () => {
+    this.setState({filterStaffText: ""},
+      () => this.props.onGetStaffList(this.state.current, 10, this.state.filterStaffText, true))
+  };
+
   onClickOnStaff = (staff) => {
     confirm({
       title: `You have selected ${staff.first_name + " " + staff.last_name}, click on YES to confirm!`,
@@ -65,13 +70,13 @@ class ReportAssigning extends Component {
           <div>
             <div className="gx-d-flex gx-justify-content-between">
               <div className="gx-mb-2">Assigned To</div>
-              <div className="gx-link" onClick={this.onToggleStaffModal}>Edit</div>
+              <div className="gx-link" onClick={this.onToggleStaffModal}>Change Staff</div>
             </div>
             <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5">
               {assignedStaff.image ?
                 <Avatar className="gx-mr-3 gx-size-50" src={assignedStaff.image}/> :
                 <Avatar className="gx-mr-3 gx-size-50"
-                        style={{backgroundColor: '#f56a00'}}>{assignedStaff.name[0].toUpperCase()}</Avatar>}
+                        style={{backgroundColor: '#00CED1'}}>{assignedStaff.name[0].toUpperCase()}</Avatar>}
               <div className="gx-media-body gx-mt-2">
               <span
                 className="gx-mb-0 gx-text-capitalize">{assignedStaff.name}</span>
@@ -96,6 +101,7 @@ class ReportAssigning extends Component {
         <Modal
           title="Select Staff"
           centered
+          afterClose={this.onCloseModal}
           visible={showStaffModal}
           onCancel={this.onToggleStaffModal}
           footer={null}>
@@ -110,7 +116,7 @@ class ReportAssigning extends Component {
                     {staff.profile_pic.length > 0 ?
                       <Avatar className="gx-mr-3 gx-size-50" src={staff.profile_pic[0].src}/> :
                       <Avatar className="gx-mr-3 gx-size-50"
-                              style={{backgroundColor: '#f56a00'}}>{staff.first_name[0].toUpperCase()}</Avatar>}
+                              style={{backgroundColor: '#00CED1'}}>{staff.first_name[0].toUpperCase()}</Avatar>}
                     <div className="gx-media-body">
                       <span className="gx-mb-0 gx-text-capitalize">{staff.first_name + " " + staff.last_name}</span>
                       <div>{staff.email}</div>

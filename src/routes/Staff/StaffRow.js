@@ -35,7 +35,7 @@ const StaffRow = (context) => {
              {record.profile_pic.length > 0 ?
                <Avatar className="gx-mr-3 gx-size-50" src={record.profile_pic[0].src}/> :
                <Avatar className="gx-mr-3 gx-size-50"
-                       style={{backgroundColor: '#f56a00'}}>{record.first_name[0].toUpperCase()}</Avatar>}
+                       style={{backgroundColor: '#00CED1'}}>{record.first_name[0].toUpperCase()}</Avatar>}
           {record.first_name + " " + record.last_name} </span>
       }
     },

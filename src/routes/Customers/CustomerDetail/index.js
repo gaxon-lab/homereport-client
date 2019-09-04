@@ -17,13 +17,18 @@ class CustomerDetail extends Component {
     this.props.onNullifyCustomerDetails();
   };
 
+  onGoBackToList = () => {
+    this.props.history.goBack()
+  };
+
   render() {
     const {currentCustomer} = this.props;
     return (
       <div>
         {currentCustomer ?
           <div>
-            <CustomerInfo currentCustomer={currentCustomer.customer}/>
+            <CustomerInfo currentCustomer={currentCustomer.customer}
+                          onGoBackToList={this.onGoBackToList}/>
             <CustomerQuoteRequests quoteRequests={currentCustomer.quoteRequests}
                                    onSelectRequest={this.onSelectRequest}
                                    history={this.props.history}/>

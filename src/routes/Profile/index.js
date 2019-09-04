@@ -5,6 +5,7 @@ import Widget from "../../components/Widget";
 import {connect} from "react-redux";
 import ImageUpload from "./ImageUpload";
 import {fetchError, fetchStart, fetchSuccess, getUserProfile, onUpdateUserProfile} from "../../appRedux/actions";
+import InfoView from "../../components/InfoView";
 
 
 class Profile extends Component {
@@ -138,6 +139,7 @@ class Profile extends Component {
             </span>
           </div>
         </Widget>
+        <InfoView/>
       </div>
     )
   }

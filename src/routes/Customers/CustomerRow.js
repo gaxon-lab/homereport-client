@@ -34,7 +34,7 @@ const CustomersRow = (context) => {
             {record.avatar ?
               <Avatar className="gx-mr-3 gx-size-50" src={record.avatar.src}/> :
               <Avatar className="gx-mr-3 gx-size-50"
-                      style={{backgroundColor: '#f56a00'}}>{record.first_name[0].toUpperCase()}</Avatar>}
+                      style={{backgroundColor: '#00CED1'}}>{record.first_name[0].toUpperCase()}</Avatar>}
             <div className="gx-media-body">
               <span className="gx-mb-0 gx-text-capitalize">{record.first_name + " " + record.last_name}</span>
             </div>

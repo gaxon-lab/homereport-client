@@ -13,7 +13,7 @@ const ConversationCell = ({conversation}) => {
             <Avatar className="gx-rounded-circle gx-size-40"
                     src={conversation.user.profile_pic[0].src}/> :
             <Avatar className="gx-rounded-circle gx-size-40"
-                    style={{backgroundColor: '#f56a00'}}>{conversation.user.first_name[0].toUpperCase()}</Avatar>}
+                    style={{backgroundColor: '#00CED1'}}>{conversation.user.first_name[0].toUpperCase()}</Avatar>}
         </div>
         <div className="gx-chat-toto-info">
           <div className="gx-flex-column">

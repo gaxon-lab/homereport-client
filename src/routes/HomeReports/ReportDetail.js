@@ -29,6 +29,7 @@ class ReportDetail extends Component {
     this.props.onGetReportDetail(reportId);
     this.onGetStaffList(1, 10);
     this.props.onGetReportComments(reportId);
+    this.timeInterval = setInterval(() => this.props.onGetReportComments(reportId), 30000)
   }
 
   onGetStaffList = (currentPage, itemsPerPage, filterText, updatingContent) => {
@@ -56,7 +57,8 @@ class ReportDetail extends Component {
     const comment = this.state.comment;
     if (this.state.comment !== '') {
       this.props.onAddNewComment(currentReport.report_id, {
-        comment: comment});
+        comment: comment
+      });
       setTimeout(() =>
         this.setState({comment: '', fileList: []}), 20)
     }
@@ -101,6 +103,7 @@ class ReportDetail extends Component {
 
   componentWillUnmount() {
     this.props.onNullifyCurrentReport();
+    clearInterval(this.timeInterval);
   }
 
   render() {
@@ -179,8 +182,7 @@ class ReportDetail extends Component {
                     <div className="gx-text-grey">Property</div>
                     <div className="gx-mt-2">
                       <p className="gx-mb-1 gx-font-weight-medium">{currentReport.address1}</p>
-                      <p
-                        className="gx-mb-1 gx-font-weight-medium">{currentReport.city}, Scotland</p>
+                      <p className="gx-mb-1 gx-font-weight-medium">{currentReport.city}, Scotland</p>
                       <p className="gx-mb-1 gx-font-weight-medium"> Zip -{currentReport.postcode}</p>
                     </div>
                   </Col>
@@ -190,7 +192,8 @@ class ReportDetail extends Component {
                     <div className=" gx-font-weight-medium">{currentReport.property_age_value}</div>
                   </Col>
                 </Row>
-                <div className=""><i className="gx-font-weight-medium">Payment Date</i> : {moment(currentReport.report_created_at).format('LL')}</div>
+                <div className=""><i className="gx-font-weight-medium">Payment
+                  Date and Time</i> : {moment(currentReport.report_created_at).format('MMMM Do YYYY, h:mm:ss a')}</div>
               </Col>
               <Col xl={8} lg={12} md={12} sm={12} xs={24}>
                 <ReportAssigning staffList={staffList}
@@ -207,11 +210,11 @@ class ReportDetail extends Component {
                   <h3 className="gx-mb-0 gx-mb-sm-1">Comments</h3>
                 </div>
                 {reportComments.length > 0 ?
-                <div>
-                  {reportComments.map((conversation, index) =>
-                    <ConversationCell key={index} conversation={conversation}/>
-                  )}
-                </div> : "No Comment yet, Write first comment!"}
+                  <div>
+                    {reportComments.map((conversation, index) =>
+                      <ConversationCell key={index} conversation={conversation}/>
+                    )}
+                  </div> : "No Comment yet, Write first comment!"}
 
                 <div className="gx-flex-column">
                   <TextArea row={4} placeholder="Add a comment..." value={comment} onKeyPress={(event) => {

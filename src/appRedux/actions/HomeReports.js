@@ -86,12 +86,11 @@ export const onNullifyCurrentReport  = () => {
 
 export const onGetReportComments = (reportId) => {
   return (dispatch) => {
-    dispatch({type: FETCH_START});
     axios.get(`/reports/${reportId}/comments`).then(({data}) => {
       console.info("onGetReportComments: ", data);
       if (data.success) {
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({type: GET_REPORT_COMMENTS, payload: data.data});
+        const Comments = data.data.data.reverse();
+        dispatch({type: GET_REPORT_COMMENTS, payload: Comments});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {
