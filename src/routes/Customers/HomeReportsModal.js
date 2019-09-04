@@ -36,7 +36,7 @@ class HomeReportsModal extends Component {
         },
       },
       {
-        title: "ESTIMATED PRICE & AGE",
+        title: <div className="gx-text-nowrap">ESTIMATED PRICE & AGE</div>,
         dataIndex: 'price',
         key: 'price',
         render: (text, record) => {

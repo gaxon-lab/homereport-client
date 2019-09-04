@@ -20,13 +20,13 @@ const ConversationCell = ({conversation}) => {
             <div className="gx-name gx-mr-2">{conversation.user.first_name + " " + conversation.user.last_name}</div>
             <div>
               <span
-                className="gx-time gx-text-muted"> Created at: {moment(conversation.created_at).format('MMMM Do YYYY, h:mm:ss a')},</span>
-              <span
-                className="gx-mr-2 gx-text-grey"> Last Updated at: {moment(conversation.updated_at).fromNow()}</span>
+                className="gx-time gx-text-muted"> Sent at: {moment(conversation.created_at).format('MMMM Do YYYY, h:mm:ss a')},</span>
+              {/*<span*/}
+              {/*  className="gx-mr-2 gx-text-grey"> Last Updated at: {moment(conversation.updated_at).fromNow()}</span>*/}
             </div>
           </div>
-          {conversation.comment ? conversation.comment.split("\n").map(message => <p
-            style={{padding: 0, margin: 0, minHeight: 15}}>
+          {conversation.comment ? conversation.comment.split("\n").map((message, index) => <p
+            style={{padding: 0, margin: 0, minHeight: 15}} key={index}>
             {message}
           </p>) : null}
           {/*<div className="gx-d-flex">*/}

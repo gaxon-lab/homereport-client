@@ -1,15 +1,23 @@
 import React, {Component} from 'react';
 import Widget from "../../components/Widget";
-import {Breadcrumb, Button, Col, Divider, Input, Row, Upload} from "antd";
+import {Breadcrumb, Button, Col, Divider, Input, Row} from "antd";
 import {Link} from "react-router-dom";
 import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
 import {onGetStaff} from "../../appRedux/actions/StaffList";
 import {onGetReportDetail, onNullifyCurrentReport} from "../../appRedux/actions/HomeReports";
-import {onAddNewComment, onAssignStaffToReport, onGetReportComments} from "../../appRedux/actions";
+import {
+  fetchError,
+  fetchStart,
+  fetchSuccess,
+  onAddNewComment,
+  onAssignStaffToReport,
+  onGetReportComments
+} from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
 import ConversationCell from "./ConversationCell";
 import moment from "moment";
+import DocumentUploading from "./DocumentUploading/index";
 
 
 const {TextArea} = Input;
@@ -19,7 +27,6 @@ class ReportDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileList: [],
       comment: ''
     }
   }
@@ -45,11 +52,7 @@ class ReportDetail extends Component {
   };
 
   onSubmitMessage = () => {
-    if (this.state.fileList.length > 0) {
-      this.handleUpload();
-    } else {
-      this.onSendMessage();
-    }
+    this.onSendMessage();
   };
 
   onSendMessage = () => {
@@ -60,45 +63,12 @@ class ReportDetail extends Component {
         comment: comment
       });
       setTimeout(() =>
-        this.setState({comment: '', fileList: []}), 20)
+        this.setState({comment: ''}), 20)
     }
   };
 
-
-  handleUpload = () => {
-    let formData = new FormData();
-    this.state.fileList.map(file => {
-      formData = new FormData();
-      formData.append('file', file);
-      formData.append('title', file.name);
-      this.imageUpload(formData);
-      return file;
-    });
-  };
-
-  imageUpload = (file) => {
-    this.onSendMessage();
-    // this.props.fetchStart();
-    // axios.post("/uploads/temporary/media", file, {
-    //   headers: {
-    //     'Content-Type': "multipart/form-data"
-    //   }
-    // }).then(({data}) => {
-    //   if (data.success) {
-    //     this.props.fetchSuccess();
-    //     this.setState({attachments: this.state.attachments.concat(data.data)}, () => {
-    //       if (this.state.attachments.length === this.state.fileList.length) {
-    //         this.onSendMessage();
-    //         this.setState({fileList: []})
-    //       }
-    //     })
-    //   }
-    //   else {
-    //     this.props.fetchError(data.errors[0])
-    //   }
-    // }).catch(function (error) {
-    //   this.props.fetchError(error.message)
-    // });
+  onUploadDocument = (documentId) => {
+    const document = {media_ids: [documentId]}
   };
 
   onGoBackToList = () => {
@@ -112,27 +82,8 @@ class ReportDetail extends Component {
 
   render() {
     const {staffList, currentReport, totalItems, reportComments} = this.props;
-    const {fileList, comment} = this.state;
-    const props = {
-      multiple: true,
-      onRemove: file => {
-        this.setState(state => {
-          const index = state.fileList.indexOf(file);
-          const newFileList = state.fileList.slice();
-          newFileList.splice(index, 1);
-          return {
-            fileList: newFileList,
-          };
-        });
-      },
-      beforeUpload: file => {
-        this.setState(state => ({
-          fileList: [...state.fileList, file],
-        }))
-        return false;
-      },
-      fileList,
-    };
+    const {comment} = this.state;
+
     let assignedTo = null;
     if (currentReport && currentReport.assigned_user_id) {
       assignedTo = {
@@ -159,31 +110,31 @@ class ReportDetail extends Component {
               </Breadcrumb.Item>
             </Breadcrumb>
             <Row>
-              <Col xl={16} lg={12} md={12} sm={12} xs={24}>
+              <Col xl={11} lg={12} md={12} sm={12} xs={24}>
                 <Row>
-                  <Col span={8}>
+                  <Col span={14}>
                     <div className="gx-text-grey">Reference No.</div>
                     <div className="gx-text-blue gx-mt-2 gx-font-weight-medium">{currentReport.reference_no}</div>
                   </Col>
-                  <Col span={16}>
+                  <Col span={10}>
                     <div className="gx-text-grey">Quote Amount</div>
                     <div className="gx-mt-2 gx-font-weight-bold">${currentReport.quote_amount}</div>
                   </Col>
                 </Row>
                 <Row className="gx-mt-4">
-                  <Col span={8}>
+                  <Col span={14}>
                     <div className="gx-text-grey">Customer Detail</div>
                     <div
                       className=" gx-mt-2 gx-font-weight-medium">{currentReport.customer_name ? currentReport.customer_name : "NA"}</div>
                   </Col>
-                  <Col span={16}>
+                  <Col span={10}>
                     <div className="gx-text-grey">Contact Detail</div>
                     <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.day_time_tel} Day</div>
                     <div className="gx-mt-1 gx-font-weight-medium">{currentReport.evening_time_tel} Evening</div>
                   </Col>
                 </Row>
                 <Row className="gx-my-4">
-                  <Col span={8}>
+                  <Col span={14}>
                     <div className="gx-text-grey">Property</div>
                     <div className="gx-mt-2">
                       <p className="gx-mb-1 gx-font-weight-medium">{currentReport.address1}</p>
@@ -191,7 +142,7 @@ class ReportDetail extends Component {
                       <p className="gx-mb-1 gx-font-weight-medium"> Zip -{currentReport.postcode}</p>
                     </div>
                   </Col>
-                  <Col span={16}>
+                  <Col span={10}>
                     <p className="gx-text-grey">Estimated Price & Age</p>
                     <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.property_price_value}</div>
                     <div className=" gx-font-weight-medium">{currentReport.property_age_value}</div>
@@ -200,12 +151,16 @@ class ReportDetail extends Component {
                 <div className=""><i className="gx-font-weight-medium">Payment
                   Date and Time</i> : {moment(currentReport.report_created_at).format('MMMM Do YYYY, h:mm:ss a')}</div>
               </Col>
-              <Col xl={8} lg={12} md={12} sm={12} xs={24}>
+              <Col xl={13} lg={12} md={12} sm={12} xs={24}>
                 <ReportAssigning staffList={staffList}
                                  totalItems={totalItems}
                                  onAssignStaff={this.onAssignStaff}
                                  onGetStaffList={this.onGetStaffList}
                                  assignedTo={assignedTo}/>
+                <DocumentUploading onUploadDocument={this.onUploadDocument}
+                                   fetchError={this.props.fetchError}
+                                   fetchSuccess={this.props.fetchSuccess}
+                                   fetchStart={this.props.fetchStart}/>
               </Col>
             </Row>
             <Divider/>
@@ -229,13 +184,6 @@ class ReportDetail extends Component {
                   }} className="gx-form-control-lg gx-my-3"
                             onChange={(e) => this.onMessageEnter(e)}/>
                 </div>
-                <div className="gx-flex-column">
-                  {/*<label>Upload Attachments</label>*/}
-                  <Upload {...props} >
-                    <Input placeholder="Add Files here" className="gx-my-3" readOnly
-                           prefix={<i className="icon gx-icon-attachment"/>}/>
-                  </Upload>
-                </div>
                 <Button type="primary" className="gx-my-3" onClick={this.onSubmitMessage}
                         disabled={comment === ""}>Send Message</Button>
               </div> : null}
@@ -258,6 +206,9 @@ export default connect(mapStateToProps, {
   onNullifyCurrentReport,
   onAssignStaffToReport,
   onGetReportComments,
-  onAddNewComment
+  onAddNewComment,
+  fetchStart,
+  fetchSuccess,
+  fetchError
 })(ReportDetail);
 

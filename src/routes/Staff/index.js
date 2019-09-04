@@ -5,7 +5,7 @@ import {Breadcrumb, Button, Dropdown, Icon, Input, Menu, Modal, Select, Table} f
 import {Link} from "react-router-dom";
 import Widget from "../../components/Widget";
 import StaffRow from "./StaffRow";
-import {onAddStaffMember, onDeleteStaff, onEditStaffMember, onGetStaff} from "../../appRedux/actions/StaffList";
+import {onAddStaffMember, onEditStaffMember, onGetStaff} from "../../appRedux/actions/StaffList";
 import AddNewStaff from "./AddNewStaff";
 import InfoView from "../../components/InfoView";
 import {fetchError, fetchStart, fetchSuccess, onBulkDeleteStaff} from "../../appRedux/actions";
@@ -102,8 +102,9 @@ class Staff extends Component {
       okText: "Yes",
       cancelText: "Cancel",
       onOk: () => {
-        staff.status = 1;
-        this.props.onEditStaffMember(staff, true);
+        const staffMember = staff;
+        staffMember.status = 1;
+        this.props.onEditStaffMember(staffMember, true);
       },
       onCancel() {
         console.log('Cancel');
@@ -117,8 +118,9 @@ class Staff extends Component {
       okText: "Yes",
       cancelText: "Cancel",
       onOk: () => {
-        staff.status = 0;
-        this.props.onEditStaffMember(staff, true);
+        const staffMember = staff;
+        staffMember.status = 0;
+        this.props.onEditStaffMember(staffMember, true);
       },
       onCancel() {
         console.log('Cancel');
@@ -196,7 +198,6 @@ class Staff extends Component {
         this.setState({bulkSelectedStaff: ids, selectedRowKeys: selectedRowKeys})
       }
     };
-console.log("permisions", this.props.userPermissions)
 
     return (
       <div className="gx-main-content">
@@ -278,7 +279,6 @@ const mapStateToProps = ({staff, common, auth}) => {
 export default connect(mapStateToProps, {
   onGetStaff,
   onAddStaffMember,
-  onDeleteStaff,
   onEditStaffMember,
   onBulkDeleteStaff,
   fetchStart,

@@ -5,7 +5,8 @@ import {
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
-  NULLIFY_CURRENT_REPORT
+  GET_REPORT_DOCUMENTS,
+  NULLIFY_CURRENT_REPORT, UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
 export const onGetReportsList = (currentPage, itemsPerPage, filterText, updatingContent) => {
@@ -40,7 +41,7 @@ export const onGetReportsList = (currentPage, itemsPerPage, filterText, updating
 
 export const onGetReportDetail = (recordId) => {
   return (dispatch) => {
-      dispatch({type: FETCH_START});
+    dispatch({type: FETCH_START});
     axios.get(`/reports/${recordId}`).then(({data}) => {
       console.info("onGetReportDetail: ", data);
       if (data.success) {
@@ -58,10 +59,10 @@ export const onGetReportDetail = (recordId) => {
   }
 };
 
-export const onAssignStaffToReport  = (reportId, id) => {
+export const onAssignStaffToReport = (reportId, id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.post(`reports/${reportId}/assign`, {user_id:id} ).then(({data}) => {
+    axios.post(`reports/${reportId}/assign`, {user_id: id}).then(({data}) => {
       console.log("onAssignStaffToReport", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
@@ -78,7 +79,7 @@ export const onAssignStaffToReport  = (reportId, id) => {
   }
 };
 
-export const onNullifyCurrentReport  = () => {
+export const onNullifyCurrentReport = () => {
   return {
     type: NULLIFY_CURRENT_REPORT
   }
@@ -89,7 +90,7 @@ export const onGetReportComments = (reportId) => {
     axios.get(`/reports/${reportId}/comments`).then(({data}) => {
       console.info("onGetReportComments: ", data);
       if (data.success) {
-        const Comments = data.data.data.reverse();
+        const Comments = data.data.length > 0 ? data.data.reverse() : data.data;
         dispatch({type: GET_REPORT_COMMENTS, payload: Comments});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
@@ -111,6 +112,46 @@ export const onAddNewComment = (reportId, message) => {
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: ADD_NEW_COMMENT, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onGetReportDocuments = (reportId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.get(`/reports/${reportId}/media/list`).then(({data}) => {
+      console.info("onGetReportDocuments: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: GET_REPORT_DOCUMENTS, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onAddReportDocument = (reportId, file) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post(`/reports/${reportId}/media/upload`, file).then(({data}) => {
+      console.info("onAddReportDocument: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

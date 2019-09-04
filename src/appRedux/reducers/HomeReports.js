@@ -2,8 +2,8 @@ import {
   ADD_NEW_COMMENT,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
-  GET_REPORT_DETAIL,
-  NULLIFY_CURRENT_REPORT
+  GET_REPORT_DETAIL, GET_REPORT_DOCUMENTS,
+  NULLIFY_CURRENT_REPORT, UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
 
@@ -11,7 +11,8 @@ const initialState = {
   reportsList: [],
   totalItems: null,
   currentReport: null,
-  reportComments: []
+  reportComments: [],
+  reportDocuments: []
 };
 
 export default (state = initialState, action) => {
@@ -46,6 +47,18 @@ export default (state = initialState, action) => {
         ...state,
         reportComments: [...state.reportComments, action.payload]
       };
+
+    case GET_REPORT_DOCUMENTS:
+      return {
+        ...state,
+        reportDocuments: action.payload
+      };
+
+    case UPLOAD_REPORT_DOCUMENT:
+      return {
+        ...state,
+        reportDocuments: [...state.reportDocuments, action.payload]
+      }
 
     default:
       return state;

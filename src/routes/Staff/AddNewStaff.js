@@ -220,7 +220,7 @@ class AddNewStaff extends Component {
                                   value={permissions}>
 
                       {userPermissions.map(permission => {
-                        return <div className="gx-mb-2">
+                        return <div className="gx-mb-2" key={permission.id}>
                         <Checkbox value={permission.name}>{permission.name}</Checkbox>
                         </div>
                       })

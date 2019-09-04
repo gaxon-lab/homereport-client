@@ -59,26 +59,6 @@ export const onAddStaffMember = (staffMember) => {
   }
 };
 
-export const onDeleteStaff = (staffId) => {
-  return (dispatch) => {
-    dispatch({type: FETCH_START});
-    axios.delete(`/staffs/${staffId}`).then(({data}) => {
-      if (data.success) {
-        dispatch({type: DELETE_STAFF, payload: staffId});
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({type: SHOW_MESSAGE, payload: "The selected Staff has been deleted successfully"});
-      } else if (data.message) {
-        dispatch({type: FETCH_ERROR, payload: data.message});
-      } else {
-        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
-      }
-    }).catch(function (error) {
-      dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
-    });
-  }
-};
-
 export const onEditStaffMember = (staffMember, updatingContent) => {
   return (dispatch) => {
     if (updatingContent) {
@@ -104,7 +84,7 @@ export const onEditStaffMember = (staffMember, updatingContent) => {
 };
 
 export const onBulkDeleteStaff = (staffIds) => {
-  console.log("staffids", staffIds)
+  console.log("staffids", staffIds);
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('/staffs/delete', staffIds).then(({data}) => {
@@ -124,28 +104,3 @@ export const onBulkDeleteStaff = (staffIds) => {
     });
   }
 };
-
-
-// export const onChangeStaffStatus = (staffId, status, updatingContent, context) => {
-//   const {messages} = context.props.intl;
-//   return (dispatch) => {
-//       dispatch({type: FETCH_START});
-//     axios.post(`/setup`, staffId).then(({data}) => {
-//       if (data.success) {
-//         dispatch({type: STAFF_STATUS_CHANGE, payload: {id: data.data, status: status}});
-//         dispatch({type: FETCH_SUCCESS});
-//         dispatch({
-//           type: SHOW_MESSAGE,
-//           payload: status === 0 ? "" : messages["action.staff.active"]
-//         });
-//       } else if (data.message) {
-//         dispatch({type: FETCH_ERROR, payload: data.message});
-//       } else {
-//         dispatch({type: FETCH_ERROR, payload: data.errors[0]});
-//       }
-//     }).catch(function (error) {
-//       dispatch({type: FETCH_ERROR, payload: error.message});
-//       console.info("Error****:", error.message);
-//     });
-//   }
-// };

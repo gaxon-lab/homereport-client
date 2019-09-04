@@ -7,7 +7,7 @@ import StaffList from "./StaffList";
 import Customers from "./Customers";
 import QuoteRequests from "./QuoteRequests";
 import HomeReports from "./HomeReports";
-
+import Dashboard from "./Dashboard";
 
 
 const reducers = combineReducers({
@@ -18,7 +18,8 @@ const reducers = combineReducers({
   staff: StaffList,
   customers: Customers,
   quoteRequests: QuoteRequests,
-  homeReports: HomeReports
+  homeReports: HomeReports,
+  dashboard: Dashboard
 });
 
 export default reducers;
