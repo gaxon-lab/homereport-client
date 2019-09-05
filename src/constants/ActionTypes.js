@@ -36,6 +36,7 @@ export const FETCH_USER_INFO_START = 'fetch_user_info_start';
 export const FETCH_USER_INFO_SUCCESS = 'fetch_user_info_success';
 export const FETCH_USER_INFO_ERROR = 'fetch_user_info_error';
 export const UPDATE_USER_PERMISSION_DATA = 'update_user_permission_data';
+export const LOGGED_USER_PERMISSION = 'LOGGED_USER_PERMISSION';
 
 //Sticky
 export const GET_STICKY = 'GET_STICKY';

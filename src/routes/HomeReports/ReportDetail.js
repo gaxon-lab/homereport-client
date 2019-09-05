@@ -11,8 +11,10 @@ import {
   fetchStart,
   fetchSuccess,
   onAddNewComment,
+  onAddReportDocument,
   onAssignStaffToReport,
-  onGetReportComments
+  onGetReportComments,
+  onGetReportDocuments
 } from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
 import ConversationCell from "./ConversationCell";
@@ -36,6 +38,7 @@ class ReportDetail extends Component {
     this.props.onGetReportDetail(reportId);
     this.onGetStaffList(1, 10);
     this.props.onGetReportComments(reportId);
+    this.props.onGetReportDocuments(reportId);
     this.timeInterval = setInterval(() => this.props.onGetReportComments(reportId), 30000)
   }
 
@@ -67,8 +70,10 @@ class ReportDetail extends Component {
     }
   };
 
-  onUploadDocument = (documentId) => {
-    const document = {media_ids: [documentId]}
+  onUploadDocument = (documentId, documentName) => {
+    console.log("documentName", documentName)
+    const document = {media_id: documentId, caption: documentName}
+    this.props.onAddReportDocument(this.props.currentReport.report_id, document)
   };
 
   onGoBackToList = () => {
@@ -81,16 +86,15 @@ class ReportDetail extends Component {
   }
 
   render() {
-    const {staffList, currentReport, totalItems, reportComments} = this.props;
+    const {staffList, currentReport, totalItems, reportComments, reportDocuments} = this.props;
     const {comment} = this.state;
-
     let assignedTo = null;
     if (currentReport && currentReport.assigned_user_id) {
       assignedTo = {
         id: currentReport.assigned_user_id,
         image: currentReport.assigned_user_image,
         name: currentReport.assigned_user_name,
-        email: currentReport.customer_email
+        email: currentReport.assigned_user_email
       }
     }
 
@@ -148,19 +152,20 @@ class ReportDetail extends Component {
                     <div className=" gx-font-weight-medium">{currentReport.property_age_value}</div>
                   </Col>
                 </Row>
-                <div className=""><i className="gx-font-weight-medium">Payment
+                <div className="gx-mb-4"><i className="gx-font-weight-medium">Payment
                   Date and Time</i> : {moment(currentReport.report_created_at).format('MMMM Do YYYY, h:mm:ss a')}</div>
               </Col>
               <Col xl={13} lg={12} md={12} sm={12} xs={24}>
+                <DocumentUploading onUploadDocument={this.onUploadDocument}
+                                   reportDocuments={reportDocuments}
+                                   fetchError={this.props.fetchError}
+                                   fetchSuccess={this.props.fetchSuccess}
+                                   fetchStart={this.props.fetchStart}/>
                 <ReportAssigning staffList={staffList}
                                  totalItems={totalItems}
                                  onAssignStaff={this.onAssignStaff}
                                  onGetStaffList={this.onGetStaffList}
                                  assignedTo={assignedTo}/>
-                <DocumentUploading onUploadDocument={this.onUploadDocument}
-                                   fetchError={this.props.fetchError}
-                                   fetchSuccess={this.props.fetchSuccess}
-                                   fetchStart={this.props.fetchStart}/>
               </Col>
             </Row>
             <Divider/>
@@ -196,8 +201,8 @@ class ReportDetail extends Component {
 
 const mapStateToProps = ({staff, homeReports}) => {
   const {staffList, totalItems} = staff;
-  const {currentReport, reportComments} = homeReports;
-  return {staffList, totalItems, currentReport, reportComments};
+  const {currentReport, reportComments, reportDocuments} = homeReports;
+  return {staffList, totalItems, currentReport, reportComments, reportDocuments};
 };
 
 export default connect(mapStateToProps, {
@@ -209,6 +214,8 @@ export default connect(mapStateToProps, {
   onAddNewComment,
   fetchStart,
   fetchSuccess,
-  fetchError
+  fetchError,
+  onAddReportDocument,
+  onGetReportDocuments
 })(ReportDetail);
 

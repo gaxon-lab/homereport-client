@@ -4,7 +4,7 @@ import {
   BULK_DELETE_SUPPORT_STAFF,
   DELETE_STAFF,
   EDIT_STAFF_DETAILS,
-  GET_STAFF_LIST
+  GET_STAFF_LIST, GET_USER_PERMISSION
 } from "../../constants/StaffList";
 import axios from 'util/Api'
 
@@ -104,3 +104,23 @@ export const onBulkDeleteStaff = (staffIds) => {
     });
   }
 };
+
+export const onGetSelectedStaffPermission = (staffId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.get(`/user/${staffId}/permissions`, staffId).then(({data}) => {
+      console.log("onGetSelectedStaffPermission", data);
+      if (data.success) {
+        dispatch({type: GET_USER_PERMISSION, payload: data.data});
+        dispatch({type: FETCH_SUCCESS});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+}

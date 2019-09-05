@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Avatar, Input, Modal, Pagination, Tag} from "antd";
+import {Avatar, Icon, Input, Modal, Pagination, Tag} from "antd";
 import PropTypes from "prop-types";
 
 const confirm = Modal.confirm;
@@ -68,9 +68,9 @@ class ReportAssigning extends Component {
       <div className="gx-main-layout-content">
         {assignedStaff ?
           <div>
-            <div className="gx-d-flex gx-justify-content-between">
-              <div className="gx-mb-2">Assigned To</div>
-              <div className="gx-link" onClick={this.onToggleStaffModal}>Change Staff</div>
+            <div className="gx-d-flex">
+              <div className="gx-mb-2 gx-mr-4">Assigned To</div>
+              <div className="gx-link" onClick={this.onToggleStaffModal}><Icon type="edit" /> Change</div>
             </div>
             <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5">
               {assignedStaff.image ?

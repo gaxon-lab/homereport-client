@@ -1,6 +1,15 @@
 import React, {Component} from 'react';
 import {Avatar, Button, Checkbox, Col, Form, Input, Modal, Radio, Row, Upload} from "antd";
 import axios from 'util/Api'
+import {connect} from "react-redux";
+import {
+  fetchError,
+  fetchStart,
+  fetchSuccess,
+  onAddStaffMember,
+  onEditStaffMember,
+  onGetSelectedStaffPermission
+} from "../../appRedux/actions";
 
 class AddNewStaff extends Component {
   constructor(props) {
@@ -18,9 +27,25 @@ class AddNewStaff extends Component {
       }
     } else {
       const imageId = props.selectedStaff.profile_pic.length > 0 ? props.selectedStaff.profile_pic[0].id : null
-      this.state = {...props.selectedStaff, fileList: [], profile_pic: imageId}
+      this.state = {...props.selectedStaff, fileList: [], profile_pic: imageId, permissions: []}
     }
   }
+
+  componentDidMount() {
+    if (this.props.selectedStaff) {
+      this.props.onGetSelectedStaffPermission(this.props.selectedStaff.id);
+    }
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (this.props.selectedStaff) {
+      if (nextProps.selectedStaffPermissions && nextProps.selectedStaffPermissions !== this.props.selectedStaffPermissions) {
+        const permissions = nextProps.selectedStaffPermissions.map(permission => permission.name)
+        this.setState({permissions: permissions});
+      }
+    }
+  };
+
 
   onSelectStaffPermissions = checkedList => {
     this.setState({permissions: checkedList})
@@ -61,7 +86,6 @@ class AddNewStaff extends Component {
         'Content-Type': "multipart/form-data"
       }
     }).then(({data}) => {
-      console.log("image data", data)
       if (data.success) {
         this.props.fetchSuccess();
         this.setState({profile_pic: data.data}, () => {
@@ -97,11 +121,9 @@ class AddNewStaff extends Component {
     });
   };
 
-
   render() {
-    console.log("permissions status",this.state.permissions )
     const {getFieldDecorator} = this.props.form;
-    const {isAddStaff, onToggleAddStaff, userPermissions} = this.props;
+    const {isAddStaff, onToggleAddStaff, userPermissions, loggedUserPermissions} = this.props;
     const {first_name, last_name, email, password, fileList, status, permissions} = this.state;
     const props = {
       onRemove: file => {
@@ -214,20 +236,21 @@ class AddNewStaff extends Component {
                     <Radio value={0}>Disabled</Radio>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item label="Permissions">
-                  <Checkbox.Group style={{width: '100%'}}
-                                  onChange={this.onSelectStaffPermissions}
-                                  value={permissions}>
+                {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage roles & permissions").length > 0 ?
+                  <Form.Item label="Permissions">
+                    <Checkbox.Group style={{width: '100%'}}
+                                    onChange={this.onSelectStaffPermissions}
+                                    value={permissions}>
 
                       {userPermissions.map(permission => {
                         return <div className="gx-mb-2" key={permission.id}>
-                        <Checkbox value={permission.name}>{permission.name}</Checkbox>
+                          <Checkbox value={permission.name}>{permission.name}</Checkbox>
                         </div>
                       })
                       }
 
-                  </Checkbox.Group>
-                </Form.Item>
+                    </Checkbox.Group>
+                  </Form.Item> : null}
               </Form>
             </Col>
             <Col xl={10} lg={12} md={12} sm={12} xs={24}>
@@ -244,4 +267,19 @@ class AddNewStaff extends Component {
 
 AddNewStaff = Form.create({})(AddNewStaff);
 
-export default AddNewStaff;
+
+const mapStateToProps = ({staff, auth}) => {
+  const {selectedStaffPermissions} = staff;
+  const {userPermissions, loggedUserPermissions} = auth;
+  return {selectedStaffPermissions, userPermissions, loggedUserPermissions};
+};
+
+
+export default connect(mapStateToProps, {
+  onAddStaffMember,
+  onEditStaffMember,
+  fetchStart,
+  fetchSuccess,
+  fetchError,
+  onGetSelectedStaffPermission
+})((AddNewStaff));

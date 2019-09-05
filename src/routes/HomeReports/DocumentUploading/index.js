@@ -8,26 +8,37 @@ import SingleSurveryDocument from "./SingleSurveryDocument";
 class DocumentUploading extends Component {
 
   render() {
-
+    const reportDocuments = this.props.reportDocuments;
+    let termConditionDocument, propertyQuestionnaire, energyDocument, surveyDocument;
+    if (reportDocuments) {
+      termConditionDocument = reportDocuments.find(document => document.caption === "term_cond");
+      propertyQuestionnaire = reportDocuments.find(document => document.caption === "property_quest");
+      energyDocument = reportDocuments.find(document => document.caption === "eng_cert");
+      surveyDocument = reportDocuments.find(document => document.caption === "single_sur");
+    }
     return (
       <div>
-        <h2 className="gx-text-grey">Documents:</h2>
+        <div className="gx-text-grey gx-mb-2">Documents:</div>
         <PropertyQuestionareDocument onUploadDocument={this.props.onUploadDocument}
                                      fetchError={this.props.fetchError}
                                      fetchSuccess={this.props.fetchSuccess}
-                                     fetchStart={this.props.fetchStart}/>
+                                     fetchStart={this.props.fetchStart}
+                                     propertyQuestionnaire={propertyQuestionnaire}/>
         <TermsConditionsDocument onUploadDocument={this.props.onUploadDocument}
                                  fetchError={this.props.fetchError}
                                  fetchSuccess={this.props.fetchSuccess}
-                                 fetchStart={this.props.fetchStart}/>
+                                 fetchStart={this.props.fetchStart}
+                                 termConditionDocument={termConditionDocument}/>
         <EnergyDocument onUploadDocument={this.props.onUploadDocument}
                         fetchError={this.props.fetchError}
                         fetchSuccess={this.props.fetchSuccess}
-                        fetchStart={this.props.fetchStart}/>
+                        fetchStart={this.props.fetchStart}
+                        energyDocument={energyDocument}/>
         <SingleSurveryDocument onUploadDocument={this.props.onUploadDocument}
                                fetchError={this.props.fetchError}
                                fetchSuccess={this.props.fetchSuccess}
-                               fetchStart={this.props.fetchStart}/>
+                               fetchStart={this.props.fetchStart}
+                               surveyDocument={surveyDocument}/>
       </div>
     );
   }

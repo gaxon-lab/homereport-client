@@ -8,7 +8,13 @@ import StaffRow from "./StaffRow";
 import {onAddStaffMember, onEditStaffMember, onGetStaff} from "../../appRedux/actions/StaffList";
 import AddNewStaff from "./AddNewStaff";
 import InfoView from "../../components/InfoView";
-import {fetchError, fetchStart, fetchSuccess, onBulkDeleteStaff} from "../../appRedux/actions";
+import {
+  fetchError,
+  fetchStart,
+  fetchSuccess,
+  onBulkDeleteStaff,
+  onGetSelectedStaffPermission
+} from "../../appRedux/actions";
 
 
 const ButtonGroup = Button.Group;
@@ -131,9 +137,6 @@ class Staff extends Component {
   onSelectOption = () => {
     const menu = (
       <Menu>
-        {/*<Menu.Item key="1">*/}
-        {/*  Archive*/}
-        {/*</Menu.Item>*/}
         <Menu.Item key="3" onClick={this.onShowBulkDeleteConfirm}>
           Delete
         </Menu.Item>
@@ -255,12 +258,7 @@ class Staff extends Component {
         {isAddStaff ? <AddNewStaff isAddStaff={isAddStaff}
                                    onToggleAddStaff={this.onToggleAddStaff}
                                    selectedStaff={selectedStaff}
-                                   onAddStaffMember={this.props.onAddStaffMember}
-                                   onEditStaffMember={this.props.onEditStaffMember}
-                                   userPermissions={this.props.userPermissions}
-                                   fetchError={this.props.fetchError}
-                                   fetchSuccess={this.props.fetchSuccess}
-                                   fetchStart={this.props.fetchStart}/> : null}
+                                   /> : null}
         <InfoView/>
       </div>
     );
@@ -268,11 +266,10 @@ class Staff extends Component {
 }
 
 
-const mapStateToProps = ({staff, common, auth}) => {
+const mapStateToProps = ({staff, common}) => {
   const {staffList, totalItems} = staff;
-  const {userPermissions} = auth;
   const {updatingContent} = common;
-  return {staffList, totalItems, updatingContent, userPermissions};
+  return {staffList, totalItems, updatingContent};
 };
 
 
@@ -283,7 +280,8 @@ export default connect(mapStateToProps, {
   onBulkDeleteStaff,
   fetchStart,
   fetchSuccess,
-  fetchError
+  fetchError,
+  onGetSelectedStaffPermission
 })((Staff));
 
 Staff.defaultProps = {

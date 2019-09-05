@@ -70,7 +70,6 @@ class HomeReports extends Component {
     </Select>
   };
 
-
   onPageChange = page => {
     const {filterText, itemNumbers} = this.state;
     this.setState({current: page}, () => {

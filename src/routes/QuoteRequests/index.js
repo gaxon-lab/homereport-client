@@ -120,7 +120,7 @@ class QuoteRequests extends Component {
               </Button>
             </Button.Group>
           </div>
-          <Table rowKey="id" rowSelection={rowSelection} columns={QuotesRow(this)}
+          <Table rowKey="quote_request_id" rowSelection={rowSelection} columns={QuotesRow(this)}
                  dataSource={quotesList}
                  loading={updatingContent}
                  pagination={{

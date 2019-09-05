@@ -58,7 +58,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         reportDocuments: [...state.reportDocuments, action.payload]
-      }
+      };
 
     default:
       return state;

@@ -7,7 +7,7 @@ import {onGetDashboardInfo} from "../../appRedux/actions/Dashboard";
 class Dashboard extends Component {
 
   componentDidMount() {
-    // this.props.onGetDashboardInfo();
+    this.props.onGetDashboardInfo();
   }
 
   render() {
@@ -15,24 +15,25 @@ class Dashboard extends Component {
 
     return (
       <div className="gx-main-content">
+        {dashboardData ?
         <Row>
           <Col xl={6} lg={12} md={12} sm={12} xs={12} className="gx-col-full">
-            <SummaryDesign icon="orders" iconColor="geekblue" title={28}
+            <SummaryDesign icon="orders" iconColor="geekblue" title={dashboardData.total_quote_request}
                            subTitle="Total Quote Requests"/>
           </Col>
           <Col xl={6} lg={12} md={12} sm={12} xs={12} className="gx-col-full">
-            <SummaryDesign icon="tickets" iconColor="geekblue" title={30}
+            <SummaryDesign icon="tickets" iconColor="geekblue" title={dashboardData.total_report}
                            subTitle="Total Home Reports"/>
           </Col>
           <Col xl={6} lg={12} md={12} sm={12} xs={12} className="gx-col-full">
-            <SummaryDesign icon="signup" iconColor="geekblue" title={47}
+            <SummaryDesign icon="signup" iconColor="geekblue" title={dashboardData.total_customer}
                            subTitle="Total Customers"/>
           </Col>
           <Col xl={6} lg={12} md={12} sm={12} xs={12} className="gx-col-full">
-            <SummaryDesign icon="contacts" iconColor="geekblue" title={23}
+            <SummaryDesign icon="contacts" iconColor="geekblue" title={dashboardData.total_staff}
                            subTitle="Total Staff"/>
           </Col>
-        </Row>
+        </Row> : null}
       </div>
     );
   }

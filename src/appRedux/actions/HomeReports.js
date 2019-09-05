@@ -150,13 +150,14 @@ export const onAddReportDocument = (reportId, file) => {
     axios.post(`/reports/${reportId}/media/upload`, file).then(({data}) => {
       console.info("onAddReportDocument: ", data);
       if (data.success) {
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data});
-      } else if (data.message) {
-        dispatch({type: FETCH_ERROR, payload: data.message});
-      } else {
-        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
-      }
+              dispatch({type: FETCH_SUCCESS});
+              dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data});
+              dispatch({type: SHOW_MESSAGE, payload: "The document has been uploaded successfully!"})
+            } else if (data.message) {
+              dispatch({type: FETCH_ERROR, payload: data.message});
+            } else {
+              dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+            }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
       console.info("Error****:", error.message);

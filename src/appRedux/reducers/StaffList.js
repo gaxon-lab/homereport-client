@@ -2,14 +2,15 @@ import {
   ADD_NEW_STAFF,
   BULK_DELETE_SUPPORT_STAFF,
   EDIT_STAFF_DETAILS,
-  GET_STAFF_LIST,
+  GET_STAFF_LIST, GET_USER_PERMISSION,
   STAFF_STATUS_CHANGE
 } from "../../constants/StaffList";
 
 
 const initialState = {
   staffList: [],
-  totalItems: null
+  totalItems: null,
+  selectedStaffPermissions: []
 };
 
 export default (state = initialState, action) => {
@@ -55,6 +56,12 @@ export default (state = initialState, action) => {
         ...state,
         staffList: state.staffList.filter(member => (action.payload.indexOf(member.id) === -1)),
         totalItems: state.totalItems - action.payload.length
+      };
+
+    case GET_USER_PERMISSION:
+      return {
+        ...state,
+        selectedStaffPermissions: action.payload
       };
 
     default:

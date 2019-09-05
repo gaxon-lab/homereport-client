@@ -5,7 +5,7 @@ import {GET_DASHBOARD_INFO} from "../../constants/Dashboard";
 export const onGetDashboardInfo = () => {
   return (dispatch) => {
       dispatch({type: FETCH_START});
-    axios.get('/quotes/requests/list').then(({data}) => {
+    axios.get('/dashboard').then(({data}) => {
       console.info("onGetDashboardInfo: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});

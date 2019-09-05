@@ -40,7 +40,6 @@ export const showMessage = (message) => {
 };
 
 export const hideMessage = () => {
-  console.log(" i m active")
   return (dispatch) => dispatch({
     type: HIDE_MESSAGE
   })

@@ -5,7 +5,7 @@ import {
   FETCH_USER_INFO_ERROR,
   FETCH_USER_INFO_START,
   FETCH_USER_INFO_SUCCESS,
-  INIT_URL,
+  INIT_URL, LOGGED_USER_PERMISSION,
   SHOW_MESSAGE,
   SIGNOUT_USER_SUCCESS,
   UPDATE_USER_PERMISSION_DATA,
@@ -64,8 +64,6 @@ export const onGetUserPermission = (history) => {
         dispatch({type: UPDATE_USER_PERMISSION_DATA, payload: data.data});
         localStorage.setItem("settings", JSON.stringify(data.data));
         Permissions.setPermissions(data.data);
-        // setUserSetting(data.data.settings);
-        // dispatch({type: SWITCH_LANGUAGE, payload: data.data.settings.locale.default_language})
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
         dispatch({type: FETCH_USER_INFO_ERROR, payload: data.errors[0]});
@@ -230,6 +228,26 @@ export const onUpdateUserProfile = ({first_name, last_name, profile_pic, passwor
     });
   }
 };
+
+export const onGetLoggedUserPermission = (userId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.get(`/user/${userId}/permissions`,).then(({data}) => {
+      console.info("getUserProfile: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: LOGGED_USER_PERMISSION, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+}
 
 
 

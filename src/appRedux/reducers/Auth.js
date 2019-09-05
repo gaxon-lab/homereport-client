@@ -2,7 +2,7 @@ import {
   FETCH_USER_INFO_ERROR,
   FETCH_USER_INFO_START,
   FETCH_USER_INFO_SUCCESS,
-  INIT_URL,
+  INIT_URL, LOGGED_USER_PERMISSION,
   ON_HIDE_LOADER,
   SIGNOUT_USER_SUCCESS,
   UPDATE_USER_PERMISSION_DATA,
@@ -18,6 +18,7 @@ const INIT_STATE = {
   userSettings: {},
   loadingUser: true,
   errorMessage: '',
+  loggedUserPermissions: []
 };
 
 export default (state = INIT_STATE, action) => {
@@ -81,13 +82,13 @@ export default (state = INIT_STATE, action) => {
         token: action.payload,
       };
     }
-    // case ERROR_INITIAL_SETUP: {
-    //   return {
-    //     ...state,
-    //     errorMessage: action.payload,
-    //     loadingUser: false
-    //   }
-    // }
+
+    case LOGGED_USER_PERMISSION: {
+      return {
+        ...state,
+        loggedUserPermissions: action.payload
+      }
+    }
 
     default:
       return state;
