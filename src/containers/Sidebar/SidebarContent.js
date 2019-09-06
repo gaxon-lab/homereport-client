@@ -19,14 +19,14 @@ class SidebarContent extends Component {
 
   componentWillMount() {
     if (this.props.authUser&&this.props.authUser.id) {
-      this.props.onGetLoggedUserPermission(this.props.authUser.id);
+      this.props.onGetLoggedUserPermission();
     }
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
     console.log("second component will reciever props")
     if (nextProps.authUser && nextProps.authUser !== this.props.authUser) {
-      this.props.onGetLoggedUserPermission(nextProps.authUser.id);
+      this.props.onGetLoggedUserPermission();
     }
   }
 

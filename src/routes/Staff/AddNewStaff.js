@@ -33,7 +33,9 @@ class AddNewStaff extends Component {
 
   componentDidMount() {
     if (this.props.selectedStaff) {
-      this.props.onGetSelectedStaffPermission(this.props.selectedStaff.id);
+      if (this.props.loggedUserPermissions && this.props.loggedUserPermissions.filter((key) => key.name === "can manage roles & permissions").length > 0) {
+        this.props.onGetSelectedStaffPermission(this.props.selectedStaff.id);
+      }
     }
   }
 

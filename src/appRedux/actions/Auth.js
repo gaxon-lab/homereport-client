@@ -56,7 +56,7 @@ export const onGetUserPermission = (history) => {
   console.log("onGetUserPermission");
   return (dispatch) => {
     dispatch({type: FETCH_USER_INFO_START});
-    axios.get('/role/permissions',
+    axios.get('/permissions/list',
     ).then(({data}) => {
       console.log("onGetUserPermission: ", data);
       if (data.success) {
@@ -229,11 +229,10 @@ export const onUpdateUserProfile = ({first_name, last_name, profile_pic, passwor
   }
 };
 
-export const onGetLoggedUserPermission = (userId) => {
-  console.log("onGetLoggedUserPermission is", userId)
+export const onGetLoggedUserPermission = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.get(`/user/${userId}/permissions`,).then(({data}) => {
+    axios.get('/user/permissions',).then(({data}) => {
       console.log("onGetLoggedUserPermission: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
