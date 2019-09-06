@@ -1,5 +1,5 @@
 import React from "react";
-import loader from "../../assets/images/loader.svg"
+import loader from "../../assets/images/loader.gif"
 
 const CircularProgress = ({className}) => <div className={`loader ${className}`}>
   <img src={loader} alt="loader"/>

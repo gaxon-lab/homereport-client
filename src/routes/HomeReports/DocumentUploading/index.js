@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import PropertyQuestionareDocument from "./PropertyQuestionareDocument";
-import TermsConditionsDocument from "./TermsConditionsDocument";
-import EnergyDocument from "./EnergyDocument";
-import SingleSurveryDocument from "./SingleSurveryDocument";
+import UploaderContainer from "./UploaderContainer";
 
 
 class DocumentUploading extends Component {
@@ -19,26 +16,38 @@ class DocumentUploading extends Component {
     return (
       <div>
         <div className="gx-text-grey gx-mb-2">Documents:</div>
-        <PropertyQuestionareDocument onUploadDocument={this.props.onUploadDocument}
-                                     fetchError={this.props.fetchError}
-                                     fetchSuccess={this.props.fetchSuccess}
-                                     fetchStart={this.props.fetchStart}
-                                     propertyQuestionnaire={propertyQuestionnaire}/>
-        <TermsConditionsDocument onUploadDocument={this.props.onUploadDocument}
-                                 fetchError={this.props.fetchError}
-                                 fetchSuccess={this.props.fetchSuccess}
-                                 fetchStart={this.props.fetchStart}
-                                 termConditionDocument={termConditionDocument}/>
-        <EnergyDocument onUploadDocument={this.props.onUploadDocument}
-                        fetchError={this.props.fetchError}
-                        fetchSuccess={this.props.fetchSuccess}
-                        fetchStart={this.props.fetchStart}
-                        energyDocument={energyDocument}/>
-        <SingleSurveryDocument onUploadDocument={this.props.onUploadDocument}
-                               fetchError={this.props.fetchError}
-                               fetchSuccess={this.props.fetchSuccess}
-                               fetchStart={this.props.fetchStart}
-                               surveyDocument={surveyDocument}/>
+
+        <UploaderContainer caption="property_quest"
+                           document={propertyQuestionnaire}
+                           onUploadDocument={this.props.onUploadDocument}
+                           title="Property Questionnaire"
+                           fetchError={this.props.fetchError}
+                           fetchSuccess={this.props.fetchSuccess}
+                           fetchStart={this.props.fetchStart}/>
+
+        <UploaderContainer caption="term_cond"
+                           document={termConditionDocument}
+                           onUploadDocument={this.props.onUploadDocument}
+                           title="Terms and Conditions"
+                           fetchError={this.props.fetchError}
+                           fetchSuccess={this.props.fetchSuccess}
+                           fetchStart={this.props.fetchStart}/>
+
+        <UploaderContainer caption="eng_cert"
+                           document={energyDocument}
+                           onUploadDocument={this.props.onUploadDocument}
+                           title="Energy Performance Certificate"
+                           fetchError={this.props.fetchError}
+                           fetchSuccess={this.props.fetchSuccess}
+                           fetchStart={this.props.fetchStart}/>
+
+        <UploaderContainer caption="single_sur"
+                           document={surveyDocument}
+                           onUploadDocument={this.props.onUploadDocument}
+                           title="The Single Survey"
+                           fetchError={this.props.fetchError}
+                           fetchSuccess={this.props.fetchSuccess}
+                           fetchStart={this.props.fetchStart}/>
       </div>
     );
   }

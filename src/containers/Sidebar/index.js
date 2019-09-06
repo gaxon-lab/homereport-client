@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Drawer, Layout} from "antd";
 
 import SidebarContent from "./SidebarContent";
-import {toggleCollapsedSideNav, updateWindowWidth} from "appRedux/actions/Setting";
+import {toggleCollapsedSideNav} from "appRedux/actions/Setting";
 import {
   NAV_STYLE_DRAWER,
   NAV_STYLE_FIXED,
@@ -22,11 +22,6 @@ export class Sidebar extends Component {
     this.props.toggleCollapsedSideNav(!this.props.navCollapsed);
   };
 
-  componentDidMount() {
-    window.addEventListener('resize', () => {
-      this.props.updateWindowWidth(window.innerWidth)
-    });
-  }
 
   render() {
     const {themeType, navCollapsed, width, navStyle} = this.props;
@@ -76,4 +71,4 @@ const mapStateToProps = ({settings}) => {
   const {themeType, navStyle, navCollapsed, width, locale} = settings;
   return {themeType, navStyle, navCollapsed, width, locale}
 };
-export default connect(mapStateToProps, {toggleCollapsedSideNav, updateWindowWidth})(Sidebar);
+export default connect(mapStateToProps, {toggleCollapsedSideNav})(Sidebar);

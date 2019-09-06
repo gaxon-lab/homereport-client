@@ -230,10 +230,11 @@ export const onUpdateUserProfile = ({first_name, last_name, profile_pic, passwor
 };
 
 export const onGetLoggedUserPermission = (userId) => {
+  console.log("onGetLoggedUserPermission is", userId)
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`/user/${userId}/permissions`,).then(({data}) => {
-      console.info("getUserProfile: ", data);
+      console.log("onGetLoggedUserPermission: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: LOGGED_USER_PERMISSION, payload: data.data});

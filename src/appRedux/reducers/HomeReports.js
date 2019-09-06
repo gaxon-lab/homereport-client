@@ -55,6 +55,7 @@ export default (state = initialState, action) => {
       };
 
     case UPLOAD_REPORT_DOCUMENT:
+      console.log("report document", [...state.reportDocuments, action.payload])
       return {
         ...state,
         reportDocuments: [...state.reportDocuments, action.payload]

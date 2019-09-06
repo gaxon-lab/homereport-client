@@ -1,18 +1,25 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import CircularProgress from "components/CircularProgress/index";
 import {message} from 'antd';
 import Auxiliary from "util/Auxiliary";
 import {connect} from "react-redux";
-import {hideMessage} from "../../appRedux/actions/Common";
+import {hideMessage} from "appRedux/actions/Common";
 
-class InfoView extends React.Component {
+class InfoView extends PureComponent {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.error || nextProps.message || !nextProps.loading) {
+    if (nextProps.error || nextProps.message || nextProps.displayMessage) {
       setTimeout(() => {
         this.props.hideMessage();
-      }, 1000);
+      }, 3000);
     }
   }
+
+  showMessage = (displayMessage) => {
+    message.success(displayMessage)
+  };
+  showError = (error) => {
+    message.error(error)
+  };
 
   render() {
     const {error, loading, displayMessage} = this.props;
@@ -20,10 +27,12 @@ class InfoView extends React.Component {
     return (
       <Auxiliary>
         {loading && <div className="gx-loader-view gx-loader-pos">
-          <CircularProgress/>
+          <CircularProgress className=""/>
         </div>}
-        {error && message.error(<span id="message-id">{error}</span>)}
-        {displayMessage && message.success(<span id="message-id">{displayMessage}</span>)}
+
+        {displayMessage && this.showMessage(displayMessage)}
+        {error && this.showError(error)}
+
       </Auxiliary>
     );
   }

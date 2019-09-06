@@ -18,7 +18,7 @@ import {onGetLoggedUserPermission} from "../../appRedux/actions";
 class SidebarContent extends Component {
 
   componentWillMount() {
-    if (this.props.authUser) {
+    if (this.props.authUser&&this.props.authUser.id) {
       this.props.onGetLoggedUserPermission(this.props.authUser.id);
     }
   }

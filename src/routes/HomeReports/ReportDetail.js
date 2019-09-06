@@ -42,6 +42,12 @@ class ReportDetail extends Component {
     this.timeInterval = setInterval(() => this.props.onGetReportComments(reportId), 30000)
   }
 
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if(this.props.reportDocuments !== prevProps.reportDocuments) {
+  //     this.props.onGetReportDetail(this.props.currentReport.report_id);
+  //   }
+  // }
+
   onGetStaffList = (currentPage, itemsPerPage, filterText, updatingContent) => {
     this.props.onGetStaff(currentPage, itemsPerPage, filterText, updatingContent);
   };

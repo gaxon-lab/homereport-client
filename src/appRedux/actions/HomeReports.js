@@ -151,7 +151,7 @@ export const onAddReportDocument = (reportId, file) => {
       console.info("onAddReportDocument: ", data);
       if (data.success) {
               dispatch({type: FETCH_SUCCESS});
-              dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data});
+              dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data[0]});
               dispatch({type: SHOW_MESSAGE, payload: "The document has been uploaded successfully!"})
             } else if (data.message) {
               dispatch({type: FETCH_ERROR, payload: data.message});

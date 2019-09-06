@@ -108,8 +108,10 @@ class Staff extends Component {
       okText: "Yes",
       cancelText: "Cancel",
       onOk: () => {
-        const staffMember = staff;
+        const staffMember = {};
         staffMember.status = 1;
+        staffMember.email = staff.email;
+
         this.props.onEditStaffMember(staffMember, true);
       },
       onCancel() {
@@ -124,8 +126,12 @@ class Staff extends Component {
       okText: "Yes",
       cancelText: "Cancel",
       onOk: () => {
-        const staffMember = staff;
+        const {email, first_name, last_name} = staff;
+        const staffMember = {};
         staffMember.status = 0;
+        staffMember.email = email;
+        staffMember.first_name = first_name;
+        staffMember.last_name = last_name;
         this.props.onEditStaffMember(staffMember, true);
       },
       onCancel() {
@@ -154,7 +160,7 @@ class Staff extends Component {
       confirm({
         title: "Are you sure you want to delete selected Staff(s)?",
         onOk: () => {
-          this.props.onBulkDeleteStaff({ids: this.state.bulkSelectedStaff});
+          this.props.onBulkDeleteStaff({ids: this.state.bulkSelectedStaff}, true);
           this.setState({selectedRowKeys: [], bulkSelectedStaff: []});
         }
       })
@@ -258,7 +264,7 @@ class Staff extends Component {
         {isAddStaff ? <AddNewStaff isAddStaff={isAddStaff}
                                    onToggleAddStaff={this.onToggleAddStaff}
                                    selectedStaff={selectedStaff}
-                                   /> : null}
+        /> : null}
         <InfoView/>
       </div>
     );

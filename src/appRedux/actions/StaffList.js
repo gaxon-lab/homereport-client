@@ -83,10 +83,13 @@ export const onEditStaffMember = (staffMember, updatingContent) => {
   }
 };
 
-export const onBulkDeleteStaff = (staffIds) => {
-  console.log("staffids", staffIds);
+export const onBulkDeleteStaff = (staffIds, updatingContent) => {
   return (dispatch) => {
-    dispatch({type: FETCH_START});
+    if (updatingContent) {
+      dispatch({type: UPDATING_CONTENT});
+    } else {
+      dispatch({type: FETCH_START});
+    }
     axios.post('/staffs/delete', staffIds).then(({data}) => {
       console.log("deleted date", data);
       if (data.success) {

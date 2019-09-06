@@ -35,7 +35,7 @@ export const onGetQuotesList = (currentPage, itemsPerPage, filterText, updatingC
 export const onGetQuoteRequestDetail = (recordId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.get(`free/quote/${recordId}`).then(({data}) => {
+    axios.get(`quotes/requests/${recordId}`).then(({data}) => {
       console.info("onGetQuoteRequestDetail: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});

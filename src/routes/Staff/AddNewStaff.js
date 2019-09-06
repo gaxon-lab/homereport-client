@@ -22,12 +22,12 @@ class AddNewStaff extends Component {
         password: "",
         fileList: [],
         status: 1,
-        profile_pic: null,
+        profile_pic_id: null,
         permissions: []
       }
     } else {
       const imageId = props.selectedStaff.profile_pic.length > 0 ? props.selectedStaff.profile_pic[0].id : null
-      this.state = {...props.selectedStaff, fileList: [], profile_pic: imageId, permissions: []}
+      this.state = {...props.selectedStaff, fileList: [], profile_pic_id: imageId, permissions: []}
     }
   }
 
@@ -88,7 +88,7 @@ class AddNewStaff extends Component {
     }).then(({data}) => {
       if (data.success) {
         this.props.fetchSuccess();
-        this.setState({profile_pic: data.data}, () => {
+        this.setState({profile_pic_id: data.data}, () => {
           this.onStaffAdd();
           this.setState({fileList: []})
         })
