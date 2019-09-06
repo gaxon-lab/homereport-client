@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Widget from "../../components/Widget";
-import {Breadcrumb, Button, Col, Divider, Input, Row} from "antd";
+import {Avatar, Breadcrumb, Button, Col, Input, Row, Tag} from "antd";
 import {Link} from "react-router-dom";
 import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
@@ -18,8 +18,8 @@ import {
 } from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
 import ConversationCell from "./ConversationCell";
-import moment from "moment";
 import DocumentUploading from "./DocumentUploading/index";
+import moment from "moment";
 
 
 const {TextArea} = Input;
@@ -41,12 +41,6 @@ class ReportDetail extends Component {
     this.props.onGetReportDocuments(reportId);
     this.timeInterval = setInterval(() => this.props.onGetReportComments(reportId), 30000)
   }
-
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if(this.props.reportDocuments !== prevProps.reportDocuments) {
-  //     this.props.onGetReportDetail(this.props.currentReport.report_id);
-  //   }
-  // }
 
   onGetStaffList = (currentPage, itemsPerPage, filterText, updatingContent) => {
     this.props.onGetStaff(currentPage, itemsPerPage, filterText, updatingContent);
@@ -77,7 +71,6 @@ class ReportDetail extends Component {
   };
 
   onUploadDocument = (documentId, documentName) => {
-    console.log("documentName", documentName)
     const document = {media_id: documentId, caption: documentName}
     this.props.onAddReportDocument(this.props.currentReport.report_id, document)
   };
@@ -92,7 +85,8 @@ class ReportDetail extends Component {
   }
 
   render() {
-    const {staffList, currentReport, totalItems, reportComments, reportDocuments} = this.props;
+    console.log("currentReport", this.props.authUser)
+    const {staffList, currentReport, totalItems, reportComments, reportDocuments, authUser} = this.props;
     const {comment} = this.state;
     let assignedTo = null;
     if (currentReport && currentReport.assigned_user_id) {
@@ -108,8 +102,11 @@ class ReportDetail extends Component {
       <div className="gx-main-layout-content">
         {currentReport ?
           <Widget styleName="gx-card-filter">
-            <i className="icon icon-arrow-left gx-mb-3" onClick={this.onGoBackToList}/>
-            <h2 className="gx-text">Home Report Detail</h2>
+            <div className="gx-mb-3 gx-border gx-rounded-circle gx-size-24 gx-d-flex gx-justify-content-center"
+                 style={{borderColor: "black"}}>
+              <i className="icon icon-arrow-left gx-link gx-text-black" onClick={this.onGoBackToList}/>
+            </div>
+            <h2 className="gx-text gx-mb-2">Home Report Detail</h2>
             <Breadcrumb className="gx-mb-4">
               <Breadcrumb.Item>
                 <Link to="/home-reports">Home Reports</Link>
@@ -120,84 +117,122 @@ class ReportDetail extends Component {
               </Breadcrumb.Item>
             </Breadcrumb>
             <Row>
-              <Col xl={11} lg={12} md={12} sm={12} xs={24}>
-                <Row>
-                  <Col span={14}>
+              <Col xl={15} lg={12} md={12} sm={12} xs={24}>
+                <div className="gx-pr-4">
+                  <div className="gx-mb-4">
                     <div className="gx-text-grey">Reference No.</div>
-                    <div className="gx-text-blue gx-mt-2 gx-font-weight-medium">{currentReport.reference_no}</div>
-                  </Col>
-                  <Col span={10}>
-                    <div className="gx-text-grey">Quote Amount</div>
-                    <div className="gx-mt-2 gx-font-weight-bold">${currentReport.quote_amount}</div>
-                  </Col>
-                </Row>
-                <Row className="gx-mt-4">
-                  <Col span={14}>
-                    <div className="gx-text-grey">Customer Detail</div>
-                    <div
-                      className=" gx-mt-2 gx-font-weight-medium">{currentReport.customer_name ? currentReport.customer_name : "NA"}</div>
-                  </Col>
-                  <Col span={10}>
-                    <div className="gx-text-grey">Contact Detail</div>
-                    <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.day_time_tel} Day</div>
-                    <div className="gx-mt-1 gx-font-weight-medium">{currentReport.evening_time_tel} Evening</div>
-                  </Col>
-                </Row>
-                <Row className="gx-my-4">
-                  <Col span={14}>
+                    <div className="gx-mt-2 gx-text-black">{currentReport.reference_no}</div>
+                  </div>
+                  <div className="gx-mb-4">
                     <div className="gx-text-grey">Property</div>
                     <div className="gx-mt-2">
-                      <p className="gx-mb-1 gx-font-weight-medium">{currentReport.address1}</p>
-                      <p className="gx-mb-1 gx-font-weight-medium">{currentReport.city}, Scotland</p>
-                      <p className="gx-mb-1 gx-font-weight-medium"> Zip -{currentReport.postcode}</p>
+                      <p className="gx-mb-1 gx-text-black">{currentReport.address1}</p>
+                      <p className="gx-mb-1 gx-text-black">{currentReport.city}, Scotland</p>
+                      <p className="gx-mb-1 gx-text-black"> Zip -{currentReport.postcode}</p>
                     </div>
-                  </Col>
-                  <Col span={10}>
-                    <p className="gx-text-grey">Estimated Price & Age</p>
-                    <div className=" gx-mt-2 gx-font-weight-medium">{currentReport.property_price_value}</div>
-                    <div className=" gx-font-weight-medium">{currentReport.property_age_value}</div>
-                  </Col>
-                </Row>
-                <div className="gx-mb-4"><i className="gx-font-weight-medium">Payment
-                  Date and Time</i> : {moment(currentReport.report_created_at).format('MMMM Do YYYY, h:mm:ss a')}</div>
+                  </div>
+                  <div className="gx-d-flex gx-mb-4">
+                    <div className="gx-mr-5">
+                      <div className="gx-text-grey">Estimated Price</div>
+                      <div className="gx-mt-2 gx-text-black">{currentReport.property_price_value}</div>
+                    </div>
+                    <div>
+                      <div className="gx-text-grey">Property Age</div>
+                      <div className=" gx-mt-2 gx-text-black">{currentReport.property_age_value}</div>
+                    </div>
+                  </div>
+                  <div style={{backgroundColor: "#eee"}} className="gx-px-5 gx-py-3 gx-mb-5">
+                    <DocumentUploading onUploadDocument={this.onUploadDocument}
+                                       reportDocuments={reportDocuments}
+                                       fetchError={this.props.fetchError}
+                                       fetchSuccess={this.props.fetchSuccess}
+                                       fetchStart={this.props.fetchStart}/>
+                  </div>
+                  {/*<div>*/}
+                  {/*  <div className="gx-text-grey">Quote Amount</div>*/}
+                  {/*  <div className="gx-mt-2 gx-font-weight-bold">${currentReport.quote_amount}</div>*/}
+
+                  {/*</div>*/}
+                  {currentReport.assigned_user_id ?
+                    <div>
+                      <div className="gx-py-1">
+                        <h3 className="gx-mb-0 gx-mb-sm-1">Comments</h3>
+                      </div>
+                      {reportComments.length > 0 ?
+                        <div>
+                          {reportComments.map((conversation, index) =>
+                            <ConversationCell key={index} conversation={conversation}/>
+                          )}
+                        </div> : "No Comment yet, Write first comment!"}
+                      <div className="gx-d-flex">
+                        {authUser && authUser.profile_pic && authUser.profile_pic.length > 0 ?
+                          <Avatar className="gx-mr-3 gx-size-40" src={authUser.profile_pic[0].src}/> :
+                          <Avatar className="gx-mr-3 gx-size-40"
+                                  style={{backgroundColor: '#00CED1'}}>{authUser.first_name[0].toUpperCase()}</Avatar>}
+                        <TextArea row={4} placeholder="Add a comment..." value={comment} onKeyPress={(event) => {
+                          if (event.charCode === 13 && !event.shiftKey) {
+                            this.onSubmitMessage()
+                          }
+                        }} className="gx-form-control-lg gx-mt-3"
+                                  onChange={(e) => this.onMessageEnter(e)}/>
+                      </div>
+                      <Button type="primary" className=" gx-mt-2 gx-mx-5" onClick={this.onSubmitMessage}
+                              disabled={comment === ""}>Send</Button>
+                    </div> : null}
+                </div>
               </Col>
-              <Col xl={13} lg={12} md={12} sm={12} xs={24}>
-                <DocumentUploading onUploadDocument={this.onUploadDocument}
-                                   reportDocuments={reportDocuments}
-                                   fetchError={this.props.fetchError}
-                                   fetchSuccess={this.props.fetchSuccess}
-                                   fetchStart={this.props.fetchStart}/>
-                <ReportAssigning staffList={staffList}
-                                 totalItems={totalItems}
-                                 onAssignStaff={this.onAssignStaff}
-                                 onGetStaffList={this.onGetStaffList}
-                                 assignedTo={assignedTo}/>
+              <Col xl={9} lg={12} md={12} sm={12} xs={24}>
+                <div className="gx-border-left gx-p-3">
+                  <div className="gx-mb-4">
+                    <div className="gx-text-grey gx-mb-2">Customer</div>
+                    <div className="gx-media gx-flex-nowrap gx-align-items-center">
+                      {currentReport.profile_pic ?
+                        <Avatar className="gx-mr-3 gx-size-40" src={currentReport.profile_pic[0].src}/> :
+                        <Avatar className="gx-mr-3 gx-size-40"
+                                style={{backgroundColor: '#00CED1'}}>{currentReport.customer_name[0].toUpperCase()}</Avatar>}
+                      <div className="gx-media-body">
+                  <span
+                    className="gx-mb-0 gx-text-black">{currentReport.customer_name}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="gx-mb-4">
+                    <div className="gx-text-grey">Contact Detail</div>
+                    <Row className=" gx-mt-2 ">
+                      <Col span={9}>
+                        <div>{currentReport.day_time_tel}</div>
+                      </Col>
+                      <Col span={15}>
+                        <Tag style={{borderRadius: 20}}>Day</Tag>
+                      </Col>
+                    </Row>
+
+                    <Row className=" gx-mt-1 ">
+                      <Col span={9}>
+                        <div>{currentReport.evening_time_tel}</div>
+                      </Col>
+                      <Col span={15}>
+                        <Tag style={{borderRadius: 20}}>Evening</Tag>
+                      </Col>
+                    </Row>
+                  </div>
+                  <ReportAssigning staffList={staffList}
+                                   totalItems={totalItems}
+                                   onAssignStaff={this.onAssignStaff}
+                                   onGetStaffList={this.onGetStaffList}
+                                   assignedTo={assignedTo}/>
+                  <div className="gx-p-4 gx-my-4" style={{backgroundColor: "#eee"}}>
+                    <div className="gx-text-grey">Survey Date</div>
+                    <div className="gx-mt-2 gx-text-black">30 Aug, 2019</div>
+                  </div>
+                  <div className="gx-p-4" style={{backgroundColor: "#eee"}}>
+                    <div className="gx-text-grey">Payment Date & Time</div>
+                    <div
+                      className="gx-mt-2 gx-text-black">{moment(currentReport.report_created_at).format('MMM Do YYYY, h:mm:ss a')}</div>
+                  </div>
+                </div>
               </Col>
             </Row>
-            <Divider/>
-            {currentReport.assigned_user_id ?
-              <div>
-                <div className="gx-py-1">
-                  <h3 className="gx-mb-0 gx-mb-sm-1">Comments</h3>
-                </div>
-                {reportComments.length > 0 ?
-                  <div>
-                    {reportComments.map((conversation, index) =>
-                      <ConversationCell key={index} conversation={conversation}/>
-                    )}
-                  </div> : "No Comment yet, Write first comment!"}
-
-                <div className="gx-flex-column">
-                  <TextArea row={4} placeholder="Add a comment..." value={comment} onKeyPress={(event) => {
-                    if (event.charCode === 13 && !event.shiftKey) {
-                      this.onSubmitMessage()
-                    }
-                  }} className="gx-form-control-lg gx-my-3"
-                            onChange={(e) => this.onMessageEnter(e)}/>
-                </div>
-                <Button type="primary" className="gx-my-3" onClick={this.onSubmitMessage}
-                        disabled={comment === ""}>Send Message</Button>
-              </div> : null}
           </Widget> : null}
         <InfoView/>
       </div>
@@ -205,10 +240,11 @@ class ReportDetail extends Component {
   }
 }
 
-const mapStateToProps = ({staff, homeReports}) => {
+const mapStateToProps = ({staff, homeReports, auth}) => {
+  const {authUser} = auth;
   const {staffList, totalItems} = staff;
   const {currentReport, reportComments, reportDocuments} = homeReports;
-  return {staffList, totalItems, currentReport, reportComments, reportDocuments};
+  return {staffList, totalItems, currentReport, reportComments, reportDocuments, authUser};
 };
 
 export default connect(mapStateToProps, {

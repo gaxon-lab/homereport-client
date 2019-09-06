@@ -257,9 +257,8 @@ class Staff extends Component {
                  onRow={(record) => ({
                    onClick: () => this.onEditIconClick(record)
                  })}
-                 className="gx-table-responsive gx-mb-4"/>
-          <div className="gx-d-flex gx-flex-row">
-          </div>
+                 className="gx-table-responsive"
+                 rowClassName="gx-link gx-text-black"/>
         </Widget>
         {isAddStaff ? <AddNewStaff isAddStaff={isAddStaff}
                                    onToggleAddStaff={this.onToggleAddStaff}

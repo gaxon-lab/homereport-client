@@ -27,7 +27,10 @@ class QuoteDetail extends Component {
       <div className="gx-main-layout-content">
         {currentQuote ?
           <Widget styleName="gx-card-filter">
-            <i className="icon icon-arrow-left gx-mb-3" onClick={this.onGoBackToList}/>
+            <div className="gx-mb-3 gx-border gx-rounded-circle gx-size-24 gx-d-flex gx-justify-content-center"
+                 style={{borderColor: "black"}}>
+            <i className="icon icon-arrow-left gx-link gx-text-black" onClick={this.onGoBackToList}/>
+            </div>
             <h2 className="gx-text">Quote Requests</h2>
             <Breadcrumb className="gx-mb-4">
               <Breadcrumb.Item>

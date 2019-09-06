@@ -78,7 +78,7 @@ import React from "react";
   );
   return (
     <Dropdown overlay={menu} trigger={['click']}>
-      <i className="icon icon-ellipse-h"/>
+      <i className="icon icon-ellipse-h gx-link gx-text-black"/>
     </Dropdown>
   )
 };

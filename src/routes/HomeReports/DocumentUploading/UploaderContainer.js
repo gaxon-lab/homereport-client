@@ -46,28 +46,27 @@ class UploaderContainer extends Component {
 
     return (
       <div>
-        <Row className="gx-d-flex gx-justify-content-around gx-mb-3">
-          <Col span={13} className="gx-font-weight-medium">
-            {document ? <Icon type="check" className="gx-text-green"/> : <Icon type="close-circle"/>}
-            <span className="gx-ml-1">{this.props.title}</span>
+        <Row className="gx-d-flex gx-justify-content-around gx-mb-1">
+          <Col span={13}>
+            {document ? <Icon type="check" className="gx-text-green"/> : <Icon type="close"/>}
+            <span className="gx-ml-3 gx-text-black">{this.props.title}</span>
           </Col>
           <Col span={11} className="gx-d-flex gx-justify-content-between">
             <a href={filePath} target="_blank" rel="noopener noreferrer">
               <Tooltip title="View">
-                <Icon type="eye" className=" gx-text-cyan"/>
+                <Icon type="eye" className=" gx-text-black"/>
               </Tooltip>
             </a>
             <a href={filePath} download target="_blank" rel="noopener noreferrer">
               <Tooltip title="Download">
-                <Icon type="download" className="gx-text-cyan"/>
+                <Icon type="download" className="gx-text-black"/>
               </Tooltip>
             </a>
             <Upload
               fileList={fileList}
-              onChange={this.handleUpload}
-            >
-              <Button style={{marginBottom: 0}} className="gx-badge-cyan gx-text-white gx-mb-0">
-                <Icon type="upload"/> Upload
+              onChange={this.handleUpload}>
+              <Button type="primary" ghost>
+                Upload
               </Button>
             </Upload>
           </Col>

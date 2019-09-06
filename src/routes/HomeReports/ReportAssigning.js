@@ -68,18 +68,18 @@ class ReportAssigning extends Component {
       <div className="gx-main-layout-content">
         {assignedStaff ?
           <div>
-            <div className="gx-d-flex">
-              <div className="gx-mb-2 gx-mr-4">Assigned To</div>
+            <div className="gx-d-flex gx-justify-content-between">
+              <div className="gx-mb-2 gx-mr-4 gx-text-grey">Assigned To</div>
               <div className="gx-link" onClick={this.onToggleStaffModal}><Icon type="edit" /> Change</div>
             </div>
             <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5">
               {assignedStaff.image ?
-                <Avatar className="gx-mr-3 gx-size-50" src={assignedStaff.image}/> :
-                <Avatar className="gx-mr-3 gx-size-50"
+                <Avatar className="gx-mr-3 gx-size-40" src={assignedStaff.image}/> :
+                <Avatar className="gx-mr-3 gx-size-40"
                         style={{backgroundColor: '#00CED1'}}>{assignedStaff.name[0].toUpperCase()}</Avatar>}
               <div className="gx-media-body gx-mt-2">
               <span
-                className="gx-mb-0 gx-text-capitalize">{assignedStaff.name}</span>
+                className="gx-mb-0 gx-text-capitalize gx-text-black">{assignedStaff.name}</span>
                 <div className="gx-mb-2">{assignedStaff.email}</div>
               </div>
             </div>

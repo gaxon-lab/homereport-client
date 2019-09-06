@@ -128,7 +128,8 @@ class HomeReports extends Component {
                    showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
                    onChange: this.onPageChange
                  }}
-                 className="gx-table-responsive"/>
+                 className="gx-table-responsive"
+                 />
         </Widget>
         <InfoView/>
       </div>

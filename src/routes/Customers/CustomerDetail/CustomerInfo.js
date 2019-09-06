@@ -6,7 +6,10 @@ const CustomerInfo = ({currentCustomer, onGoBackToList}) => {
   return (
     <div className="gx-main-layout-content">
       <Widget styleName="gx-card-filter">
-        <i className="icon icon-arrow-left gx-mb-3" onClick={() => onGoBackToList()}/>
+        <div className="gx-mb-3 gx-border gx-rounded-circle gx-size-24 gx-d-flex gx-justify-content-center"
+             style={{borderColor: "black"}}>
+        <i className="icon icon-arrow-left gx-link gx-text-black" onClick={() => onGoBackToList()}/>
+        </div>
         <h2 className="gx-widget-heading">Customer Detail</h2>
         <div className="gx-mt-3">
           <Row>

@@ -152,6 +152,7 @@ class Customers extends Component {
                    onChange: this.onPageChange
                  }}
                  className="gx-table-responsive"
+                 rowClassName="gx-link gx-text-black"
                  onRow={(record) => ({
                    onClick: () => this.onSelectCustomer(record)
                  })}

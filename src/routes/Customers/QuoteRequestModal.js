@@ -91,7 +91,7 @@ class QuoteRequestModal extends Component {
     );
     return (
       <Dropdown overlay={menu} trigger={['click']}>
-        <i className="icon icon-ellipse-h"/>
+        <i className="icon icon-ellipse-h gx-link gx-text-black"/>
       </Dropdown>
     )
   };
@@ -110,11 +110,12 @@ class QuoteRequestModal extends Component {
                onCancel={() => onToggleShowQuotes()}
                footer={null}>
           <h2 className="gx-widget-heading">Quote Requests</h2>
-          <Table rowKey="id" columns={this.quoteRow()}
+          <Table rowKey="quote_request_id" columns={this.quoteRow()}
                  dataSource={customerQuotes}
                  loading={updatingContent}
                  pagination={false}
-                 className="gx-table-responsive"/>
+                 className="gx-table-responsive"
+                 rowClassName="gx-text-black"/>
         </Modal>
         <InfoView/>
       </div>

@@ -15,10 +15,11 @@ class CustomerQuoteRequests extends Component {
       <div className="gx-main-layout-content">
         <Widget styleName="gx-card-filter">
           <h2 className="gx-widget-heading">Quote Requests</h2>
-          <Table rowKey="id" columns={CustomerQuotesRow(this)}
+          <Table rowKey="quote_request_id" columns={CustomerQuotesRow(this)}
                  dataSource={this.props.quoteRequests}
                  pagination={false}
-                 className="gx-table-responsive"/>
+                 className="gx-table-responsive"
+                 rowClassName="gx-text-black"/>
         </Widget>
       </div>
     )

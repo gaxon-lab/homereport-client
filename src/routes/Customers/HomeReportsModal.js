@@ -91,7 +91,7 @@ class HomeReportsModal extends Component {
     );
     return (
       <Dropdown overlay={menu} trigger={['click']}>
-        <i className="icon icon-ellipse-h"/>
+        <i className="icon icon-ellipse-h gx-link gx-text-black"/>
       </Dropdown>
     )
   };
@@ -114,7 +114,8 @@ class HomeReportsModal extends Component {
                  dataSource={customerReports}
                  loading={updatingContent}
                  pagination={false}
-                 className="gx-table-responsive"/>
+                 className="gx-table-responsive"
+                 rowClassName="gx-text-black"/>
         </Modal>
         <InfoView/>
       </div>
