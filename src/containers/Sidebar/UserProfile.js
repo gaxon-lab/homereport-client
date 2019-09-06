@@ -17,7 +17,7 @@ class UserProfile extends Component {
   getImageURL = () => {
     if(this.props.authUser) {
       const authUser = this.props.authUser;
-      if (authUser.profile_pic) {
+      if (authUser.profile_pic.length > 0 && authUser.profile_pic[0].src) {
         console.log("i m in if")
         return authUser.profile_pic[0].src;
       } else {
