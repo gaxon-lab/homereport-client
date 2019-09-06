@@ -52,12 +52,12 @@ class UploaderContainer extends Component {
             <span className="gx-ml-1">{this.props.title}</span>
           </Col>
           <Col span={11} className="gx-d-flex gx-justify-content-between">
-            <a href={filePath} target="_blank">
+            <a href={filePath} target="_blank" rel="noopener noreferrer">
               <Tooltip title="View">
                 <Icon type="eye" className=" gx-text-cyan"/>
               </Tooltip>
             </a>
-            <a href={filePath} download target="_blank">
+            <a href={filePath} download target="_blank" rel="noopener noreferrer">
               <Tooltip title="Download">
                 <Icon type="download" className="gx-text-cyan"/>
               </Tooltip>
