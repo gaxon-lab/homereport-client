@@ -186,8 +186,8 @@ class ReportDetail extends Component {
                   <div className="gx-mb-4">
                     <div className="gx-text-grey gx-mb-2">Customer</div>
                     <div className="gx-media gx-flex-nowrap gx-align-items-center">
-                      {currentReport.profile_pic ?
-                        <Avatar className="gx-mr-3 gx-size-40" src={currentReport.profile_pic[0].src}/> :
+                      {currentReport.customer_profile_image ?
+                        <Avatar className="gx-mr-3 gx-size-40" src={currentReport.customer_profile_image}/> :
                         <Avatar className="gx-mr-3 gx-size-40"
                                 style={{backgroundColor: '#00CED1'}}>{currentReport.customer_name[0].toUpperCase()}</Avatar>}
                       <div className="gx-media-body">
@@ -199,19 +199,19 @@ class ReportDetail extends Component {
                   <div className="gx-mb-4">
                     <div className="gx-text-grey">Contact Detail</div>
                     <Row className=" gx-mt-2 ">
-                      <Col span={9}>
+                      <Col span={10}>
                         <div>{currentReport.day_time_tel}</div>
                       </Col>
-                      <Col span={15}>
+                      <Col span={14}>
                         <Tag style={{borderRadius: 20}}>Day</Tag>
                       </Col>
                     </Row>
 
                     <Row className=" gx-mt-1 ">
-                      <Col span={9}>
+                      <Col span={10}>
                         <div>{currentReport.evening_time_tel}</div>
                       </Col>
-                      <Col span={15}>
+                      <Col span={14}>
                         <Tag style={{borderRadius: 20}}>Evening</Tag>
                       </Col>
                     </Row>
@@ -223,12 +223,15 @@ class ReportDetail extends Component {
                                    assignedTo={assignedTo}/>
                   <div className="gx-p-4 gx-my-4" style={{backgroundColor: "#eee"}}>
                     <div className="gx-text-grey">Survey Date</div>
-                    <div className="gx-mt-2 gx-text-black">30 Aug, 2019</div>
+                    <div className="gx-mt-2 gx-text-black">
+                      {currentReport.inspection_date ?
+                        moment(currentReport.inspection_date).format('MMM Do YYYY, h:mm:ss a') : "NA"}</div>
                   </div>
                   <div className="gx-p-4" style={{backgroundColor: "#eee"}}>
                     <div className="gx-text-grey">Payment Date & Time</div>
-                    <div
-                      className="gx-mt-2 gx-text-black">{moment(currentReport.report_created_at).format('MMM Do YYYY, h:mm:ss a')}</div>
+                    <div className="gx-mt-2 gx-text-black">
+                      {moment(currentReport.report_created_at).format('MMM Do YYYY, h:mm:ss a')}
+                    </div>
                   </div>
                 </div>
               </Col>

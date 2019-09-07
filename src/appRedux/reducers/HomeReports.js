@@ -2,8 +2,10 @@ import {
   ADD_NEW_COMMENT,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
-  GET_REPORT_DETAIL, GET_REPORT_DOCUMENTS,
-  NULLIFY_CURRENT_REPORT, UPLOAD_REPORT_DOCUMENT
+  GET_REPORT_DETAIL,
+  GET_REPORT_DOCUMENTS,
+  NULLIFY_CURRENT_REPORT,
+  UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
 
@@ -55,10 +57,17 @@ export default (state = initialState, action) => {
       };
 
     case UPLOAD_REPORT_DOCUMENT:
-      console.log("report document", [...state.reportDocuments, action.payload])
+      const index = state.reportDocuments.findIndex(document => document.caption === action.payload.caption);
+      let updatedDocuments = [];
+      if (index !== -1) {
+        updatedDocuments = state.reportDocuments;
+        updatedDocuments[index] = action.payload;
+      } else {
+        updatedDocuments = [...state.reportDocuments, action.payload]
+      }
       return {
         ...state,
-        reportDocuments: [...state.reportDocuments, action.payload]
+        reportDocuments: updatedDocuments
       };
 
     default:
