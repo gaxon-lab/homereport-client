@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Suspense} from "react";
 import {Layout} from "antd";
 
 import Sidebar from "../Sidebar/index";
@@ -26,6 +26,7 @@ import {
   TAB_SIZE
 } from "../../constants/ThemeSetting";
 import NoHeaderNotification from "../Topbar/NoHeaderNotification/index";
+import CircularProgress from "../../components/CircularProgress";
 
 const {Content, Footer} = Layout;
 
@@ -104,7 +105,9 @@ export class MainApp extends Component {
         <Layout>
           {this.getNavStyles(navStyle)}
           <Content className={`gx-layout-content ${ this.getContainerClass(navStyle)} `}>
+            <Suspense fallback={<CircularProgress/>}>
             <App match={match}/>
+            </Suspense>
             <Footer>
               <div className="gx-layout-footer-content">
                 {footerText}

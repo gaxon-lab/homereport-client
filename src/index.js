@@ -11,7 +11,7 @@ const render = Component => {
   ReactDOM.render(
     // Wrap App inside AppContainer
     <AppContainer>
-      <NextApp/>
+      <Component/>
     </AppContainer>,
     document.getElementById('root')
   );

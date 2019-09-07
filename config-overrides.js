@@ -7,6 +7,13 @@ const overrideProcessEnv = value => config => {
   config.resolve.modules = [
     path.join(__dirname, 'src')
   ].concat(config.resolve.modules);
+
+  config.optimization.splitChunks = {
+    cacheGroups: {
+      default: false,
+    },
+  };
+  config.optimization.runtimeChunk = false;
   return config;
 };
 
