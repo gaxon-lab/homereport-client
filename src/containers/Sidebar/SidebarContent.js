@@ -6,11 +6,7 @@ import CustomScrollbars from "util/CustomScrollbars";
 import SidebarLogo from "./SidebarLogo";
 
 import Auxiliary from "util/Auxiliary";
-import {
-  NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
-  NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
-  THEME_TYPE_LITE
-} from "../../constants/ThemeSetting";
+import {THEME_TYPE_LITE} from "../../constants/ThemeSetting";
 import {connect} from "react-redux";
 import {onGetLoggedUserPermission} from "../../appRedux/actions";
 
@@ -18,33 +14,18 @@ import {onGetLoggedUserPermission} from "../../appRedux/actions";
 class SidebarContent extends Component {
 
   componentWillMount() {
-    if (this.props.authUser&&this.props.authUser.id) {
+    if (this.props.authUser && this.props.authUser.id) {
       this.props.onGetLoggedUserPermission();
     }
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    console.log("second component will reciever props")
     if (nextProps.authUser && nextProps.authUser !== this.props.authUser) {
       this.props.onGetLoggedUserPermission();
     }
   }
 
-  getNoHeaderClass = (navStyle) => {
-    if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR || navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR) {
-      return "gx-no-header-notifications";
-    }
-    return "";
-  };
-  getNavStyleSubMenuClass = (navStyle) => {
-    if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      return "gx-no-header-submenu-popup";
-    }
-    return "";
-  };
-
   render() {
-    console.log("loggedUserPermissions in sidebar", this.props.loggedUserPermissions)
     const {themeType, pathname, loggedUserPermissions} = this.props;
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split('/')[1];
@@ -76,12 +57,12 @@ class SidebarContent extends Component {
                 </Menu.Item> : null}
 
 
-              <Menu.Item key="quote">
+              <Menu.Item key="quote-requests">
                 <Link to="/quote-requests"><i className="icon icon-extra-components"/>
                   Quote Requests</Link>
               </Menu.Item>
 
-              <Menu.Item key="reports">
+              <Menu.Item key="home-reports">
                 <Link to="/home-reports"><i className="icon icon-lock-screen"/>
                   Home Reports</Link>
               </Menu.Item>

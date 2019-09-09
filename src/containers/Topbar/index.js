@@ -6,8 +6,6 @@ import CustomScrollbars from "util/CustomScrollbars";
 import languageData from "./languageData";
 import {switchLanguage, toggleCollapsedSideNav} from "../../appRedux/actions/Setting";
 import UserInfo from "components/UserInfo";
-import AppNotification from "components/AppNotification";
-import MailNotification from "components/MailNotification";
 import Auxiliary from "util/Auxiliary";
 
 
@@ -21,26 +19,6 @@ class Topbar extends Component {
 
   state = {
     searchText: '',
-  };
-
-  languageMenu = () => (
-    <CustomScrollbars className="gx-popover-lang-scroll">
-      <ul className="gx-sub-popover">
-        {languageData.map(language =>
-          <li className="gx-media gx-pointer" key={JSON.stringify(language)} onClick={(e) =>
-            this.props.switchLanguage(language)
-          }>
-            <i className={`flag flag-24 gx-mr-2 flag-${language.icon}`}/>
-            <span className="gx-language-text">{language.name}</span>
-          </li>
-        )}
-      </ul>
-    </CustomScrollbars>);
-
-  updateSearchChatUser = (evt) => {
-    this.setState({
-      searchText: evt.target.value,
-    });
   };
 
 
@@ -60,50 +38,8 @@ class Topbar extends Component {
           <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
             <img alt="" src={require("assets/images/w-logo.png")}/></Link>
 
-          {/*<SearchBox styleName="gx-d-none gx-d-lg-block gx-lt-icon-search-bar-lg"*/}
-          {/*           placeholder="Search in app..."*/}
-          {/*           onChange={this.updateSearchChatUser.bind(this)}*/}
-          {/*           value={this.state.searchText}/>*/}
           <ul className="gx-header-notifications gx-ml-auto">
-            <li className="gx-notify gx-notify-search gx-d-inline-block gx-d-lg-none">
-              {/*<Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={*/}
-              {/*  <SearchBox styleName="gx-popover-search-bar"*/}
-              {/*             placeholder="Search in app..."*/}
-              {/*             onChange={this.updateSearchChatUser.bind(this)}*/}
-              {/*             value={this.state.searchText}/>*/}
-              {/*} trigger="click">*/}
-              {/*  <span className="gx-pointer gx-d-block"><i className="icon icon-search-new"/></span>*/}
-              {/*</Popover>*/}
-            </li>
-            {width >= TAB_SIZE ? null :
-              <Auxiliary>
-                <li className="gx-notify">
-                  <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={<AppNotification/>}
-                           trigger="click">
-                    <span className="gx-pointer gx-d-block"><i className="icon icon-notification"/></span>
-                  </Popover>
-                </li>
-
-                <li className="gx-msg">
-                  <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight"
-                           content={<MailNotification/>} trigger="click">
-                  <span className="gx-pointer gx-status-pos gx-d-block">
-                    <i className="icon icon-chat-new"/>
-                    <span className="gx-status gx-status-rtl gx-small gx-orange"/>
-                  </span>
-                  </Popover>
-                </li>
-              </Auxiliary>
-            }
             <li className="gx-language gx-py-3">
-              {/*<Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={this.languageMenu()}*/}
-              {/*         trigger="click">*/}
-              {/*  <span className="gx-pointer gx-flex-row gx-align-items-center">*/}
-              {/*    <i className={`flag flag-24 flag-${locale.icon}`}/>*/}
-              {/*    <span className="gx-pl-2 gx-language-name">{locale.name}</span>*/}
-              {/*    <i className="icon icon-chevron-down gx-pl-2"/>*/}
-              {/*  </span>*/}
-              {/*</Popover>*/}
               <UserProfile/>
             </li>
             {width >= TAB_SIZE ? null :
@@ -123,4 +59,4 @@ const mapStateToProps = ({settings}) => {
   return {locale, navStyle, navCollapsed, width}
 };
 
-export default connect(mapStateToProps, {toggleCollapsedSideNav, switchLanguage})(Topbar);
+export default connect(mapStateToProps, {toggleCollapsedSideNav})(Topbar);
