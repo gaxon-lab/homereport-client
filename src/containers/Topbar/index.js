@@ -1,10 +1,7 @@
 import React, {Component} from "react";
-import {Layout, Popover} from "antd";
+import {Layout} from "antd";
 import {Link} from "react-router-dom";
-
-import CustomScrollbars from "util/CustomScrollbars";
-import languageData from "./languageData";
-import {switchLanguage, toggleCollapsedSideNav} from "../../appRedux/actions/Setting";
+import {toggleCollapsedSideNav} from "../../appRedux/actions/Setting";
 import UserInfo from "components/UserInfo";
 import Auxiliary from "util/Auxiliary";
 

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Breadcrumb, Button, Input, Select, Table} from "antd";
 import {connect} from "react-redux";
-import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import CustomersRow from "./CustomerRow";
 import {onGetCustomersList} from "../../appRedux/actions/Customers";
@@ -183,17 +182,3 @@ const mapPropsToState = ({customers, common}) => {
 export default connect(mapPropsToState, {
   onGetCustomersList
 })(Customers);
-
-Customers.defaultProps = {
-  customersList: [],
-  totalItems: null,
-  labels: [],
-  company: []
-};
-
-Customers.propTypes = {
-  customersList: PropTypes.array,
-  totalItems: PropTypes.number,
-  labels: PropTypes.array,
-  company: PropTypes.array,
-};
