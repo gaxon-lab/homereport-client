@@ -8,7 +8,7 @@ const ConversationCell = ({conversation}) => {
   return (
     <div className="gx-flex-row gx-module-detail-item gx-flex-nowrap gx-pl-0">
       <div className="gx-chat-todo-avatar">
-        {conversation.user.profile_pic ?
+        {conversation.user.profile_pic && conversation.user.profile_pic.length > 0 ?
           <Avatar className="gx-rounded-circle gx-size-40"
                   src={conversation.user.profile_pic[0].src}/> :
           <Avatar className="gx-rounded-circle gx-size-40"
