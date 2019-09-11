@@ -18,7 +18,7 @@ class CustomerHomeReports extends Component {
                  dataSource={this.props.homeReports}
                  pagination={false}
                  className="gx-table-responsive"
-                 rowClassName="gx-text-black"/>
+                 />
         </Widget>
       </div>
     )

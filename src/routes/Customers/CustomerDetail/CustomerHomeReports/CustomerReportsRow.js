@@ -78,7 +78,7 @@ const onShowRowDropdown = (quote, context) => {
   );
   return (
     <Dropdown overlay={menu} trigger={['click']}>
-      <i className="icon icon-ellipse-h gx-link gx-text-black"/>
+      <i className="icon icon-ellipse-h gx-pointer"/>
     </Dropdown>
   )
 };

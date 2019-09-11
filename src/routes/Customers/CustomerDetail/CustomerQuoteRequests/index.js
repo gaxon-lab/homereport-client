@@ -19,7 +19,7 @@ class CustomerQuoteRequests extends Component {
                  dataSource={this.props.quoteRequests}
                  pagination={false}
                  className="gx-table-responsive"
-                 rowClassName="gx-text-black"/>
+                 />
         </Widget>
       </div>
     )
