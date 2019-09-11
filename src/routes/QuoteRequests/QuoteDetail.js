@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Widget from "../../components/Widget";
-import {Breadcrumb, Col, Row} from "antd";
+import {Breadcrumb, Col, Row, Tag} from "antd";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {onGetQuoteRequestDetail, onNullifyCurrentQuote} from "../../appRedux/actions/QuoteRequests";
@@ -29,7 +29,7 @@ class QuoteDetail extends Component {
           <Widget styleName="gx-card-filter">
             <div className="gx-mb-3 gx-border gx-rounded-circle gx-size-24 gx-d-flex gx-justify-content-center"
                  style={{borderColor: "black"}}>
-            <i className="icon icon-arrow-left gx-link gx-text-black" onClick={this.onGoBackToList}/>
+              <i className="icon icon-arrow-left gx-link gx-text-black" onClick={this.onGoBackToList}/>
             </div>
             <h2 className="gx-text">Quote Requests</h2>
             <Breadcrumb className="gx-mb-4">
@@ -37,7 +37,7 @@ class QuoteDetail extends Component {
                 <Link to="/quote-requests">Quote Requests</Link>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <Link to={`/quote-detail/${currentQuote.id}`}
+                <Link to={`/quote-detail/${currentQuote.quote_request_id}`}
                       className="gx-text-primary">{currentQuote.reference_no}</Link>
               </Breadcrumb.Item>
             </Breadcrumb>
@@ -60,8 +60,10 @@ class QuoteDetail extends Component {
                 </Col>
                 <Col span={18}>
                   <div className="gx-text-grey">Contact Detail</div>
-                  <div className=" gx-mt-2 gx-font-weight-medium">{currentQuote.day_time_tel} Day</div>
-                  <div className="gx-mt-1 gx-font-weight-medium">{currentQuote.evening_time_tel} Evening</div>
+                  <div className=" gx-mt-2 gx-font-weight-medium">{currentQuote.day_time_tel} <Tag
+                    style={{borderRadius: 20}}>Day</Tag></div>
+                  <div className="gx-mt-1 gx-font-weight-medium">{currentQuote.evening_time_tel} <Tag
+                    style={{borderRadius: 20}}>Evening</Tag></div>
                 </Col>
               </Row>
               <Row className="gx-my-4">

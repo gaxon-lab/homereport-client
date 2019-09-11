@@ -112,7 +112,7 @@ class ReportDetail extends Component {
                 <Link to="/home-reports">Home Reports</Link>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <Link to={`/report-detail/${currentReport.id}`}
+                <Link to={`/report-detail/${currentReport.report_id}`}
                       className="gx-text-primary">{currentReport.reference_no}</Link>
               </Breadcrumb.Item>
             </Breadcrumb>
