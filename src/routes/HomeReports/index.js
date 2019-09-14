@@ -118,7 +118,7 @@ class HomeReports extends Component {
               </Button>
             </Button.Group>
           </div>
-          <Table rowKey="id" rowSelection={rowSelection} columns={ReportsRow(this)}
+          <Table rowKey="report_id" rowSelection={rowSelection} columns={ReportsRow(this)}
                  dataSource={reportsList}
                  loading={updatingContent}
                  pagination={{
