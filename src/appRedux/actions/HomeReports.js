@@ -6,7 +6,7 @@ import {
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
   GET_REPORT_DOCUMENTS,
-  NULLIFY_CURRENT_REPORT,
+  NULLIFY_CURRENT_REPORT, SET_SURVEY_DATE,
   UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
@@ -152,8 +152,29 @@ export const onAddReportDocument = (reportId, file) => {
       console.info("onAddReportDocument: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data[0]});
+        dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data});
         dispatch({type: SHOW_MESSAGE, payload: "The document has been uploaded successfully!"})
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onSetSurveyDate = (reportId, details) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post(`/reports/${reportId}/inspection/detail/store`, details).then(({data}) => {
+      console.info("onSetSurveyDate: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SET_SURVEY_DATE, payload: data.data});
+        dispatch({type: SHOW_MESSAGE, payload: "The  Survey Date has been assigned successfully!"})
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

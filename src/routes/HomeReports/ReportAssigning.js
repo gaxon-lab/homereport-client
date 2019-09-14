@@ -62,7 +62,7 @@ class ReportAssigning extends Component {
 
   render() {
     const {showStaffModal, filterStaffText, assignedStaff, current} = this.state;
-    const {totalItems, staffList} = this.props;
+    const {totalItems, staffList, loggedUserPermissions} = this.props;
 
     return (
       <div className="gx-main-layout-content">
@@ -70,7 +70,9 @@ class ReportAssigning extends Component {
           <div>
             <div className="gx-d-flex gx-justify-content-between">
               <div className="gx-mb-2 gx-mr-4 gx-text-grey">Assigned To</div>
-              <div className="gx-link" onClick={this.onToggleStaffModal}><Icon type="edit" /> Change</div>
+              {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0 ?
+                <div className="gx-link" onClick={this.onToggleStaffModal}><Icon type="edit"/> Change</div>
+                : null}
             </div>
             <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5">
               {assignedStaff.image ?
@@ -86,14 +88,19 @@ class ReportAssigning extends Component {
           </div> :
           <div>
             <div>Assign To</div>
-            <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5" onClick={this.onToggleStaffModal}>
+            <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5" onClick={() => {
+              if (loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0) {
+                this.onToggleStaffModal();
+              }
+            }}>
               <Avatar className="gx-mr-3 gx-size-50" src={require("assets/images/placeholder.jpg")}/>
               <div className="gx-media-body gx-mt-2">
                 <span className="gx-mb-0 gx-text-capitalize">Currently Unassigned</span>
                 <div className="gx-mt-2">
+                  {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0 ?
                   <Tag>
                     Click to Assign
-                  </Tag>
+                  </Tag> : null}
                 </div>
               </div>
             </div>
@@ -111,7 +118,7 @@ class ReportAssigning extends Component {
             {staffList.length > 0 ?
               <div>
                 {staffList.map(staff => {
-                  return <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-3"
+                  return <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-3 gx-pointer"
                               onClick={() => this.onClickOnStaff(staff)} key={staff.id}>
                     {staff.profile_pic.length > 0 ?
                       <Avatar className="gx-mr-3 gx-size-50" src={staff.profile_pic[0].src}/> :

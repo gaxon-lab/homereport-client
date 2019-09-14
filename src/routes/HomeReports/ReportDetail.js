@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Widget from "../../components/Widget";
-import {Avatar, Breadcrumb, Button, Col, Input, Row, Tag} from "antd";
+import {Avatar, Breadcrumb, Button, Col, DatePicker, Icon, Input, Row, Tag} from "antd";
 import {Link} from "react-router-dom";
 import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
@@ -14,7 +14,8 @@ import {
   onAddReportDocument,
   onAssignStaffToReport,
   onGetReportComments,
-  onGetReportDocuments
+  onGetReportDocuments,
+  onSetSurveyDate
 } from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
 import ConversationCell from "./ConversationCell";
@@ -29,14 +30,31 @@ class ReportDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comment: ''
+      comment: '',
+      isShowDatePicker: false,
+      inspection_date: null,
+      inspection_time: null
+    }
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.currentReport) {
+      const {inspection_date, inspection_time} = nextProps.currentReport;
+      if (nextProps.currentReport !== this.props.currentReport) {
+        this.setState({
+          inspection_date: inspection_date,
+          inspection_time: inspection_time
+        })
+      }
     }
   }
 
   componentDidMount() {
     const reportId = this.props.match.params.id;
     this.props.onGetReportDetail(reportId);
-    this.onGetStaffList(1, 10);
+    if (this.props.loggedUserPermissions && this.props.loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0) {
+      this.onGetStaffList(1, 10);
+    }
     this.props.onGetReportComments(reportId);
     this.props.onGetReportDocuments(reportId);
     this.timeInterval = setInterval(() => this.props.onGetReportComments(reportId), 30000)
@@ -84,10 +102,29 @@ class ReportDetail extends Component {
     clearInterval(this.timeInterval);
   }
 
+  onOpenDatePicker = () => {
+    this.setState({isShowDatePicker: !this.state.isShowDatePicker});
+  };
+
+  onDateChange = (value, dateString) => {
+    const dateTime = dateString.split(' ');
+    this.setState({inspection_date: dateTime[0], inspection_time: dateTime[1]})
+  };
+
+  onSelectDateTime = () => {
+    const currentReport = this.props.currentReport;
+    const {inspection_date, inspection_time} = this.state;
+    this.setState({isShowDatePicker: false});
+    this.props.onSetSurveyDate(currentReport.report_id, {inspection_date, inspection_time})
+  };
+
+  onDisabledDate = (current) => {
+    return current && current < moment().subtract(1, 'days');
+  };
+
   render() {
-    console.log("currentReport", this.props.authUser)
-    const {staffList, currentReport, totalItems, reportComments, reportDocuments, authUser} = this.props;
-    const {comment} = this.state;
+    const {staffList, currentReport, totalItems, reportComments, reportDocuments, authUser, loggedUserPermissions} = this.props;
+    const {comment, isShowDatePicker} = this.state;
     let assignedTo = null;
     if (currentReport && currentReport.assigned_user_id) {
       assignedTo = {
@@ -97,6 +134,7 @@ class ReportDetail extends Component {
         email: currentReport.assigned_user_email
       }
     }
+
 
     return (
       <div className="gx-main-layout-content">
@@ -148,11 +186,6 @@ class ReportDetail extends Component {
                                        fetchSuccess={this.props.fetchSuccess}
                                        fetchStart={this.props.fetchStart}/>
                   </div>
-                  {/*<div>*/}
-                  {/*  <div className="gx-text-grey">Quote Amount</div>*/}
-                  {/*  <div className="gx-mt-2 gx-font-weight-bold">${currentReport.quote_amount}</div>*/}
-
-                  {/*</div>*/}
                   {currentReport.assigned_user_id ?
                     <div>
                       <div className="gx-py-1">
@@ -220,13 +253,29 @@ class ReportDetail extends Component {
                                    totalItems={totalItems}
                                    onAssignStaff={this.onAssignStaff}
                                    onGetStaffList={this.onGetStaffList}
-                                   assignedTo={assignedTo}/>
+                                   assignedTo={assignedTo}
+                                   loggedUserPermissions={loggedUserPermissions}/>
                   <div className="gx-p-4 gx-my-4" style={{backgroundColor: "#eee"}}>
-                    <div className="gx-text-grey">Survey Date</div>
+                    <div className="gx-d-flex">
+                      <div className="gx-text-grey">Survey Date</div>
+                      {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0 ?
+                        <div className="gx-ml-auto">
+                          {!isShowDatePicker ?
+                            <div className="gx-link" onClick={this.onOpenDatePicker}><Icon type="edit"/>
+                              {currentReport.inspection_date && currentReport.inspection_time ? "Change Date" : "Select Date"}
+                            </div> :
+                            <DatePicker showTime placeholder="Select Date & Time"
+                                        disabledDate={(value) => this.onDisabledDate(value)}
+                                        open={isShowDatePicker}
+                                        onChange={this.onDateChange} onOk={this.onSelectDateTime}/>}
+                        </div> : null}
+                    </div>
                     <div className="gx-mt-2 gx-text-black">
-                      {currentReport.inspection_date ?
-                        moment(currentReport.inspection_date).format('MMM Do YYYY, h:mm:ss a') : "NA"}</div>
+                      {currentReport.inspection_date && currentReport.inspection_time ?
+                        moment(currentReport.inspection_date + " " + currentReport.inspection_time).format('MMM Do YYYY, h:mm:ss a') : "NA"}</div>
                   </div>
+
+
                   <div className="gx-p-4" style={{backgroundColor: "#eee"}}>
                     <div className="gx-text-grey">Payment Date & Time</div>
                     <div className="gx-mt-2 gx-text-black">
@@ -244,10 +293,10 @@ class ReportDetail extends Component {
 }
 
 const mapStateToProps = ({staff, homeReports, auth}) => {
-  const {authUser} = auth;
+  const {authUser, loggedUserPermissions} = auth;
   const {staffList, totalItems} = staff;
   const {currentReport, reportComments, reportDocuments} = homeReports;
-  return {staffList, totalItems, currentReport, reportComments, reportDocuments, authUser};
+  return {staffList, totalItems, currentReport, reportComments, reportDocuments, authUser, loggedUserPermissions};
 };
 
 export default connect(mapStateToProps, {
@@ -261,6 +310,7 @@ export default connect(mapStateToProps, {
   fetchSuccess,
   fetchError,
   onAddReportDocument,
-  onGetReportDocuments
+  onGetReportDocuments,
+  onSetSurveyDate
 })(ReportDetail);
 

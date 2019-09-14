@@ -4,7 +4,7 @@ import {
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
   GET_REPORT_DOCUMENTS,
-  NULLIFY_CURRENT_REPORT,
+  NULLIFY_CURRENT_REPORT, SET_SURVEY_DATE,
   UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
@@ -57,17 +57,15 @@ export default (state = initialState, action) => {
       };
 
     case UPLOAD_REPORT_DOCUMENT:
-      const index = state.reportDocuments.findIndex(document => document.caption === action.payload.caption);
-      let updatedDocuments = [];
-      if (index !== -1) {
-        updatedDocuments = state.reportDocuments;
-        updatedDocuments[index] = action.payload;
-      } else {
-        updatedDocuments = [...state.reportDocuments, action.payload]
-      }
       return {
         ...state,
-        reportDocuments: updatedDocuments
+        reportDocuments: action.payload
+      };
+
+    case SET_SURVEY_DATE:
+      return {
+        ...state,
+        currentReport: action.payload
       };
 
     default:

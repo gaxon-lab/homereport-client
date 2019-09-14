@@ -48,8 +48,8 @@ class ImageUpload extends Component {
     const {uploadedImage} = this.props;
     if (this.state.fileList.length > 0) {
       return URL.createObjectURL(this.state.fileList[0]);
-    } else if (uploadedImage) {
-      return uploadedImage[0].src;
+    } else if (uploadedImage && uploadedImage.src) {
+      return uploadedImage.src;
     } else {
       return require("assets/images/placeholder.jpg")
     }

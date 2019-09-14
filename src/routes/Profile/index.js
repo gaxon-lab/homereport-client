@@ -30,8 +30,8 @@ class Profile extends Component {
           first_name: first_name,
           last_name: last_name,
           email: email,
-          profile_pic: profile_pic ? profile_pic[0].id : null,
-          avatar: profile_pic ? profile_pic : null
+          profile_pic: profile_pic && profile_pic.length > 0? profile_pic[0].id : null,
+          avatar: profile_pic && profile_pic.length > 0 ? profile_pic[0] : null
         });
       }
     }

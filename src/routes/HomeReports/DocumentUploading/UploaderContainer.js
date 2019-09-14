@@ -42,13 +42,13 @@ class UploaderContainer extends Component {
   render() {
     const {fileList} = this.state;
     const {document} = this.props;
-    const filePath = document ? document.src : null
+    const filePath = document && document.path ? document.path : null;
 
     return (
       <div>
         <Row className="gx-d-flex gx-justify-content-around gx-mb-1">
           <Col span={13}>
-            {document ? <Icon type="check" className="gx-text-green"/> : <Icon type="close"/>}
+            {document && document.id ? <Icon type="check" className="gx-text-green"/> : <Icon type="close"/>}
             <span className="gx-ml-3 gx-text-black">{this.props.title}</span>
           </Col>
           <Col span={11} className="gx-d-flex gx-justify-content-between">
