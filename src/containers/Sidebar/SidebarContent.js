@@ -42,29 +42,29 @@ class SidebarContent extends Component {
 
               <Menu.Item key="dashboard">
                 <Link to="/dashboard"><i className="icon icon-dasbhoard"/>
-                  Dashboard</Link>
+                  <span>Dashboard</span></Link>
               </Menu.Item>
               {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can access all customers").length > 0 ?
                 <Menu.Item key="customers">
                   <Link to="/customers"><i className="icon icon-tag"/>
-                    Customers</Link>
+                    <span>Customers</span></Link>
                 </Menu.Item> : null}
 
               {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0 ?
                 <Menu.Item key="staff">
                   <Link to="/staff"><i className="icon icon-user"/>
-                    Staff</Link>
+                    <span>Staff</span></Link>
                 </Menu.Item> : null}
 
 
               <Menu.Item key="quote-requests">
                 <Link to="/quote-requests"><i className="icon icon-extra-components"/>
-                  Quote Requests</Link>
+                  <span>Quote Requests</span></Link>
               </Menu.Item>
 
               <Menu.Item key="home-reports">
                 <Link to="/home-reports"><i className="icon icon-lock-screen"/>
-                  Home Reports</Link>
+                  <span>Home Reports</span></Link>
               </Menu.Item>
 
             </Menu>

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Avatar, Popover} from "antd";
+import {Popover} from "antd";
 
 
 class UserInfo extends Component {
@@ -18,8 +18,6 @@ class UserInfo extends Component {
     return (
       <Popover overlayClassName="gx-popover-horizantal" placement="bottomRight" content={userMenuOptions}
                trigger="click">
-        <Avatar src='https://via.placeholder.com/150x150'
-                className="gx-avatar gx-pointer" alt=""/>
       </Popover>
     )
 
