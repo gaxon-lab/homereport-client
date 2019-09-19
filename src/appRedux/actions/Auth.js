@@ -149,7 +149,7 @@ export const getUserProfile = () => {
   }
 };
 
-export const onResetPassword = ({email}) => {
+export const onResetPassword = ({email}, history) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('/forgot/password', {
@@ -160,6 +160,7 @@ export const onResetPassword = ({email}) => {
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: SHOW_MESSAGE, payload: "Reset password link has been successfully sent to your email address"});
+        history.push("/reset/password");
       } else if (data.message) {
         console.info("payload: data.errors[0]", data.message);
         dispatch({type: FETCH_ERROR, payload: data.message});
@@ -174,10 +175,10 @@ export const onResetPassword = ({email}) => {
   }
 };
 
-export const onSetNewPassword = (token, data, history) => {
+export const onSetNewPassword = (pin, data, history) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    axios.post(`reset/password/${token}`, data
+    axios.post(`/reset/password/${pin}`, data
     ).then(({data}) => {
       console.info("data:", data);
       if (data.success) {

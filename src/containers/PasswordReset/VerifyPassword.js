@@ -1,12 +1,12 @@
 import React from "react";
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, message} from "antd";
 import {connect} from "react-redux";
 import IntlMessages from "util/IntlMessages";
-import qs from "qs";
 import {onSetNewPassword} from "../../appRedux/actions";
 import {injectIntl} from "react-intl";
 import InfoView from "../../components/InfoView";
 import BackgroundImage from "../../assets/images/bg.png";
+import ReactCodeInput from "react-code-input";
 
 class VerifyPassword extends React.Component {
   constructor(props) {
@@ -14,16 +14,20 @@ class VerifyPassword extends React.Component {
     this.state = {
       password_confirmation: "",
       password: "",
-      email: ""
+      pin: ""
     }
   }
 
   handleSubmit = (e) => {
-    const queryParams = qs.parse(this.props.location.search, {ignoreQueryPrefix: true});
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.onSetNewPassword(queryParams.token, {...this.state}, this.props.history, this);
+        const { pin} = this.state;
+        if (pin.length === 6) {
+          this.props.onSetNewPassword(pin, {...this.state}, this.props.history);
+        } else {
+          return message.error('The length of Pin should be 6 digits');
+        }
       }
     });
   };
@@ -51,8 +55,6 @@ class VerifyPassword extends React.Component {
   };
 
   render() {
-    const {messages} = this.props.intl;
-    const {email} = this.state;
     const {getFieldDecorator} = this.props.form;
     return (
       <div className="gx-app-login-wrap" style={{
@@ -75,15 +77,10 @@ class VerifyPassword extends React.Component {
             </div>
             <div className="gx-app-login-content">
               <Form onSubmit={this.handleSubmit} className="gx-signin-form gx-form-row0">
-                <Form.Item label={<IntlMessages id="app.userAuth.enterEmail"/>}>
-                  {getFieldDecorator('email', {
-                    initialValue: email,
-                    rules: [{
-                      required: true, type: 'email', message: messages["validation.message.emailFormat"],
-                    }],
-                  })(
-                    <Input placeholder="Email" onChange={(e) => this.setState({email: e.target.value})}/>
-                  )}
+                <Form.Item label="Pin">
+                  <ReactCodeInput type='password' fields={6} onChange={(pin) => {
+                    this.setState({pin})
+                  }}/>
                 </Form.Item>
                 <Form.Item label="Password" hasFeedback>
                   {getFieldDecorator('password', {
@@ -121,7 +118,6 @@ class VerifyPassword extends React.Component {
             </div>
           </div>
         </div>
-        <InfoView/>
       </div>
     );
   }
