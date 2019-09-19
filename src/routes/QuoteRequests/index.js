@@ -10,8 +10,6 @@ import {onGetQuotesList} from "../../appRedux/actions/QuoteRequests";
 const {Option} = Select;
 const Search = Input.Search;
 
-// const confirm = Modal.confirm;
-
 class QuoteRequests extends Component {
   constructor(props) {
     super(props);

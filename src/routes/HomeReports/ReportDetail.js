@@ -37,7 +37,7 @@ class ReportDetail extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
+    componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.currentReport) {
       const {inspection_date, inspection_time} = nextProps.currentReport;
       if (nextProps.currentReport !== this.props.currentReport) {
@@ -135,7 +135,6 @@ class ReportDetail extends Component {
       }
     }
 
-
     return (
       <div className="gx-main-layout-content">
         {currentReport ?
@@ -223,9 +222,11 @@ class ReportDetail extends Component {
                         <Avatar className="gx-mr-3 gx-size-40" src={currentReport.customer_profile_image}/> :
                         <Avatar className="gx-mr-3 gx-size-40"
                                 style={{backgroundColor: '#00CED1'}}>{currentReport.customer_name[0].toUpperCase()}</Avatar>}
-                      <div className="gx-media-body">
-                  <span
-                    className="gx-mb-0 gx-text-black">{currentReport.customer_name}</span>
+
+                      <div className="gx-media-body gx-mt-2">
+              <span
+                className="gx-mb-0 gx-text-capitalize gx-text-black">{currentReport.customer_name}</span>
+                        <div className="gx-mb-2">{currentReport.customer_email}</div>
                       </div>
                     </div>
                   </div>
@@ -262,11 +263,12 @@ class ReportDetail extends Component {
                         <div className="gx-ml-auto">
                           {!isShowDatePicker ?
                             <div className="gx-link" onClick={this.onOpenDatePicker}><Icon type="edit"/>
-                              {currentReport.inspection_date && currentReport.inspection_time ? "Change Date" : "Select Date"}
+                              {currentReport.inspection_date && currentReport.inspection_time ? "Change" : "Select"}
                             </div> :
-                            <DatePicker showTime placeholder="Select Date & Time"
+                            <DatePicker showTime placeholder="Select Date & Time" ref={this.setWrapperRef}
                                         disabledDate={(value) => this.onDisabledDate(value)}
                                         open={isShowDatePicker}
+                                         onOpenChange={() => this.setState({isShowDatePicker: false})}
                                         onChange={this.onDateChange} onOk={this.onSelectDateTime}/>}
                         </div> : null}
                     </div>

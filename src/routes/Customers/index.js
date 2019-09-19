@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Input, Select, Table} from "antd";
+import {Breadcrumb, Button, Col, Input, Select, Table} from "antd";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import CustomersRow from "./CustomerRow";
@@ -8,6 +8,7 @@ import Widget from "../../components/Widget";
 import QuoteRequestModal from "./QuoteRequestModal";
 import InfoView from "../../components/InfoView";
 import HomeReportsModal from "./HomeReportsModal";
+import {onDownloadCustomerList} from "../../appRedux/actions";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -124,21 +125,27 @@ class Customers extends Component {
               <Link to="/customers" className="gx-text-primary">Customers</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
-          <div className="gx-d-flex gx-justify-content-end">
-            <Search
-              placeholder="Enter keywords to search Customers"
-              value={filterText}
-              onChange={this.onFilterTextChange}
-              style={{width: 350}}/>
-            {this.onGetCustomersShowOptions()}
-            <Button.Group>
-              <Button type="default" onClick={this.onCurrentDecrement}>
-                <i className="icon icon-long-arrow-left"/>
-              </Button>
-              <Button type="default" onClick={this.onCurrentIncrement}>
-                <i className="icon icon-long-arrow-right"/>
-              </Button>
-            </Button.Group>
+          <div className="gx-d-flex gx-justify-content-between">
+            <a href="http://gaxonlab.com/homereport-server/api/customers/export/data" target="_blank" rel="noopener noreferrer">
+            <Button type="primary" className="gx-btn-lg">
+              Export to CSV</Button>
+            </a>
+            <div className="gx-d-flex">
+              <Search
+                placeholder="Enter keywords to search Customers"
+                value={filterText}
+                onChange={this.onFilterTextChange}
+                style={{width: 350}}/>
+              {this.onGetCustomersShowOptions()}
+              <Button.Group>
+                <Button type="default" onClick={this.onCurrentDecrement}>
+                  <i className="icon icon-long-arrow-left"/>
+                </Button>
+                <Button type="default" onClick={this.onCurrentIncrement}>
+                  <i className="icon icon-long-arrow-right"/>
+                </Button>
+              </Button.Group>
+            </div>
           </div>
           <Table rowKey="id" rowSelection={rowSelection} columns={CustomersRow(this)}
                  dataSource={customersList}
@@ -180,5 +187,5 @@ const mapPropsToState = ({customers, common}) => {
 };
 
 export default connect(mapPropsToState, {
-  onGetCustomersList
+  onGetCustomersList, onDownloadCustomerList
 })(Customers);

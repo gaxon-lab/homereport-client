@@ -31,7 +31,7 @@ class SignUp extends React.Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     return (
-      <div className="gx-app-login-wrap">
+      <div className="gx-app-login-wrap ">
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">

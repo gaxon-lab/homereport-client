@@ -6,6 +6,7 @@ import {onUserSignIn} from "../appRedux/actions/Auth";
 import IntlMessages from "util/IntlMessages";
 import InfoView from "../components/InfoView";
 import {injectIntl} from "react-intl";
+import BackgroundImage from "../assets/images/bg.png";
 
 const FormItem = Form.Item;
 
@@ -34,28 +35,32 @@ class SignIn extends React.Component {
     const {messages} = this.props.intl;
     const {getFieldDecorator} = this.props.form;
     return (
-      <div className="gx-app-login-wrap">
+      <div className="gx-app-login-wrap" style={{backgroundColor:"#2ba7b7",backgroundImage:`url(${BackgroundImage})`, backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat'}}>
+
+
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">
               <div className="gx-app-logo-content-bg">
-                {/*/!*<img src="https://via.placeholder.com/272x395" alt='Nature'/>*!///back ground image here*/}
+                {/*<img src={require("../assets/images/bg.png")} alt='Nature'/>*/}
               </div>
               <div className="gx-app-logo-wid">
                 <h1><IntlMessages id="app.userAuth.signIn"/></h1>
                 <p><IntlMessages id="app.userAuth.bySigning"/></p>
-                <p className="gx-cursor" onClick={this.onForgetPassword} style={{textDecoration: 'underline'}}>"Forgot
+                <p className="gx-pointer" onClick={this.onForgetPassword} style={{textDecoration: 'underline'}}>"Forgot
                   your password? Recover Now"</p>
               </div>
               <div className="gx-app-logo">
-                {/*<img alt="example" src={require("assets/images/logo.svg")}/>*/}
+                <img alt="example" src={require("assets/images/logo-white.png")}/>
               </div>
             </div>
             <div className="gx-app-login-content">
               <Form onSubmit={this.handleSubmit} className="gx-signin-form gx-form-row0">
                 <FormItem>
                   {getFieldDecorator('email', {
-                    initialValue: "admin@g-axon.com",
+                    initialValue: "info@homereportscotland.scot",
                     rules: [{
                       required: true, type: 'email', message: messages["validation.message.emailFormat"],
                     }],
@@ -65,7 +70,7 @@ class SignIn extends React.Component {
                 </FormItem>
                 <FormItem>
                   {getFieldDecorator('password', {
-                    initialValue: "123456",
+                    initialValue: "",
                     rules: [{required: true, message: messages["validation.message.inputPassword"]}],
                   })(
                     <Input type="password" placeholder="Password"/>

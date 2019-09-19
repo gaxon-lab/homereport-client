@@ -98,6 +98,26 @@ export const onGetCustomerReports = (customerId) => {
   }
 };
 
+export const onDownloadCustomerList = () => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.get("/customers/export/data").then(({data}) => {
+      console.info("onDownloadCustomerList: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        // dispatch({type: GET_CUSTOMER_DETAIL, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
 export const onNullifyCustomerDetails = () => {
   return {
     type: NULLIFY_CUSTOMER_DETAIL

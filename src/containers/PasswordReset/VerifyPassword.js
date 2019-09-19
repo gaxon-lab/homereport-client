@@ -6,6 +6,7 @@ import qs from "qs";
 import {onSetNewPassword} from "../../appRedux/actions";
 import {injectIntl} from "react-intl";
 import InfoView from "../../components/InfoView";
+import BackgroundImage from "../../assets/images/bg.png";
 
 class VerifyPassword extends React.Component {
   constructor(props) {
@@ -54,7 +55,11 @@ class VerifyPassword extends React.Component {
     const {email} = this.state;
     const {getFieldDecorator} = this.props.form;
     return (
-      <div className="gx-app-login-wrap">
+      <div className="gx-app-login-wrap" style={{
+        backgroundColor: "#2ba7b7", backgroundImage: `url(${BackgroundImage})`, backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat'
+      }}>
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">
@@ -63,6 +68,9 @@ class VerifyPassword extends React.Component {
               <div className="gx-app-logo-wid">
                 <h1><IntlMessages id="app.userAuth.resetPassword"/></h1>
                 <p><IntlMessages id="app.userAuth.ResetPasswordText"/></p>
+              </div>
+              <div className="gx-app-logo">
+                <img alt="example" src={require("assets/images/logo-white.png")}/>
               </div>
             </div>
             <div className="gx-app-login-content">

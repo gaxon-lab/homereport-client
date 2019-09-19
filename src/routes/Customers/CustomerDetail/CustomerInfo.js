@@ -8,7 +8,7 @@ const CustomerInfo = ({currentCustomer, onGoBackToList}) => {
       <Widget styleName="gx-card-filter">
         <div className="gx-mb-3 gx-border gx-rounded-circle gx-size-24 gx-d-flex gx-justify-content-center"
              style={{borderColor: "black"}}>
-        <i className="icon icon-arrow-left gx-link gx-text-black" onClick={() => onGoBackToList()}/>
+          <i className="icon icon-arrow-left gx-link gx-text-black" onClick={() => onGoBackToList()}/>
         </div>
         <h2 className="gx-widget-heading">Customer Detail</h2>
         <div className="gx-mt-3">
@@ -49,7 +49,9 @@ const CustomerInfo = ({currentCustomer, onGoBackToList}) => {
                   Address
                 </Col>
                 <Col span={18}>
-                  {currentCustomer.address ? currentCustomer.address : "NA"}
+                  {currentCustomer.billing_info && currentCustomer.billing_info.length > 0 ?
+                    <div>{`${currentCustomer.billing_info[0].address1}, ${currentCustomer.billing_info[0].city}, Scotland - ${currentCustomer.billing_info[0].postcode}`}</div>
+                    : "NA"}
                 </Col>
                 <Divider/>
               </Row>

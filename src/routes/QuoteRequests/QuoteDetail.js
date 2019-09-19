@@ -57,6 +57,7 @@ class QuoteDetail extends Component {
                   <div className="gx-text-grey">Customer Detail</div>
                   <div
                     className=" gx-mt-2 gx-font-weight-medium">{currentQuote.customer_name ? currentQuote.customer_name : "NA"}</div>
+                  <div>{currentQuote.customer_email}</div>
                 </Col>
                 <Col span={18}>
                   <div className="gx-text-grey">Contact Detail</div>

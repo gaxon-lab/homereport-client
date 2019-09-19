@@ -48,6 +48,22 @@ const StaffRow = (context) => {
       },
     },
     {
+    title: 'PHONE',
+      dataIndex: 'mobile_no',
+      key: 'mobile_no',
+      render: (text, record) => {
+      return <span className="gx-email gx-d-inline-block gx-mr-2">{record.mobile_no}</span>
+    },
+  },
+    {
+      title: 'QUALIFICATION',
+      dataIndex: 'qualification',
+      key: 'qualification',
+      render: (text, record) => {
+        return <span className="gx-email gx-d-inline-block gx-mr-2">{record.qualification ? record.qualification: "NA"}</span>
+      },
+    },
+    {
       title: 'STATUS',
       dataIndex: 'status',
       key: 'status',

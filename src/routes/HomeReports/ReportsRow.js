@@ -43,8 +43,9 @@ const ReportsRow = (context) => {
       key: 'property',
       render: (text, record) => {
         return <div>
-          <div className="gx-mb-1">{record.address1}</div>
-          <div>{record.city}, Scotland - {record.postcode}</div>
+          <div className="gx-mb-1 gx-text-nowrap">{record.address1}</div>
+          <div className="gx-text-nowrap">{record.city}, Scotland</div>
+          <div className="gx-text-nowrap">Postcode - {record.postcode}</div>
         </div>
       },
     },

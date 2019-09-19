@@ -60,6 +60,7 @@ export const onAddStaffMember = (staffMember) => {
 };
 
 export const onEditStaffMember = (staffMember, updatingContent) => {
+  console.log("onEditStaffMember", staffMember)
   return (dispatch) => {
     if (updatingContent) {
       dispatch({type: UPDATING_CONTENT});
@@ -67,6 +68,7 @@ export const onEditStaffMember = (staffMember, updatingContent) => {
       dispatch({type: FETCH_START});
     }
     axios.put(`/staffs/${staffMember.id}`, staffMember).then(({data}) => {
+      console.log("data retured", data)
       if (data.success) {
         dispatch({type: EDIT_STAFF_DETAILS, payload: data.data});
         dispatch({type: FETCH_SUCCESS});
@@ -95,7 +97,7 @@ export const onBulkDeleteStaff = (staffIds, updatingContent) => {
       if (data.success) {
         dispatch({type: BULK_DELETE_SUPPORT_STAFF, payload: staffIds.ids});
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: SHOW_MESSAGE, payload: "The Selected Staffs have been deleted successfully"});
+        dispatch({type: SHOW_MESSAGE, payload: "The Selected Staff(s) have been deleted successfully"});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

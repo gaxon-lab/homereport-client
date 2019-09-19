@@ -23,7 +23,9 @@ class AddNewStaff extends Component {
         fileList: [],
         status: 1,
         profile_pic_id: null,
-        permissions: []
+        permissions: [],
+        mobile_no: "",
+        qualification: ""
       }
     } else {
       const imageId = props.selectedStaff.profile_pic.length > 0 ? props.selectedStaff.profile_pic[0].id : null
@@ -47,7 +49,6 @@ class AddNewStaff extends Component {
       }
     }
   };
-
 
   onSelectStaffPermissions = checkedList => {
     this.setState({permissions: checkedList})
@@ -126,7 +127,7 @@ class AddNewStaff extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const {isAddStaff, onToggleAddStaff, userPermissions, loggedUserPermissions} = this.props;
-    const {first_name, last_name, email, password, fileList, status, permissions} = this.state;
+    const {first_name, last_name, email, password, fileList, status, permissions, mobile_no, qualification} = this.state;
     const props = {
       onRemove: file => {
         this.setState(state => {
@@ -230,6 +231,27 @@ class AddNewStaff extends Component {
                       this.setState({password: e.target.value})
                     }}/>}
                 </Form.Item>
+
+                <Form.Item label="Phone no.">
+                  {getFieldDecorator('mobile_no', {
+                    initialValue: mobile_no,
+                    validateTrigger: 'onBlur',
+                    rules: [{required: true, message: 'Please Enter Mobile number!'},
+                      {pattern: /^[0-9\b]+$/,
+                        message: "Please enter only numerical values!"}],
+                  })(<Input type="text" onChange={(e) => {
+                    this.setState({mobile_no: e.target.value})
+                  }}/>)}
+                </Form.Item>
+
+                <Form.Item label="Qualification">
+                  {getFieldDecorator('qualification', {
+                    initialValue: qualification
+                  })(<Input type="text" onChange={(e) => {
+                    this.setState({qualification: e.target.value})
+                  }}/>)}
+                </Form.Item>
+
                 <Form.Item label="Status">
                   <Radio.Group value={status} onChange={(e) => {
                     this.setState({status: e.target.value})
