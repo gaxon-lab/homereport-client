@@ -1,7 +1,7 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT} from "../../constants/ActionTypes";
 import axios from 'util/Api'
 import {
-  ADD_NEW_COMMENT,
+  ADD_NEW_COMMENT, ASSIGN_STAFF,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
@@ -64,9 +64,9 @@ export const onAssignStaffToReport = (reportId, id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post(`reports/${reportId}/assign`, {user_id: id}).then(({data}) => {
-      console.log("onAssignStaffToReport", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
+        dispatch({type: ASSIGN_STAFF, payload: id})
         dispatch({type: SHOW_MESSAGE, payload: "The Report has been assigned to selected staff successfully"});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});

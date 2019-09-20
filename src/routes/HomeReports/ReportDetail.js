@@ -277,7 +277,6 @@ class ReportDetail extends Component {
                         moment(currentReport.inspection_date + " " + currentReport.inspection_time).format('MMM Do YYYY, h:mm:ss a') : "NA"}</div>
                   </div>
 
-
                   <div className="gx-p-4" style={{backgroundColor: "#eee"}}>
                     <div className="gx-text-grey">Payment Date & Time</div>
                     <div className="gx-mt-2 gx-text-black">

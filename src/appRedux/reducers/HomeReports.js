@@ -1,5 +1,5 @@
 import {
-  ADD_NEW_COMMENT,
+  ADD_NEW_COMMENT, ASSIGN_STAFF,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
@@ -68,6 +68,15 @@ export default (state = initialState, action) => {
         currentReport: action.payload
       };
 
+    case ASSIGN_STAFF:
+      const report = state.currentReport;
+      report.assigned_user_id = action.payload;
+    {
+      return {
+        ...state,
+        currentReport: report
+      };
+    }
     default:
       return state;
   }
