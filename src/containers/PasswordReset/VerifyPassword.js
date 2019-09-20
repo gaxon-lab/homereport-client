@@ -6,6 +6,7 @@ import {onSetNewPassword} from "../../appRedux/actions";
 import {injectIntl} from "react-intl";
 import BackgroundImage from "../../assets/images/bg.png";
 import ReactCodeInput from "react-code-input";
+import InfoView from "../../components/InfoView";
 
 class VerifyPassword extends React.Component {
   constructor(props) {
@@ -117,6 +118,7 @@ class VerifyPassword extends React.Component {
             </div>
           </div>
         </div>
+        <InfoView/>
       </div>
     );
   }

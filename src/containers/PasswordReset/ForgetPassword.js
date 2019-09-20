@@ -66,7 +66,6 @@ class ForgetPassword extends React.Component {
             </div>
           </div>
         </div>
-        <InfoView/>
       </div>
     );
   }
