@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import IntlMessages from "util/IntlMessages";
 import {onSetNewPassword} from "../../appRedux/actions";
 import {injectIntl} from "react-intl";
-import InfoView from "../../components/InfoView";
 import BackgroundImage from "../../assets/images/bg.png";
 import ReactCodeInput from "react-code-input";
 
@@ -22,7 +21,7 @@ class VerifyPassword extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { pin} = this.state;
+        const {pin} = this.state;
         if (pin.length === 6) {
           this.props.onSetNewPassword(pin, {...this.state}, this.props.history);
         } else {

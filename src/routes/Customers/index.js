@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Col, Input, Select, Table} from "antd";
+import {Breadcrumb, Button, Input, Select, Table} from "antd";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import CustomersRow from "./CustomerRow";
@@ -126,9 +126,10 @@ class Customers extends Component {
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="gx-d-flex gx-justify-content-between">
-            <a href="http://gaxonlab.com/homereport-server/api/customers/export/data" target="_blank" rel="noopener noreferrer">
-            <Button type="primary" className="gx-btn-lg">
-              Export to CSV</Button>
+            <a href="http://gaxonlab.com/homereport-server/api/customers/export/data" target="_blank"
+               rel="noopener noreferrer">
+              <Button type="primary" className="gx-btn-lg">
+                Export to CSV</Button>
             </a>
             <div className="gx-d-flex">
               <Search
