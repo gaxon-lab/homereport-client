@@ -1,8 +1,10 @@
 import React from 'react';
 import Widget from "../../../components/Widget";
-import {Avatar, Col, Divider, Row} from "antd";
+import {Avatar, Col, Divider, Row, Tag} from "antd";
 
-const CustomerInfo = ({currentCustomer, onGoBackToList}) => {
+const CustomerInfo = ({currentCustomer, onGoBackToList, quoteRequests, homeReports}) => {
+  const contactArray = [...homeReports, ...quoteRequests];
+  console.log("contactArray", contactArray)
   return (
     <div className="gx-main-layout-content">
       <Widget styleName="gx-card-filter">
@@ -37,20 +39,22 @@ const CustomerInfo = ({currentCustomer, onGoBackToList}) => {
               </Row>
               <Row>
                 <Col span={6}>
-                  Phone
+                  Contact
                 </Col>
                 <Col span={18}>
-                  {currentCustomer.phone ? currentCustomer.phone : "NA"}
-                </Col>
-                <Divider/>
-              </Row>
-              <Row>
-                <Col span={6}>
-                  Address
-                </Col>
-                <Col span={18}>
-                  {currentCustomer.billing_info && currentCustomer.billing_info.length > 0 ?
-                    <div>{`${currentCustomer.billing_info[0].address1}, ${currentCustomer.billing_info[0].city}, Scotland - ${currentCustomer.billing_info[0].postcode}`}</div>
+                  {contactArray && contactArray.length > 0 ?
+                    contactArray.map(request => {
+                      return <Row className>
+                          <Col span={8}>
+                            <div className="gx-font-weight-medium">{request.day_time_tel} <Tag
+                              style={{borderRadius: 20}}>Day</Tag></div>
+                          </Col>
+                          <Col span={16}>
+                            <div className="gx-font-weight-medium">{request.evening_time_tel} <Tag
+                              style={{borderRadius: 20}}>Evening</Tag></div>
+                          </Col>
+                        </Row>
+                    })
                     : "NA"}
                 </Col>
                 <Divider/>
@@ -64,3 +68,6 @@ const CustomerInfo = ({currentCustomer, onGoBackToList}) => {
 };
 
 export default CustomerInfo;
+
+
+

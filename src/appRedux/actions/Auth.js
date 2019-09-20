@@ -248,7 +248,9 @@ export const onGetLoggedUserPermission = () => {
       console.info("Error****:", error.message);
     });
   }
-}
+};
+
+
 
 
 

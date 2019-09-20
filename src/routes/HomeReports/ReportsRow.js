@@ -32,7 +32,7 @@ const ReportsRow = (context) => {
       key: 'customer',
       render: (text, record) => {
         return <div>
-          <div>{record.customer_name}</div>
+          <div className="gx-text-nowrap">{record.customer_name}</div>
           <Tag className={`gx-mt-1 gx-text-white ${record.is_guest === 1 ? "gx-badge-red" : "gx-badge-cyan"}`}>{record.is_guest === 1 ? "Guest" : "Customer"}</Tag>
         </div>
       },
@@ -43,7 +43,7 @@ const ReportsRow = (context) => {
       key: 'property',
       render: (text, record) => {
         return <div>
-          <div className="gx-mb-1 gx-text-nowrap">{record.address1}</div>
+          <div className="gx-mb-1">{record.address1}</div>
           <div className="gx-text-nowrap">{record.city}, Scotland</div>
           <div className="gx-text-nowrap">Postcode - {record.postcode}</div>
         </div>
@@ -55,7 +55,7 @@ const ReportsRow = (context) => {
       key: 'price',
       render: (text, record) => {
         return <div>
-          <div className="gx-mb-1">{record.property_price_value}</div>
+          <div className="gx-mb-1 gx">{record.property_price_value}</div>
           <div>{record.property_age_value}</div>
         </div>
       },
@@ -66,8 +66,10 @@ const ReportsRow = (context) => {
       key: 'contact',
       render: (text, record) => {
         return <div>
-          {record.day_time_tel ? <div className="gx-mb-1">{record.day_time_tel} Day</div> : null}
-          {record.evening_time_tel ? <div>{record.evening_time_tel} Evening</div> : null}
+          {record.day_time_tel ? <div className="gx-mb-1">{record.day_time_tel} <Tag
+            style={{borderRadius: 20}}>Day</Tag></div> : null}
+          {record.evening_time_tel ? <div>{record.evening_time_tel} <Tag
+            style={{borderRadius: 20}}>Evening</Tag></div> : null}
         </div>
       },
     },

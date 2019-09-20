@@ -1,4 +1,4 @@
-import {Dropdown, Menu} from "antd/lib/index";
+import {Dropdown, Menu, Tag} from "antd/lib/index";
 import React from "react";
 
  const CustomerQuotesRow = (context) => {
@@ -17,7 +17,7 @@ import React from "react";
       key: 'property',
       render: (text, record) => {
         return <div>
-          <div className="gx-mb-1 gx-text-nowrap">{record.address1}</div>
+          <div className="gx-mb-1">{record.address1}</div>
           <div className="gx-text-nowrap">{record.city}, Scotland</div>
           <div className="gx-text-nowrap">Postcode - {record.postcode}</div>
         </div>
@@ -40,8 +40,10 @@ import React from "react";
       key: 'contact',
       render: (text, record) => {
         return <div>
-          {record.day_time_tel ? <div className="gx-mb-1 gx-text-nowrap">{record.day_time_tel} Day</div> : null}
-          {record.evening_time_tel ? <div className="gx-text-nowrap">{record.evening_time_tel} Evening</div> : null}
+          {record.day_time_tel ? <div className="gx-mb-1 gx-text-nowrap">{record.day_time_tel} <Tag
+            style={{borderRadius: 20}}>Day</Tag></div> : null}
+          {record.evening_time_tel ? <div className="gx-text-nowrap">{record.evening_time_tel} <Tag
+            style={{borderRadius: 20}}>Evening</Tag></div> : null}
         </div>
       },
     },

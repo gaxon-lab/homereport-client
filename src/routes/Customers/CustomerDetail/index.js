@@ -28,10 +28,13 @@ class CustomerDetail extends Component {
         {currentCustomer ?
           <div>
             <CustomerInfo currentCustomer={currentCustomer.customer}
+                          quoteRequests={currentCustomer.quoteRequests}
+                          homeReports={currentCustomer.reports}
                           onGoBackToList={this.onGoBackToList}/>
+
             <CustomerQuoteRequests quoteRequests={currentCustomer.quoteRequests}
-                                   onSelectRequest={this.onSelectRequest}
                                    history={this.props.history}/>
+
             <CustomerHomeReports homeReports={currentCustomer.reports}
                                  history={this.props.history}/>
           </div>

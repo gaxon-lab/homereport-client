@@ -102,7 +102,6 @@ class App extends Component {
 
   render() {
     const {match, location, layoutType, navStyle, locale, initURL, token} = this.props;
-
     if (location.pathname === '/' || location.pathname === '') {
       if (token === null) {
         return (<Redirect to={'/signin'}/>);

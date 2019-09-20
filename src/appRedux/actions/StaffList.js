@@ -7,6 +7,21 @@ import {
   GET_USER_PERMISSION
 } from "../../constants/StaffList";
 import axios from 'util/Api'
+import {onUserSignOut} from "./Auth";
+
+
+export const showErrorMessage = (error) => {
+  console.log("error", error);
+  if (error.response.status === 401) {
+    return ({type: FETCH_ERROR, payload: error.response.data.message});
+    onUserSignOut();
+  } else if (error.response.status === 403) {
+    return ({type: FETCH_ERROR, payload: error.response.data.message});
+  } else {
+    console.log("Error****:", error.message);
+    return ({type: FETCH_ERROR, payload: error.message});
+  }
+};
 
 export const onGetStaff = (currentPage, itemsPerPage, filterText, updatingContent) => {
   return (dispatch) => {
