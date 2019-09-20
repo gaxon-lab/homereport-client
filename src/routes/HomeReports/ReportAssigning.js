@@ -88,7 +88,7 @@ class ReportAssigning extends Component {
           </div> :
           <div>
             <div>Assign To</div>
-            <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5" onClick={() => {
+            <div className="gx-media gx-flex-nowrap gx-align-items-center gx-mb-lg-5 gx-pointer" onClick={() => {
               if (loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0) {
                 this.onToggleStaffModal();
               }
