@@ -1,7 +1,6 @@
 import React from "react";
 import {Button, Checkbox, Form, Input} from "antd";
 import {connect} from "react-redux";
-
 import {onUserSignIn} from "../appRedux/actions/Auth";
 import IntlMessages from "util/IntlMessages";
 import InfoView from "../components/InfoView";
@@ -32,6 +31,7 @@ class SignIn extends React.Component {
   };
 
   render() {
+    console.log("process.env.NODE_ENV", process.env.REACT_APP_API_URL)
     const {messages} = this.props.intl;
     const {getFieldDecorator} = this.props.form;
     return (

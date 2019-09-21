@@ -265,7 +265,7 @@ class ReportDetail extends Component {
                             <div className="gx-link" onClick={this.onOpenDatePicker}><Icon type="edit"/>
                               {currentReport.inspection_date && currentReport.inspection_time ? "Change" : "Select"}
                             </div> :
-                            <DatePicker showTime placeholder="Select Date & Time" ref={this.setWrapperRef}
+                            <DatePicker showTime placeholder="Select Date & Time"
                                         disabledDate={(value) => this.onDisabledDate(value)}
                                         open={isShowDatePicker}
                                          onOpenChange={() => this.setState({isShowDatePicker: false})}
