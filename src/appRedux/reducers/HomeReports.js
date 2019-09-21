@@ -71,12 +71,11 @@ export default (state = initialState, action) => {
     case ASSIGN_STAFF:
       const report = state.currentReport;
       report.assigned_user_id = action.payload;
-    {
       return {
         ...state,
         currentReport: report
       };
-    }
+
     default:
       return state;
   }

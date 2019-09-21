@@ -28,7 +28,7 @@ class AddNewStaff extends Component {
         qualification: ""
       }
     } else {
-      const imageId = props.selectedStaff.profile_pic.length > 0 ? props.selectedStaff.profile_pic[0].id : null
+      const imageId = props.selectedStaff.profile_pic.length > 0 ? props.selectedStaff.profile_pic[0].id : null;
       this.state = {...props.selectedStaff, fileList: [], profile_pic_id: imageId, permissions: []}
     }
   }
@@ -44,7 +44,7 @@ class AddNewStaff extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     if (this.props.selectedStaff) {
       if (nextProps.selectedStaffPermissions && nextProps.selectedStaffPermissions !== this.props.selectedStaffPermissions) {
-        const permissions = nextProps.selectedStaffPermissions.map(permission => permission.name)
+        const permissions = nextProps.selectedStaffPermissions.map(permission => permission.name);
         this.setState({permissions: permissions});
       }
     }
@@ -279,7 +279,7 @@ class AddNewStaff extends Component {
             </Col>
             <Col xl={10} lg={12} md={12} sm={12} xs={24}>
               <Upload {...props}>
-                <Avatar className="gx-mr-3 gx-mb-5 gx-size-150" src={this.getImageURL()}/>
+                <Avatar className="gx-mr-3 gx-mb-5 gx-size-150 gx-pointer" src={this.getImageURL()}/>
               </Upload>
             </Col>
           </Row>

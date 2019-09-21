@@ -2,7 +2,6 @@ import React from "react";
 import {Button, Form, Input} from "antd";
 import {connect} from "react-redux";
 import IntlMessages from "util/IntlMessages";
-import InfoView from "../../components/InfoView";
 import {onResetPassword} from "../../appRedux/actions";
 import {Link} from "react-router-dom";
 import {injectIntl} from "react-intl";

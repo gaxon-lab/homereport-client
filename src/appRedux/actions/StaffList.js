@@ -7,21 +7,7 @@ import {
   GET_USER_PERMISSION
 } from "../../constants/StaffList";
 import axios from 'util/Api'
-import {onUserSignOut} from "./Auth";
 
-
-export const showErrorMessage = (error) => {
-  console.log("error", error);
-  if (error.response.status === 401) {
-    return ({type: FETCH_ERROR, payload: error.response.data.message});
-    onUserSignOut();
-  } else if (error.response.status === 403) {
-    return ({type: FETCH_ERROR, payload: error.response.data.message});
-  } else {
-    console.log("Error****:", error.message);
-    return ({type: FETCH_ERROR, payload: error.message});
-  }
-};
 
 export const onGetStaff = (currentPage, itemsPerPage, filterText, updatingContent) => {
   return (dispatch) => {
@@ -75,7 +61,6 @@ export const onAddStaffMember = (staffMember) => {
 };
 
 export const onEditStaffMember = (staffMember, updatingContent) => {
-  console.log("onEditStaffMember", staffMember)
   return (dispatch) => {
     if (updatingContent) {
       dispatch({type: UPDATING_CONTENT});
@@ -83,7 +68,6 @@ export const onEditStaffMember = (staffMember, updatingContent) => {
       dispatch({type: FETCH_START});
     }
     axios.put(`/staffs/${staffMember.id}`, staffMember).then(({data}) => {
-      console.log("data retured", data)
       if (data.success) {
         dispatch({type: EDIT_STAFF_DETAILS, payload: data.data});
         dispatch({type: FETCH_SUCCESS});
@@ -108,7 +92,6 @@ export const onBulkDeleteStaff = (staffIds, updatingContent) => {
       dispatch({type: FETCH_START});
     }
     axios.post('/staffs/delete', staffIds).then(({data}) => {
-      console.log("deleted date", data);
       if (data.success) {
         dispatch({type: BULK_DELETE_SUPPORT_STAFF, payload: staffIds.ids});
         dispatch({type: FETCH_SUCCESS});
@@ -143,4 +126,4 @@ export const onGetSelectedStaffPermission = (staffId) => {
       console.info("Error****:", error.message);
     });
   }
-}
+};
