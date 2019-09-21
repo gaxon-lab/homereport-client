@@ -87,7 +87,7 @@ class SignIn extends React.Component {
                 </FormItem>
                 <FormItem>
                   <Button type="primary" className="gx-mb-0" htmlType="submit">
-                    <IntlMessages id="app.userAuth.signIn"/>
+                    {process.env.NODE_ENV === "development" ? process.env.REACT_APP_LOGIN : process.env.REACT_APP_SIGNIN}
                   </Button>
                 </FormItem>
               </Form>
