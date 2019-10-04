@@ -3,9 +3,9 @@ import {Breadcrumb, Button, Input, Select, Table} from "antd";
 import Widget from "../../components/Widget";
 import {Link} from "react-router-dom";
 import InfoView from "../../components/InfoView";
-import {connect} from "react-redux";
 import QuotesRow from "./QuotesRow";
 import {onGetQuotesList} from "../../appRedux/actions/QuoteRequests";
+import {connect} from "react-redux";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -28,6 +28,7 @@ class QuoteRequests extends Component {
   onGetPaginatedData = (currentPage, itemsPerPage, filterText, updatingContent) => {
     this.props.onGetQuotesList(currentPage, itemsPerPage, filterText, updatingContent);
   };
+
 
   onFilterTextChange = (e) => {
     const {itemNumbers} = this.state;
@@ -82,6 +83,7 @@ class QuoteRequests extends Component {
   };
 
   render() {
+
     const {quotesList, updatingContent} = this.props;
     const {selectedRowKeys, filterText, itemNumbers, current} = this.state;
     const rowSelection = {
@@ -93,6 +95,7 @@ class QuoteRequests extends Component {
         this.setState({selectedCustomers: ids, selectedRowKeys: selectedRowKeys})
       }
     };
+
     return (
       <div className="gx-main-content">
         <Widget styleName="gx-card-filter">
@@ -131,6 +134,7 @@ class QuoteRequests extends Component {
                  className="gx-table-responsive"
           />
         </Widget>
+
         <InfoView/>
       </div>
     )

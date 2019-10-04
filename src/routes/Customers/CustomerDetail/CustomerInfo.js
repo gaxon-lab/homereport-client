@@ -44,7 +44,7 @@ const CustomerInfo = ({currentCustomer, onGoBackToList, quoteRequests, homeRepor
                 <Col span={18}>
                   {contactArray && contactArray.length > 0 ?
                     contactArray.map(request => {
-                      return <Row className>
+                      return <Row>
                           <Col span={8}>
                             <div className="gx-font-weight-medium">{request.day_time_tel} <Tag
                               style={{borderRadius: 20}}>Day</Tag></div>

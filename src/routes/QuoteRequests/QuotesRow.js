@@ -7,6 +7,9 @@ const onShowRowDropdown = (currentQuote, context) => {
       <Menu.Item key="1" onClick={() => context.onSelectRequest(currentQuote)}>
         View Details
       </Menu.Item>
+      <Menu.Item key="2">
+        Add Payment Detail
+      </Menu.Item>
     </Menu>
   );
   return (

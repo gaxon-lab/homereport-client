@@ -9,6 +9,8 @@ import QuoteRequestModal from "./QuoteRequestModal";
 import InfoView from "../../components/InfoView";
 import HomeReportsModal from "./HomeReportsModal";
 import {onDownloadCustomerList} from "../../appRedux/actions";
+import AddNewCustomer from "./AddNewCustomer";
+import AddNewQuote from "../QuoteRequests/AddNewQuote";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -24,7 +26,9 @@ class Customers extends Component {
       current: 1,
       isShowQuotes: false,
       isShowHomeRecords: false,
-      selectedCustomer: null
+      selectedCustomer: null,
+      isAddCustomer: false,
+      isAddQuote: false
     }
   }
 
@@ -34,6 +38,28 @@ class Customers extends Component {
 
   onGetPaginatedData = (currentPage, itemsPerPage, filterText, updatingContent) => {
     this.props.onGetCustomersList(currentPage, itemsPerPage, filterText, updatingContent);
+  };
+
+  onToggleAddCustomer = () => {
+    this.setState({isAddCustomer: !this.state.isAddCustomer})
+  };
+
+  onAddButtonClick = () => {
+    this.setState({isAddCustomer: true, selectedCustomer: null})
+  };
+
+  onEditIconClick = record => {
+    this.setState({isAddCustomer: true, selectedCustomer: record})
+  };
+
+  onToggleAddQuote = () => {
+    this.setState({isAddQuote: !this.state.isAddQuote})
+  };
+
+  onRaiseNewQuote = () => {
+    this.setState({isShowQuotes: !this.state.isShowQuotes},() => {
+    this.setState({isAddQuote: !this.state.isAddQuote})
+    })
   };
 
   onToggleShowQuotes = () => {
@@ -106,7 +132,7 @@ class Customers extends Component {
 
   render() {
     const {customersList, updatingContent} = this.props;
-    const {selectedRowKeys, filterText, itemNumbers, current, isShowQuotes, isShowHomeRecords, selectedCustomer} = this.state;
+    const {selectedRowKeys, filterText, itemNumbers, current, isShowQuotes, isShowHomeRecords, selectedCustomer, isAddCustomer, isAddQuote} = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
@@ -125,13 +151,16 @@ class Customers extends Component {
               <Link to="/customers" className="gx-text-primary">Customers</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
-          <div className="gx-d-flex gx-justify-content-between">
+          <div className="gx-d-flex ">
             <a href="http://gaxonlab.com/homereport-server/api/customers/export/data" target="_blank"
                rel="noopener noreferrer">
               <Button type="primary" className="gx-btn-lg">
                 Export to CSV</Button>
             </a>
-            <div className="gx-d-flex">
+            <Button type="primary" className="gx-btn-lg gx-ml-3" onClick={this.onAddButtonClick}>
+              Add New Customer</Button>
+
+            <div className="gx-d-flex gx-ml-auto">
               <Search
                 placeholder="Enter keywords to search Customers"
                 value={filterText}
@@ -169,12 +198,19 @@ class Customers extends Component {
                                            onToggleShowQuotes={this.onToggleShowQuotes}
                                            selectedCustomer={selectedCustomer}
                                            history={this.props.history}
+                                           onRaiseNewQuote={this.onRaiseNewQuote}
         /> : null}
         {isShowHomeRecords ? <HomeReportsModal isShowHomeRecords={isShowHomeRecords}
                                                onToggleHomeRecords={this.onToggleHomeRecords}
                                                selectedCustomer={selectedCustomer}
                                                history={this.props.history}
         /> : null}
+        {isAddCustomer ? <AddNewCustomer isAddCustomer={isAddCustomer}
+                                         onToggleAddCustomer={this.onToggleAddCustomer}
+                                         selectedCustomer={selectedCustomer}/> : null}
+        {isAddQuote ? <AddNewQuote isAddQuote={isAddQuote} onToggleAddQuote={this.onToggleAddQuote}
+                                   onToggleShowQuotes={this.props.onToggleShowQuotes}
+                                   selectedCustomer={selectedCustomer}/> : null}
         <InfoView/>
       </div>
     )

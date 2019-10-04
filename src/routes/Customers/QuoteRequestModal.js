@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dropdown, Menu, Modal, Table, Tag} from "antd";
+import {Button, Dropdown, Menu, Modal, Table, Tag} from "antd";
 import {connect} from "react-redux";
 import {onGetCustomerQuotes, onNullifyCustomerQuotes} from "../../appRedux/actions/Customers";
 import InfoView from "../../components/InfoView";
@@ -90,6 +90,9 @@ class QuoteRequestModal extends Component {
         <Menu.Item key="1" onClick={() => this.onSelectRequest(quote)}>
           View Detail
         </Menu.Item>
+        <Menu.Item key="2">
+          Add Payment Detail
+        </Menu.Item>
       </Menu>
     );
     return (
@@ -112,14 +115,35 @@ class QuoteRequestModal extends Component {
                maskClosable={false}
                onCancel={() => onToggleShowQuotes()}
                footer={null}>
-          <h2 className="gx-widget-heading">Quote Requests</h2>
-          <Table rowKey="quote_request_id" columns={this.quoteRow()}
-                 dataSource={customerQuotes}
-                 loading={updatingContent}
-                 pagination={false}
-                 className="gx-table-responsive"
-          />
+          {customerQuotes && customerQuotes.length > 0 ?
+            <div>
+              <h2 className="gx-widget-heading">Quote Requests</h2>
+              <div className="gx-d-flex gx-justify-content-end">
+                <Button type="primary" className="gx-btn-lg" onClick={() => this.props.onRaiseNewQuote()}>
+                  Raise New Quote</Button>
+              </div>
+              <Table rowKey="quote_request_id" columns={this.quoteRow()}
+                     dataSource={customerQuotes}
+                     loading={updatingContent}
+                     pagination={false}
+                     className="gx-table-responsive"
+              />
+            </div>
+            :
+            <div className="gx-main-layout-content">
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                <div className="gx-mt-4">No Record Found</div>
+                <h3 className="gx-font-weight-bold gx-my-4">You have not raised any Quote Request</h3>
+                <Button type="primary" onClick={() => this.props.onRaiseNewQuote()}>Request New Quote</Button>
+              </div>
+            </div>}
         </Modal>
+
         <InfoView/>
       </div>
     );

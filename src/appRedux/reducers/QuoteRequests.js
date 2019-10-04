@@ -1,10 +1,20 @@
-import {GET_QUOTE_DETAIL, GET_QUOTES_LIST, NULLIFY_CURRENT_QUOTE} from "../../constants/QuoteRequests";
+import {
+  ADD_NEW_QUOTE,
+  GET_PROPERTY_OPTIONS,
+  GET_QUOTE_DETAIL,
+  GET_QUOTES_LIST,
+  NULLIFY_CURRENT_QUOTE
+} from "../../constants/QuoteRequests";
 
 
 const initialState = {
   quotesList: [],
   totalItems: null,
-  currentQuote: null
+  currentQuote: null,
+  propertyOptions: {
+    property_age: [],
+    property_price: []
+  }
 };
 
 export default (state = initialState, action) => {
@@ -28,6 +38,17 @@ export default (state = initialState, action) => {
         currentQuote: null
       };
 
+    case GET_PROPERTY_OPTIONS:
+      return {
+        ...state,
+        propertyOptions: action.payload
+      };
+
+    case ADD_NEW_QUOTE:
+      return {
+        ...state,
+        quotesList: [action.payload, ...state.quotesList]
+      };
 
     default:
       return state;

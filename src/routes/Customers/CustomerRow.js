@@ -8,6 +8,9 @@ const onShowRowDropdown = (currentCustomer, context) => {
       <Menu.Item key="1" onClick={() => context.onSelectCustomer(currentCustomer)}>
         View Profile
       </Menu.Item>
+      <Menu.Item key="2" onClick={() => context.onEditIconClick(currentCustomer)}>
+        Edit
+      </Menu.Item>
       <Menu.Item key="3" onClick={() => context.onShowCustomerQuotes(currentCustomer)}>
         Quote Requests
       </Menu.Item>
@@ -31,8 +34,8 @@ const CustomersRow = (context) => {
       key: 'customer',
       render: (text, record) => {
         return (<div className="gx-media gx-flex-nowrap gx-align-items-center">
-            {record.avatar ?
-              <Avatar className="gx-mr-3 gx-size-50" src={record.avatar.src}/> :
+            {record.profile_pic && record.profile_pic.length > 0 ?
+              <Avatar className="gx-mr-3 gx-size-50" src={record.profile_pic[0].src}/> :
               <Avatar className="gx-mr-3 gx-size-50"
                       style={{backgroundColor: '#00CED1'}}>{record.first_name[0].toUpperCase()}</Avatar>}
             <div className="gx-media-body">

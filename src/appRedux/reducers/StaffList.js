@@ -27,7 +27,6 @@ export default (state = initialState, action) => {
         ...state,
         staffList: [action.payload, ...state.staffList],
         totalItems: state.totalItems + 1,
-        profilePicId: ""
       };
 
     case EDIT_STAFF_DETAILS:
