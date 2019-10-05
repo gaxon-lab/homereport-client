@@ -274,13 +274,20 @@ class ReportDetail extends Component {
                     </div>
                     <div className="gx-mt-2 gx-text-black">
                       {currentReport.inspection_date && currentReport.inspection_time ?
-                        moment(currentReport.inspection_date + " " + currentReport.inspection_time).format('MMM Do YYYY, h:mm:ss a') : "NA"}</div>
+                        currentReport.inspection_date + " " + currentReport.inspection_time : "NA"}</div>
                   </div>
 
                   <div className="gx-p-4" style={{backgroundColor: "#eee"}}>
                     <div className="gx-text-grey">Payment Date & Time</div>
                     <div className="gx-mt-2 gx-text-black">
-                      {moment(currentReport.report_created_at).format('MMM Do YYYY, h:mm:ss a')}
+                      {currentReport.payment_date ? currentReport.payment_date : "NA"}
+                    </div>
+                  </div>
+
+                  <div className="gx-p-4 gx-my-4" style={{backgroundColor: "#eee"}}>
+                    <div className="gx-text-grey">Terms & Conditions Accepted</div>
+                    <div className="gx-mt-2 gx-text-black">
+                      {currentReport.accept_term_date ? currentReport.accept_term_date : "NA"}
                     </div>
                   </div>
                 </div>

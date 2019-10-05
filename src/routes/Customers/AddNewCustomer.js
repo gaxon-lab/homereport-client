@@ -15,8 +15,7 @@ class AddNewCustomer extends Component {
         password: "",
         fileList: [],
         profile_pic_id: null,
-        status: 1,
-        mobile_no: ""
+        status: 1
       }
     } else {
       const imageId = props.selectedCustomer.profile_pic.length > 0 ? props.selectedCustomer.profile_pic[0].id : null;
@@ -98,7 +97,7 @@ class AddNewCustomer extends Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     const {isAddCustomer, onToggleAddCustomer} = this.props;
-    const {first_name, last_name, email, password, fileList, mobile_no, status} = this.state;
+    const {first_name, last_name, email, password, fileList, status} = this.state;
     const props = {
       onRemove: file => {
         this.setState(state => {
@@ -202,21 +201,6 @@ class AddNewCustomer extends Component {
                       this.setState({password: e.target.value})
                     }}/>}
                 </Form.Item>
-
-                <Form.Item label="Phone no.">
-                  {getFieldDecorator('mobile_no', {
-                    initialValue: mobile_no,
-                    validateTrigger: 'onBlur',
-                    rules: [{required: true, message: 'Please Enter Mobile number!'},
-                      {
-                        pattern: /^[0-9\b]+$/,
-                        message: "Please enter only numerical values!"
-                      }],
-                  })(<Input type="text" onChange={(e) => {
-                    this.setState({mobile_no: e.target.value})
-                  }}/>)}
-                </Form.Item>
-
 
                 <Form.Item label="Status">
                   <Radio.Group value={status} onChange={(e) => {
