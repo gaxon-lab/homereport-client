@@ -29,10 +29,6 @@ class CustomerQuoteRequests extends Component {
       <div className="gx-main-layout-content">
         <Widget styleName="gx-card-filter">
           <h2 className="gx-widget-heading">Quote Requests</h2>
-          <div className="gx-d-flex gx-justify-content-end">
-            <Button type="primary" className="gx-btn-lg" onClick={() => this.props.onToggleAddQuote()}>
-              Raise New Quote</Button>
-          </div>
           <Table rowKey="quote_request_id" columns={CustomerQuotesRow(this)}
                  dataSource={this.props.quoteRequests}
                  pagination={false}

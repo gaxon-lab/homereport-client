@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import Widget from "../../components/Widget";
-import {Breadcrumb, Col, Row, Tag} from "antd";
+import {Breadcrumb, Button, Col, Row, Tag} from "antd";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {onGetQuoteRequestDetail, onNullifyCurrentQuote} from "../../appRedux/actions/QuoteRequests";
 import InfoView from "../../components/InfoView";
+import PaymentDetail from "./PaymentDetail";
 
 class QuoteDetail extends Component {
+
+  state = {
+    isPaymentShow: false
+  };
 
   componentDidMount() {
     const requestId = this.props.match.params.id;
@@ -17,11 +22,16 @@ class QuoteDetail extends Component {
     this.props.onNullifyCurrentQuote();
   }
 
+  onToggleShowPayment = () => {
+    this.setState({isPaymentShow: !this.state.isPaymentShow})
+  };
+
   onGoBackToList = () => {
     this.props.history.goBack()
   };
 
   render() {
+    const {isPaymentShow} = this.state;
     const {currentQuote} = this.props;
     return (
       <div className="gx-main-layout-content">
@@ -31,16 +41,23 @@ class QuoteDetail extends Component {
                  style={{borderColor: "black"}}>
               <i className="icon icon-arrow-left gx-link gx-text-black" onClick={this.onGoBackToList}/>
             </div>
-            <h2 className="gx-text">Quote Requests</h2>
-            <Breadcrumb className="gx-mb-4">
-              <Breadcrumb.Item>
-                <Link to="/quote-requests">Quote Requests</Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>
-                <Link to={`/quote-detail/${currentQuote.quote_request_id}`}
-                      className="gx-text-primary">{currentQuote.reference_no}</Link>
-              </Breadcrumb.Item>
-            </Breadcrumb>
+            <div className="gx-d-flex">
+              <div>
+              <h2 className="gx-text">Quote Requests</h2>
+                <Breadcrumb className="gx-mb-4">
+                  <Breadcrumb.Item>
+                    <Link to="/quote-requests">Quote Requests</Link>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item>
+                    <Link to={`/quote-detail/${currentQuote.quote_request_id}`}
+                          className="gx-text-primary">{currentQuote.reference_no}</Link>
+                  </Breadcrumb.Item>
+                </Breadcrumb>
+              </div>
+              <Button type="primary" className="gx-btn-lg gx-ml-auto" onClick={this.onToggleShowPayment}>
+                Add Payment Detail</Button>
+            </div>
+
             <div>
               <Row>
                 <Col span={6}>
@@ -84,6 +101,10 @@ class QuoteDetail extends Component {
               </Row>
             </div>
           </Widget> : null}
+        <InfoView/>
+        {isPaymentShow ?
+          <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}
+                         selectedQuote={currentQuote} /> : null}
         <InfoView/>
       </div>
     )

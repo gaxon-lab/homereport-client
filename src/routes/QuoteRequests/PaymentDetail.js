@@ -65,12 +65,12 @@ class PaymentDetail extends Component {
     const {getFieldDecorator} = this.props.form;
     const {isChecked, remark, billing_address_id, payment_date, transaction_id} = this.state;
     const {isPaymentShow, onToggleShowPayment, customerAddresses, selectedQuote} = this.props;
-
     return (
+
       <div className="gx-main-layout-content">
-        <Modal
+        <Modal width="60%"
           visible={isPaymentShow}
-          title={`Payment Details for Quote Reference no. ${selectedQuote.reference_no}`}
+          title={`Add Payment Details for Quote Reference no. ${selectedQuote.reference_no}`}
           maskClosable={false}
           onCancel={() => onToggleShowPayment()}
           footer={[
@@ -94,6 +94,8 @@ class PaymentDetail extends Component {
                 <div className="gx-text-grey">Address</div>
                 <div className="gx-mt-2">
                   <p className="gx-mb-1 gx-font-weight-medium">{selectedQuote.address1}</p>
+                  {selectedQuote.address1 ?
+                    <p className="gx-mb-1 gx-font-weight-medium">{selectedQuote.address1}</p> : null}
                   <p className="gx-mb-1 gx-font-weight-medium">{selectedQuote.city}, Scotland</p>
                   <p className="gx-mb-1 gx-font-weight-medium"> Zip -{selectedQuote.postcode}</p>
                 </div>
@@ -108,7 +110,8 @@ class PaymentDetail extends Component {
                            onChange={(value) => this.setState({billing_address_id: value})}
                 >
                   {customerAddresses.map(address => {
-                    return <Option value={address.id} key={address.id}>{address.name}</Option>
+                    return <Option value={address.id}
+                                   key={address.id}>{`${address.address1}, ${address.address2}, ${address.city}, Scotland - ${address.postcode}`}</Option>
                   })}
                 </Select>)}
               </Form.Item>}
@@ -135,7 +138,6 @@ class PaymentDetail extends Component {
                 initialValue: transaction_id,
               })(<Input onChange={(e) => this.setState({transaction_id: e.target.value})}/>)}
             </Form.Item>
-
 
           </Form>
         </Modal>

@@ -4,15 +4,10 @@ import CustomerQuoteRequests from "./CustomerQuoteRequests";
 import CustomerHomeReports from "./CustomerHomeReports";
 import {connect} from "react-redux";
 import {onGetCustomerDetail, onNullifyCustomerDetails} from "../../../appRedux/actions";
-import AddNewQuote from "../../QuoteRequests/AddNewQuote";
 import InfoView from "../../../components/InfoView";
 
 
 class CustomerDetail extends Component {
-
-  state = {
-    isAddQuote: false
-  };
 
   componentDidMount() {
     const customerId = this.props.match.params.id;
@@ -23,17 +18,12 @@ class CustomerDetail extends Component {
     this.props.onNullifyCustomerDetails();
   };
 
-  onToggleAddQuote = () => {
-    this.setState({isAddQuote: !this.state.isAddQuote})
-  };
 
   onGoBackToList = () => {
     this.props.history.goBack()
   };
 
   render() {
-    console.log("currentCustomer", this.props.currentCustomer)
-    const {isAddQuote} = this.state;
     const {currentCustomer} = this.props;
     return (
       <div>
@@ -53,8 +43,6 @@ class CustomerDetail extends Component {
                                  history={this.props.history}/>
           </div>
           : null}
-        {isAddQuote ? <AddNewQuote isAddQuote={isAddQuote} onToggleAddQuote={this.onToggleAddQuote}
-                                   selectedCustomer={currentCustomer.customer}/> : null}
         <InfoView/>
       </div>
     )
