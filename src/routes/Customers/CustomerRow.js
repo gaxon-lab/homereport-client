@@ -5,11 +5,11 @@ import React from "react";
 const onShowRowDropdown = (currentCustomer, context) => {
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={() => context.onSelectCustomer(currentCustomer)}>
-        View Profile
-      </Menu.Item>
       <Menu.Item key="2" onClick={() => context.onEditIconClick(currentCustomer)}>
         Edit
+      </Menu.Item>
+      <Menu.Item key="1" onClick={() => context.onSelectCustomer(currentCustomer)}>
+        View Profile
       </Menu.Item>
       <Menu.Item key="3" onClick={() => context.onShowCustomerQuotes(currentCustomer)}>
         Quote Requests

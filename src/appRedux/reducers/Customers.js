@@ -1,10 +1,13 @@
 import {
-  ADD_NEW_CUSTOMER, DECREASE_QUOTE_REQUESTS,
-  EDIT_CUSTOMER_DETAILS, GET_CUSTOMER_ADDRESS,
+  ADD_NEW_CUSTOMER,
+  DECREASE_QUOTE_REQUESTS,
+  EDIT_CUSTOMER_DETAILS,
+  GET_CUSTOMER_ADDRESS,
   GET_CUSTOMER_DETAIL,
   GET_CUSTOMER_QUOTES,
   GET_CUSTOMERS_LIST,
-  GET_CUSTOMERS_REPORTS, INCREASE_CUSTOMER_QUOTES,
+  GET_CUSTOMERS_REPORTS,
+  INCREASE_CUSTOMER_QUOTES,
   NULLIFY_CUSTOMER_DETAIL,
   NULLIFY_CUSTOMER_QUOTES,
   NULLIFY_CUSTOMER_REPORTS
@@ -69,11 +72,10 @@ export default (state = initialState, action) => {
 
     case INCREASE_CUSTOMER_QUOTES:
       const updatedList = state.customersList.map(customer => {
-        if(customer.id === action.payload) {
+        if (customer.id === action.payload) {
           customer.quote_requests_count = customer.quote_requests_count + 1
           return customer;
-        }
-        else {
+        } else {
           return customer;
         }
       });
@@ -84,11 +86,11 @@ export default (state = initialState, action) => {
 
     case DECREASE_QUOTE_REQUESTS:
       const list = state.customersList.map(customer => {
-        if(customer.id === action.payload) {
-          customer.quote_requests_count = customer.quote_requests_count - 1
+        if (customer.id === action.payload) {
+          customer.quote_requests_count = customer.quote_requests_count - 1;
+          customer.reports_count = customer.reports_count + 1;
           return customer;
-        }
-        else {
+        } else {
           return customer;
         }
       });

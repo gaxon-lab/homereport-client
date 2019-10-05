@@ -68,7 +68,7 @@ const QuotesRow = (context) => {
       dataIndex: 'contact',
       key: 'contact',
       render: (text, record) => {
-        return <div>
+        return <div className="gx-text-nowrap">
           {record.day_time_tel ? <div className="gx-mb-1">{record.day_time_tel} <Tag
             style={{borderRadius: 20}}>Day</Tag></div> : null}
           {record.evening_time_tel ? <div>{record.evening_time_tel} <Tag

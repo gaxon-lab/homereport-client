@@ -23,14 +23,6 @@ class AddNewQuote extends Component {
     this.props.onGetPropertyOptions();
   }
 
-  // handleSearch = (value) => {
-  //   this.props.onSearchCustomers(value)
-  // };
-
-  // onSelectCustomer = (id) => {
-  //   this.setState({customer_id: id});
-  // };
-
   onValidationCheck = () => {
     this.props.form.validateFields(err => {
       if (!err) {

@@ -123,7 +123,6 @@ class QuoteRequestModal extends Component {
   };
 
   render() {
-    const {isPaymentShow, selectedQuote} = this.state;
     const {isShowQuotes, onToggleShowQuotes, updatingContent, customerQuotes} = this.props;
     return (
       <div className="gx-main-layout-content">

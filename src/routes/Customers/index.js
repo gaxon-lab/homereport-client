@@ -226,7 +226,6 @@ class Customers extends Component {
                                          onToggleAddCustomer={this.onToggleAddCustomer}
                                          selectedCustomer={selectedCustomer}/> : null}
         {isAddQuote ? <AddNewQuote isAddQuote={isAddQuote} onToggleAddQuote={this.onToggleAddQuote}
-                                   onToggleShowQuotes={this.props.onToggleShowQuotes}
                                    selectedCustomer={selectedCustomer}/> : null}
         {isPaymentShow ?
           <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}

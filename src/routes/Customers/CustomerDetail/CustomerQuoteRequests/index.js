@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table} from "antd/lib/index";
+import {Button, Table} from "antd/lib/index";
 import CustomerQuotesRow from "./CustomerQuotesRow";
 import Widget from "../../../../components/Widget";
 import PaymentDetail from "../../../QuoteRequests/PaymentDetail";
@@ -29,6 +29,10 @@ class CustomerQuoteRequests extends Component {
       <div className="gx-main-layout-content">
         <Widget styleName="gx-card-filter">
           <h2 className="gx-widget-heading">Quote Requests</h2>
+          <div className="gx-d-flex gx-justify-content-end">
+            <Button type="primary" className="gx-btn-lg" onClick={() => this.props.onToggleAddQuote()}>
+              Raise New Quote</Button>
+          </div>
           <Table rowKey="quote_request_id" columns={CustomerQuotesRow(this)}
                  dataSource={this.props.quoteRequests}
                  pagination={false}
