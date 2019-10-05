@@ -4,7 +4,6 @@ import {Avatar, Col, Divider, Row, Tag} from "antd";
 
 const CustomerInfo = ({currentCustomer, onGoBackToList, quoteRequests, homeReports}) => {
   const contactArray = [...homeReports, ...quoteRequests];
-  console.log("contactArray", contactArray)
   return (
     <div className="gx-main-layout-content">
       <Widget styleName="gx-card-filter">

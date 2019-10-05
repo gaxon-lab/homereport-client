@@ -6,6 +6,7 @@ import InfoView from "../../components/InfoView";
 import QuotesRow from "./QuotesRow";
 import {onGetQuotesList} from "../../appRedux/actions/QuoteRequests";
 import {connect} from "react-redux";
+import PaymentDetail from "./PaymentDetail";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -18,6 +19,8 @@ class QuoteRequests extends Component {
       selectedRowKeys: [],
       itemNumbers: 10,
       current: 1,
+      isPaymentShow: false,
+      selectedQuote: null
     }
   }
 
@@ -29,6 +32,13 @@ class QuoteRequests extends Component {
     this.props.onGetQuotesList(currentPage, itemsPerPage, filterText, updatingContent);
   };
 
+  onToggleShowPayment = () => {
+    this.setState({isPaymentShow: !this.state.isPaymentShow})
+  };
+
+  onOpenPaymentModal = (quote) => {
+    this.setState({isPaymentShow: true, selectedQuote: quote})
+  };
 
   onFilterTextChange = (e) => {
     const {itemNumbers} = this.state;
@@ -85,7 +95,7 @@ class QuoteRequests extends Component {
   render() {
 
     const {quotesList, updatingContent} = this.props;
-    const {selectedRowKeys, filterText, itemNumbers, current} = this.state;
+    const {selectedRowKeys, filterText, itemNumbers, current, isPaymentShow, selectedQuote} = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
@@ -134,7 +144,9 @@ class QuoteRequests extends Component {
                  className="gx-table-responsive"
           />
         </Widget>
-
+        {isPaymentShow ?
+          <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}
+                         selectedQuote={selectedQuote}/> : null}
         <InfoView/>
       </div>
     )

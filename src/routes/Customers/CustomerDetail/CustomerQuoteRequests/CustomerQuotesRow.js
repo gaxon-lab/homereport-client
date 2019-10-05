@@ -77,7 +77,7 @@ import React from "react";
       <Menu.Item key="1" onClick={() => context.onSelectRequest(quote)}>
         View Detail
       </Menu.Item>
-      <Menu.Item key="2">
+      <Menu.Item key="2" onClick={() => context.onOpenPaymentModal(quote)}>
         Add Payment Detail
       </Menu.Item>
     </Menu>

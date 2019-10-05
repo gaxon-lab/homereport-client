@@ -3,8 +3,14 @@ import {Button, Dropdown, Menu, Modal, Table, Tag} from "antd";
 import {connect} from "react-redux";
 import {onGetCustomerQuotes, onNullifyCustomerQuotes} from "../../appRedux/actions/Customers";
 import InfoView from "../../components/InfoView";
+import PaymentDetail from "../QuoteRequests/PaymentDetail";
 
 class QuoteRequestModal extends Component {
+
+  state = {
+    isPaymentShow: false,
+    selectedQuote: null
+  };
 
   componentDidMount() {
     this.props.onGetCustomerQuotes(this.props.selectedCustomer.id)
@@ -13,6 +19,16 @@ class QuoteRequestModal extends Component {
   componentWillUnmount() {
     this.props.onNullifyCustomerQuotes();
   }
+
+  onOpenPaymentModal = (quote) => {
+    this.setState({isPaymentShow: true, selectedQuote: quote}, () => {
+      this.props.onToggleShowQuotes()
+    })
+  };
+
+  onToggleShowPayment = () => {
+    this.setState({isPaymentShow: !this.state.isPaymentShow})
+  };
 
   quoteRow = () => {
     return [
@@ -90,7 +106,7 @@ class QuoteRequestModal extends Component {
         <Menu.Item key="1" onClick={() => this.onSelectRequest(quote)}>
           View Detail
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="2" onClick={() => this.props.onOpenPaymentModal(quote)}>
           Add Payment Detail
         </Menu.Item>
       </Menu>
@@ -107,6 +123,7 @@ class QuoteRequestModal extends Component {
   };
 
   render() {
+    const {isPaymentShow, selectedQuote} = this.state;
     const {isShowQuotes, onToggleShowQuotes, updatingContent, customerQuotes} = this.props;
     return (
       <div className="gx-main-layout-content">
@@ -145,6 +162,8 @@ class QuoteRequestModal extends Component {
         </Modal>
 
         <InfoView/>
+
+
       </div>
     );
   }

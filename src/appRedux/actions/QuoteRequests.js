@@ -7,7 +7,7 @@ import {
   GET_QUOTES_LIST,
   NULLIFY_CURRENT_QUOTE
 } from "../../constants/QuoteRequests";
-import {INCREASE_CUSTOMER_QUOTES} from "../../constants/Customers";
+import {DECREASE_QUOTE_REQUESTS, INCREASE_CUSTOMER_QUOTES} from "../../constants/Customers";
 
 export const onGetQuotesList = (currentPage, itemsPerPage, filterText, updatingContent) => {
   return (dispatch) => {
@@ -101,9 +101,29 @@ export const onAddNewQuote = (customerId, details) => {
   }
 };
 
+export const onUpdatePaymentDetail = (quoteId, details, customerId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post(`quotes/requests/${quoteId}/update`, details).then(({data}) => {
+      console.info("onUpdatePaymentDetail: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SHOW_MESSAGE, payload: "The Payment Details has been successfully Updated!"});
+        dispatch({type: DECREASE_QUOTE_REQUESTS, payload: customerId});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
 
 export const onNullifyCurrentQuote = () => {
   return {
     type: NULLIFY_CURRENT_QUOTE
   }
-}
+};

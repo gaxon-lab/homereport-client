@@ -1,13 +1,13 @@
 import {Dropdown, Menu, Tag} from "antd";
 import React from "react";
 
-const onShowRowDropdown = (currentQuote, context) => {
+const onShowRowDropdown = (quote, context) => {
   const menu = (
     <Menu>
-      <Menu.Item key="1" onClick={() => context.onSelectRequest(currentQuote)}>
+      <Menu.Item key="1" onClick={() => context.onSelectRequest(quote)}>
         View Details
       </Menu.Item>
-      <Menu.Item key="2">
+      <Menu.Item key="2" onClick={() => context.onOpenPaymentModal(quote)}>
         Add Payment Detail
       </Menu.Item>
     </Menu>

@@ -11,6 +11,7 @@ import HomeReportsModal from "./HomeReportsModal";
 import {onDownloadCustomerList} from "../../appRedux/actions";
 import AddNewCustomer from "./AddNewCustomer";
 import AddNewQuote from "../QuoteRequests/AddNewQuote";
+import PaymentDetail from "../QuoteRequests/PaymentDetail";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -28,7 +29,9 @@ class Customers extends Component {
       isShowHomeRecords: false,
       selectedCustomer: null,
       isAddCustomer: false,
-      isAddQuote: false
+      isAddQuote: false,
+      isPaymentShow: false,
+      selectedQuote: null
     }
   }
 
@@ -38,6 +41,16 @@ class Customers extends Component {
 
   onGetPaginatedData = (currentPage, itemsPerPage, filterText, updatingContent) => {
     this.props.onGetCustomersList(currentPage, itemsPerPage, filterText, updatingContent);
+  };
+
+  onOpenPaymentModal = (quote) => {
+    this.setState({isShowQuotes: !this.state.isShowQuotes}, () => {
+      this.setState({isPaymentShow: true, selectedQuote: quote})
+    });
+  };
+
+  onToggleShowPayment = () => {
+    this.setState({isPaymentShow: !this.state.isPaymentShow})
   };
 
   onToggleAddCustomer = () => {
@@ -57,8 +70,8 @@ class Customers extends Component {
   };
 
   onRaiseNewQuote = () => {
-    this.setState({isShowQuotes: !this.state.isShowQuotes},() => {
-    this.setState({isAddQuote: !this.state.isAddQuote})
+    this.setState({isShowQuotes: !this.state.isShowQuotes}, () => {
+      this.setState({isAddQuote: !this.state.isAddQuote})
     })
   };
 
@@ -132,7 +145,10 @@ class Customers extends Component {
 
   render() {
     const {customersList, updatingContent} = this.props;
-    const {selectedRowKeys, filterText, itemNumbers, current, isShowQuotes, isShowHomeRecords, selectedCustomer, isAddCustomer, isAddQuote} = this.state;
+    const {
+      selectedRowKeys, filterText, itemNumbers, current, isShowQuotes, isShowHomeRecords,
+      selectedCustomer, isAddCustomer, isAddQuote, isPaymentShow, selectedQuote
+    } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
@@ -199,6 +215,7 @@ class Customers extends Component {
                                            selectedCustomer={selectedCustomer}
                                            history={this.props.history}
                                            onRaiseNewQuote={this.onRaiseNewQuote}
+                                           onOpenPaymentModal={this.onOpenPaymentModal}
         /> : null}
         {isShowHomeRecords ? <HomeReportsModal isShowHomeRecords={isShowHomeRecords}
                                                onToggleHomeRecords={this.onToggleHomeRecords}
@@ -211,6 +228,9 @@ class Customers extends Component {
         {isAddQuote ? <AddNewQuote isAddQuote={isAddQuote} onToggleAddQuote={this.onToggleAddQuote}
                                    onToggleShowQuotes={this.props.onToggleShowQuotes}
                                    selectedCustomer={selectedCustomer}/> : null}
+        {isPaymentShow ?
+          <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}
+                         selectedQuote={selectedQuote} /> : null}
         <InfoView/>
       </div>
     )

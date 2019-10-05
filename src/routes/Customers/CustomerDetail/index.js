@@ -33,7 +33,8 @@ class CustomerDetail extends Component {
                           onGoBackToList={this.onGoBackToList}/>
 
             <CustomerQuoteRequests quoteRequests={currentCustomer.quoteRequests}
-                                   history={this.props.history}/>
+                                   history={this.props.history}
+                                   customerId={this.props.match.params.id}/>
 
             <CustomerHomeReports homeReports={currentCustomer.reports}
                                  history={this.props.history}/>

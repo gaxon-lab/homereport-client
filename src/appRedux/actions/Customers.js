@@ -2,7 +2,7 @@ import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT}
 import axios from 'util/Api'
 import {
   ADD_NEW_CUSTOMER,
-  EDIT_CUSTOMER_DETAILS,
+  EDIT_CUSTOMER_DETAILS, GET_CUSTOMER_ADDRESS,
   GET_CUSTOMER_DETAIL,
   GET_CUSTOMER_QUOTES,
   GET_CUSTOMERS_LIST,
@@ -194,6 +194,27 @@ export const onDownloadCustomerList = () => {
     });
   }
 };
+
+export const onGetCustomerAddress = (customerId, type) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.get(`addresses/${type}/customer/${customerId}`).then(({data}) => {
+      console.info("onGetCustomerAddress: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: GET_CUSTOMER_ADDRESS, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
 
 export const onNullifyCustomerDetails = () => {
   return {

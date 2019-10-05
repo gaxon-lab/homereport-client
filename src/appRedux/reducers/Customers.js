@@ -1,6 +1,6 @@
 import {
-  ADD_NEW_CUSTOMER,
-  EDIT_CUSTOMER_DETAILS,
+  ADD_NEW_CUSTOMER, DECREASE_QUOTE_REQUESTS,
+  EDIT_CUSTOMER_DETAILS, GET_CUSTOMER_ADDRESS,
   GET_CUSTOMER_DETAIL,
   GET_CUSTOMER_QUOTES,
   GET_CUSTOMERS_LIST,
@@ -16,7 +16,8 @@ const initialState = {
   totalItems: null,
   currentCustomer: null,
   customerQuotes: [],
-  customerReports: []
+  customerReports: [],
+  customerAddresses: []
 };
 
 export default (state = initialState, action) => {
@@ -81,19 +82,41 @@ export default (state = initialState, action) => {
         customersList: updatedList
       };
 
-    case NULLIFY_CUSTOMER_QUOTES: {
+    case DECREASE_QUOTE_REQUESTS:
+      const list = state.customersList.map(customer => {
+        if(customer.id === action.payload) {
+          customer.quote_requests_count = customer.quote_requests_count - 1
+          return customer;
+        }
+        else {
+          return customer;
+        }
+      });
+      return {
+        ...state,
+        customersList: list
+      };
+
+
+    case NULLIFY_CUSTOMER_QUOTES:
       return {
         ...state,
         customerQuotes: []
-      }
-    }
+      };
 
-    case NULLIFY_CUSTOMER_REPORTS: {
+
+    case NULLIFY_CUSTOMER_REPORTS:
       return {
         ...state,
         customerReports: []
-      }
-    }
+      };
+
+
+    case GET_CUSTOMER_ADDRESS:
+      return {
+        ...state,
+        customerAddresses: action.payload
+      };
 
     default:
       return state;
