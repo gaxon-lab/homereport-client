@@ -200,7 +200,6 @@ export const onSetNewPassword = (pin, data, history) => {
 };
 
 export const onUpdateUserProfile = ({first_name, last_name, profile_pic, password, password_confirmation}) => {
-  console.log("data",first_name, last_name, profile_pic, password, password_confirmation)
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('/current/user/update', {

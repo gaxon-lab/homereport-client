@@ -1,12 +1,14 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT} from "../../constants/ActionTypes";
 import axios from 'util/Api'
 import {
-  ADD_NEW_COMMENT, ASSIGN_STAFF,
+  ADD_NEW_COMMENT,
+  ASSIGN_STAFF,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
   GET_REPORT_DOCUMENTS,
-  NULLIFY_CURRENT_REPORT, SET_SURVEY_DATE,
+  NULLIFY_CURRENT_REPORT,
+  SET_SURVEY_DATE,
   UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
@@ -84,7 +86,7 @@ export const onNullifyCurrentReport = () => {
   return {
     type: NULLIFY_CURRENT_REPORT
   }
-}
+};
 
 export const onGetReportComments = (reportId) => {
   return (dispatch) => {

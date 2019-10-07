@@ -65,7 +65,8 @@ class HomeReportsModal extends Component {
         dataIndex: 'quote',
         key: 'quote',
         render: (text, record) => {
-          return <span>${record.quote_amount}</span>
+          return <span><img alt="example" className=""
+                            src={require("assets/images/money.png")}/> {record.quote_amount}</span>
         },
       },
       {
