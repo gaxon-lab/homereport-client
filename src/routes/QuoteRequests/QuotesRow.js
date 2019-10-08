@@ -81,8 +81,7 @@ const QuotesRow = (context) => {
       dataIndex: 'quote',
       key: 'quote',
       render: (text, record) => {
-        return <span><img alt="example" className=""
-                          src={require("assets/images/money.png")}/> {record.quote_amount}</span>
+        return <span>£ {record.quote_amount}</span>
       },
     },
     {

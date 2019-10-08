@@ -66,8 +66,7 @@ class QuoteDetail extends Component {
                 </Col>
                 <Col span={18}>
                   <div className="gx-text-grey">Quote Amount</div>
-                  <div className="gx-mt-2 gx-font-weight-bold"><img alt="example" className=""
-                                                                    src={require("assets/images/money.png")}/> {currentQuote.quote_amount}</div>
+                  <div className="gx-mt-2 gx-font-weight-bold">£ {currentQuote.quote_amount}</div>
                 </Col>
               </Row>
               <Row className="gx-mt-4">

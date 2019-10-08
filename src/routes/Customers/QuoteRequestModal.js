@@ -3,7 +3,6 @@ import {Button, Dropdown, Menu, Modal, Table, Tag} from "antd";
 import {connect} from "react-redux";
 import {onGetCustomerQuotes, onNullifyCustomerQuotes} from "../../appRedux/actions/Customers";
 import InfoView from "../../components/InfoView";
-import PaymentDetail from "../QuoteRequests/PaymentDetail";
 
 class QuoteRequestModal extends Component {
 
@@ -81,8 +80,7 @@ class QuoteRequestModal extends Component {
         dataIndex: 'quote',
         key: 'quote',
         render: (text, record) => {
-          return <span><img alt="example" className=""
-                            src={require("assets/images/money.png")}/> {record.quote_amount}</span>
+          return <span>£ {record.quote_amount}</span>
         },
       },
       {
@@ -94,7 +92,7 @@ class QuoteRequestModal extends Component {
             e.stopPropagation();
             e.preventDefault();
           }}>
-            {this.onShowRowDropdown(record)}
+            {this.onShowRowDropdown(record)}o
       </span>
         },
       },
