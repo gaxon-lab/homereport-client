@@ -92,7 +92,7 @@ class QuoteRequestModal extends Component {
             e.stopPropagation();
             e.preventDefault();
           }}>
-            {this.onShowRowDropdown(record)}o
+            {this.onShowRowDropdown(record)}
       </span>
         },
       },
