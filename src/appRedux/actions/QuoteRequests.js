@@ -2,6 +2,7 @@ import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT}
 import axios from 'util/Api'
 import {
   ADD_NEW_QUOTE,
+  FILTER_QUOTE_LIST,
   GET_PROPERTY_OPTIONS,
   GET_QUOTE_DETAIL,
   GET_QUOTES_LIST,
@@ -101,15 +102,17 @@ export const onAddNewQuote = (customerId, details) => {
   }
 };
 
-export const onUpdatePaymentDetail = (quoteId, details, customerId) => {
+export const onUpdatePaymentDetail = (quoteId, details, customerId, quoteFilterFunction) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post(`quotes/requests/${quoteId}/update`, details).then(({data}) => {
       console.info("onUpdatePaymentDetail: ", data);
       if (data.success) {
+        quoteFilterFunction(quoteId);
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: SHOW_MESSAGE, payload: "The Payment Details has been successfully Updated!"});
-        dispatch({type: DECREASE_QUOTE_REQUESTS, payload: customerId});
+        dispatch({type: FILTER_QUOTE_LIST, payload: quoteId})
+        dispatch({type: DECREASE_QUOTE_REQUESTS, payload: {customerId: customerId, quoteId: quoteId}});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

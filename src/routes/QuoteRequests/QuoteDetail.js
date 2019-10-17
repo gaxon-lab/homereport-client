@@ -105,7 +105,7 @@ class QuoteDetail extends Component {
         {isPaymentShow ?
           <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}
                          selectedQuote={currentQuote} /> : null}
-        <InfoView/>
+
       </div>
     )
   }

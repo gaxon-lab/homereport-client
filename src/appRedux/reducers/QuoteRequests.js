@@ -1,5 +1,5 @@
 import {
-  ADD_NEW_QUOTE,
+  ADD_NEW_QUOTE, FILTER_QUOTE_LIST,
   GET_PROPERTY_OPTIONS,
   GET_QUOTE_DETAIL,
   GET_QUOTES_LIST,
@@ -48,6 +48,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         quotesList: [action.payload, ...state.quotesList]
+      };
+
+    case FILTER_QUOTE_LIST:
+      return {
+        ...state,
+        quotesList: state.quotesList.filter(quote => quote.quote_request_id !== action.payload)
       };
 
     default:

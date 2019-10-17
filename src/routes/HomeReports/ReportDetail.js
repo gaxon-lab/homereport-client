@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Widget from "../../components/Widget";
-import {Avatar, Breadcrumb, Button, Col, DatePicker, Icon, Input, Row, Tag} from "antd";
+import {Avatar, Breadcrumb, Button, Col, DatePicker, Icon, Input, Row, Select, Tag} from "antd";
 import {Link} from "react-router-dom";
 import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
@@ -24,6 +24,7 @@ import moment from "moment";
 
 
 const {TextArea} = Input;
+const {Option} = Select;
 
 
 class ReportDetail extends Component {
@@ -33,11 +34,11 @@ class ReportDetail extends Component {
       comment: '',
       isShowDatePicker: false,
       inspection_date: null,
-      inspection_time: null
+      inspection_time: "",
     }
   }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.currentReport) {
       const {inspection_date, inspection_time} = nextProps.currentReport;
       if (nextProps.currentReport !== this.props.currentReport) {
@@ -107,8 +108,11 @@ class ReportDetail extends Component {
   };
 
   onDateChange = (value, dateString) => {
-    const dateTime = dateString.split(' ');
-    this.setState({inspection_date: dateTime[0], inspection_time: dateTime[1]})
+    this.setState({inspection_date: dateString})
+  };
+
+  onSelectTimeSlot = value => {
+    this.setState({inspection_time: value});
   };
 
   onSelectDateTime = () => {
@@ -124,7 +128,7 @@ class ReportDetail extends Component {
 
   render() {
     const {staffList, currentReport, totalItems, reportComments, reportDocuments, authUser, loggedUserPermissions} = this.props;
-    const {comment, isShowDatePicker} = this.state;
+    const {comment, isShowDatePicker, inspection_time} = this.state;
     let assignedTo = null;
     if (currentReport && currentReport.assigned_user_id) {
       assignedTo = {
@@ -265,11 +269,19 @@ class ReportDetail extends Component {
                             <div className="gx-link" onClick={this.onOpenDatePicker}><Icon type="edit"/>
                               {currentReport.inspection_date && currentReport.inspection_time ? "Change" : "Select"}
                             </div> :
-                            <DatePicker showTime placeholder="Select Date & Time"
-                                        disabledDate={(value) => this.onDisabledDate(value)}
-                                        open={isShowDatePicker}
-                                         onOpenChange={() => this.setState({isShowDatePicker: false})}
-                                        onChange={this.onDateChange} onOk={this.onSelectDateTime}/>}
+                            <div className="gx-flex-column">
+                              <DatePicker placeholder="Select Date" disabledDate={(value) => this.onDisabledDate(value)}
+                                          onChange={this.onDateChange} onOk={this.onSelectDateTime}/>
+                              <Select className="gx-my-2" value={inspection_time} placeholder="Select Time Slot"
+                                      onChange={this.onSelectTimeSlot}>
+                                <Option value="9am - 11am">9am - 11am</Option>
+                                <Option value="11am - 1pm">11am - 1pm</Option>
+                                <Option value="1pm - 3pm">1pm - 3pm</Option>
+                                <Option value="3pm - 5pm">3pm - 5pm</Option>
+                                <Option value="5pm - 7pm">5pm - 7pm</Option>
+                              </Select>
+                              <Button onClick={this.onSelectDateTime}>Save</Button>
+                            </div>}
                         </div> : null}
                     </div>
                     <div className="gx-mt-2 gx-text-black">

@@ -42,6 +42,7 @@ class PaymentDetail extends Component {
 
   onValidationCheck = () => {
     const selectedQuote = this.props.selectedQuote;
+    const quoteFilterFunction = this.props.onFilterQuoteRequest ? this.props.onFilterQuoteRequest : (() => {});
     this.props.form.validateFields(err => {
       if (!err) {
         if (this.state.transaction_id === "") {
@@ -49,12 +50,12 @@ class PaymentDetail extends Component {
             ...this.state,
             payment_status: "completed",
             transaction_id: "city_12345678"
-          }, selectedQuote.customer_id);
+          }, selectedQuote.customer_id, quoteFilterFunction);
         } else {
           this.props.onUpdatePaymentDetail(selectedQuote.quote_request_id, {
             ...this.state,
             payment_status: "completed"
-          }, selectedQuote.customer_id);
+          }, selectedQuote.customer_id, quoteFilterFunction);
         }
         this.props.onToggleShowPayment();
       }

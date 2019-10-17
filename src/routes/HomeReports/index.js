@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Input, Select, Table} from "antd";
+import {Breadcrumb, Button, Dropdown, Icon, Input, Menu, Modal, Select, Table} from "antd";
 import Widget from "../../components/Widget";
 import {Link} from "react-router-dom";
 import InfoView from "../../components/InfoView";
 import {connect} from "react-redux";
 import {onGetReportsList} from "../../appRedux/actions/HomeReports";
 import ReportsRow from "./ReportsRow";
+import {onChangeReportStatus} from "../../appRedux/actions";
 
 const {Option} = Select;
 const Search = Input.Search;
+const confirm = Modal.confirm;
+
 
 class HomeReports extends Component {
   constructor(props) {
@@ -18,6 +21,8 @@ class HomeReports extends Component {
       selectedRowKeys: [],
       itemNumbers: 10,
       current: 1,
+      selectedReports: [],
+      filterOption: ""
     }
   }
 
@@ -25,8 +30,8 @@ class HomeReports extends Component {
     this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText);
   }
 
-  onGetPaginatedData = (currentPage, itemsPerPage, filterText, updatingContent) => {
-    this.props.onGetReportsList(currentPage, itemsPerPage, filterText, updatingContent);
+  onGetPaginatedData = (currentPage, itemsPerPage, filterText, updatingContent, status) => {
+    this.props.onGetReportsList(currentPage, itemsPerPage, filterText, updatingContent, status);
   };
 
   onFilterTextChange = (e) => {
@@ -81,18 +86,95 @@ class HomeReports extends Component {
     this.props.history.push(`/report-detail/${record.report_id}`);
   };
 
+  onSelectOption = () => {
+    const menu = (
+      <Menu>
+        <Menu.Item key="1" onClick={() => this.onSelectFilterOption("completed")}>
+          Completed
+        </Menu.Item>
+
+        <Menu.Item key="2" onClick={() => this.onSelectFilterOption("in-progress")}>
+          In Progress
+        </Menu.Item>
+
+        <Menu.Item key="3" onClick={() => this.onSelectFilterOption("pending")}>
+          Pending
+        </Menu.Item>
+
+        <Menu.Item key="4" onClick={() => this.onSelectFilterOption("cancelled")}>
+          Cancelled
+        </Menu.Item>
+
+      </Menu>
+    );
+    return <Dropdown overlay={menu} trigger={['click']}>
+      <Button>
+        Filter By Status <Icon type="down"/>
+      </Button>
+    </Dropdown>
+  };
+
+  onSelectFilterOption = filter => {
+    this.setState({filterOption: filter}, () => {
+      this.onGetPaginatedData(1, this.state.itemNumbers, this.state.filterText, true, this.state.filterOption)
+    })
+  };
+
+  onChangeStatus = () => {
+    const menu = (
+      <Menu>
+        <Menu.Item key="1" onClick={() => this.onChangeStatusPopUp("completed")}>
+          Completed
+        </Menu.Item>
+
+        <Menu.Item key="2" onClick={() => this.onChangeStatusPopUp("in-progress")}>
+          In Progress
+        </Menu.Item>
+
+        <Menu.Item key="3" onClick={() => this.onChangeStatusPopUp("pending")}>
+          Pending
+        </Menu.Item>
+
+        <Menu.Item key="4" onClick={() => this.onChangeStatusPopUp("cancelled")}>
+          Cancelled
+        </Menu.Item>
+
+      </Menu>
+    );
+    return <Dropdown overlay={menu} trigger={['click']}>
+      <Button>
+        Change Status <Icon type="down"/>
+      </Button>
+    </Dropdown>
+  };
+
+  onChangeStatusPopUp = (name) => {
+    confirm({
+      title: `Are you sure you want to Change the status to "${name}"`,
+      okText: "Change",
+      cancelText: "Cancel",
+      onOk: () => {
+        this.props.onChangeReportStatus({report_ids: this.state.selectedReports, status: name})
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
   render() {
     const {reportsList, updatingContent} = this.props;
-    const {selectedRowKeys, filterText, itemNumbers, current} = this.state;
+    const {selectedRowKeys, filterText, itemNumbers, current, selectedReports} = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         const ids = selectedRows.map(selectedRow => {
-          return selectedRow.id
+          return selectedRow.report_id
         });
-        this.setState({selectedCustomers: ids, selectedRowKeys: selectedRowKeys})
+        this.setState({selectedReports: ids, selectedRowKeys: selectedRowKeys})
       }
     };
+
     return (
       <div className="gx-main-content">
         <Widget styleName="gx-card-filter">
@@ -103,6 +185,8 @@ class HomeReports extends Component {
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="gx-d-flex gx-justify-content-end">
+            {selectedReports.length > 0 ? this.onChangeStatus() : null}
+            {this.onSelectOption()}
             <Search
               placeholder="Enter keywords to search Home Reports"
               value={filterText}
@@ -129,7 +213,7 @@ class HomeReports extends Component {
                    onChange: this.onPageChange
                  }}
                  className="gx-table-responsive"
-                 />
+          />
         </Widget>
         <InfoView/>
       </div>
@@ -144,5 +228,5 @@ const mapPropsToState = ({homeReports, common}) => {
 };
 
 export default connect(mapPropsToState, {
-  onGetReportsList
+  onGetReportsList, onChangeReportStatus
 })(HomeReports);

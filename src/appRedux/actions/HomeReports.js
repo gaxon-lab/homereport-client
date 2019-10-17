@@ -2,7 +2,7 @@ import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT}
 import axios from 'util/Api'
 import {
   ADD_NEW_COMMENT,
-  ASSIGN_STAFF,
+  ASSIGN_STAFF, CHANGE_REPORT_STATUS,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
@@ -12,7 +12,8 @@ import {
   UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
-export const onGetReportsList = (currentPage, itemsPerPage, filterText, updatingContent) => {
+export const onGetReportsList = (currentPage, itemsPerPage, filterText, updatingContent, status) => {
+  console.log("status", status)
   return (dispatch) => {
     if (updatingContent) {
       dispatch({type: UPDATING_CONTENT});
@@ -23,7 +24,8 @@ export const onGetReportsList = (currentPage, itemsPerPage, filterText, updating
       params: {
         page: currentPage,
         per_page: itemsPerPage,
-        search: filterText
+        search: filterText,
+        status: status
       }
     }).then(({data}) => {
       console.info("onGetReportsList: ", data);
@@ -177,6 +179,27 @@ export const onSetSurveyDate = (reportId, details) => {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: SET_SURVEY_DATE, payload: data.data});
         dispatch({type: SHOW_MESSAGE, payload: "The  Survey Date has been assigned successfully!"})
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onChangeReportStatus = (details) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post('/reports/update/status', details).then(({data}) => {
+      console.info("onChangeReportStatus: ", data);
+      if (data.success) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: CHANGE_REPORT_STATUS, payload: details});
+        dispatch({type: SHOW_MESSAGE, payload: "The status of Selected Reports has been updated successfully!"})
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

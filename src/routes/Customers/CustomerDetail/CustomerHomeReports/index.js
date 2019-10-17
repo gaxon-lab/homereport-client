@@ -14,7 +14,7 @@ class CustomerHomeReports extends Component {
       <div className="gx-main-layout-content">
         <Widget styleName="gx-card-filter">
           <h2 className="gx-widget-heading">Home Reports</h2>
-          <Table rowKey="id" columns={CustomerReportsRow(this)}
+          <Table rowKey="report_id" columns={CustomerReportsRow(this)}
                  dataSource={this.props.homeReports}
                  pagination={false}
                  className="gx-table-responsive"

@@ -2,7 +2,8 @@ import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT}
 import axios from 'util/Api'
 import {
   ADD_NEW_CUSTOMER,
-  EDIT_CUSTOMER_DETAILS, GET_CUSTOMER_ADDRESS,
+  EDIT_CUSTOMER_DETAILS,
+  GET_CUSTOMER_ADDRESS,
   GET_CUSTOMER_DETAIL,
   GET_CUSTOMER_QUOTES,
   GET_CUSTOMERS_LIST,
@@ -42,7 +43,6 @@ export const onGetCustomersList = (currentPage, itemsPerPage, filterText, updati
   }
 };
 
-
 export const onSearchCustomers = (filterText) => {
   return (dispatch) => {
     axios.get('/customers', {
@@ -65,10 +65,6 @@ export const onSearchCustomers = (filterText) => {
     });
   }
 };
-
-
-
-
 
 export const onGetCustomerDetail = (customerId) => {
   return (dispatch) => {
@@ -214,7 +210,6 @@ export const onGetCustomerAddress = (customerId, type) => {
     });
   }
 };
-
 
 export const onNullifyCustomerDetails = () => {
   return {

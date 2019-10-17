@@ -18,12 +18,12 @@ class CustomerDetail extends Component {
     this.props.onNullifyCustomerDetails();
   };
 
-
   onGoBackToList = () => {
     this.props.history.goBack()
   };
 
   render() {
+    console.log("currentCustomer", this.props.currentCustomer);
     const {currentCustomer} = this.props;
     return (
       <div>
@@ -34,7 +34,7 @@ class CustomerDetail extends Component {
                           homeReports={currentCustomer.reports}
                           onGoBackToList={this.onGoBackToList}/>
 
-            <CustomerQuoteRequests quoteRequests={currentCustomer.quoteRequests}
+            <CustomerQuoteRequests currentCustomer={currentCustomer}
                                    history={this.props.history}
                                    customerId={this.props.match.params.id}
                                    onToggleAddQuote={this.onToggleAddQuote}/>

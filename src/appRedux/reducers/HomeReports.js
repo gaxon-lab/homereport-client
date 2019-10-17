@@ -1,10 +1,13 @@
 import {
-  ADD_NEW_COMMENT, ASSIGN_STAFF,
+  ADD_NEW_COMMENT,
+  ASSIGN_STAFF,
+  CHANGE_REPORT_STATUS,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
   GET_REPORT_DOCUMENTS,
-  NULLIFY_CURRENT_REPORT, SET_SURVEY_DATE,
+  NULLIFY_CURRENT_REPORT,
+  SET_SURVEY_DATE,
   UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
 
@@ -74,6 +77,20 @@ export default (state = initialState, action) => {
       return {
         ...state,
         currentReport: report
+      };
+
+    case CHANGE_REPORT_STATUS:
+      const updatedReports = state.reportsList.map(report => {
+        if (action.payload.report_ids.includes(report.report_id)) {
+          report.status = action.payload.status;
+          return report;
+        } else {
+          return report;
+        }
+      });
+      return {
+        ...state,
+        reportsList: updatedReports
       };
 
     default:

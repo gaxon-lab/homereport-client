@@ -33,7 +33,8 @@ const ReportsRow = (context) => {
       render: (text, record) => {
         return <div>
           <div className="gx-text-nowrap">{record.customer_name}</div>
-          <Tag className={`gx-mt-1 gx-text-white ${record.is_guest === 1 ? "gx-badge-red" : "gx-badge-cyan"}`}>{record.is_guest === 1 ? "Guest" : "Customer"}</Tag>
+          <Tag
+            className={`gx-mt-1 gx-text-white ${record.is_guest === 1 ? "gx-badge-red" : "gx-badge-cyan"}`}>{record.is_guest === 1 ? "Guest" : "Customer"}</Tag>
         </div>
       },
     },
@@ -79,6 +80,14 @@ const ReportsRow = (context) => {
       key: 'quote',
       render: (text, record) => {
         return <span>£ {record.quote_amount}</span>
+      },
+    },
+    {
+      title: "Status",
+      dataIndex: 'status',
+      key: 'status',
+      render: (text, record) => {
+        return <Tag> {record.status}</Tag>
       },
     },
     {

@@ -85,8 +85,9 @@ export default (state = initialState, action) => {
       };
 
     case DECREASE_QUOTE_REQUESTS:
+      let updatedCustomer = null;
       const list = state.customersList.map(customer => {
-        if (customer.id === action.payload) {
+        if (customer.id === action.payload.customerId) {
           customer.quote_requests_count = customer.quote_requests_count - 1;
           customer.reports_count = customer.reports_count + 1;
           return customer;
@@ -94,11 +95,18 @@ export default (state = initialState, action) => {
           return customer;
         }
       });
+      console.log("currentCustomer", state.currentCustomer);
+      if (state.currentCustomer) {
+        updatedCustomer = state.currentCustomer;
+        updatedCustomer.quoteRequests = updatedCustomer.quoteRequests.filter(quote => quote.quote_request_id !== action.payload.quoteId);
+      }
+      console.log("updatedCustomer", updatedCustomer);
       return {
         ...state,
-        customersList: list
+        customersList: list,
+        customerQuotes: state.customerQuotes.filter(quote => quote.quote_request_id !== action.payload.quoteId),
+        currentCustomer: updatedCustomer
       };
-
 
     case NULLIFY_CUSTOMER_QUOTES:
       return {
@@ -106,13 +114,11 @@ export default (state = initialState, action) => {
         customerQuotes: []
       };
 
-
     case NULLIFY_CUSTOMER_REPORTS:
       return {
         ...state,
         customerReports: []
       };
-
 
     case GET_CUSTOMER_ADDRESS:
       return {
