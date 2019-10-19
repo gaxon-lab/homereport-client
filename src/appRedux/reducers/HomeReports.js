@@ -2,6 +2,7 @@ import {
   ADD_NEW_COMMENT,
   ASSIGN_STAFF,
   CHANGE_REPORT_STATUS,
+  DELETE_HOME_REPORT,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
@@ -27,6 +28,13 @@ export default (state = initialState, action) => {
         ...state,
         reportsList: action.payload.data,
         totalItems: action.payload.total
+      };
+
+    case DELETE_HOME_REPORT:
+      return {
+        ...state,
+        reportsList: state.reportsList.filter(report => report.report_id !== action.payload),
+        totalItems: state.totalItems - 1
       };
 
     case GET_REPORT_DETAIL:

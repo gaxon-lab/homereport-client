@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
 import {Button, Col, Icon, Row, Tooltip, Upload} from "antd";
 import axios from 'util/Api'
+import ViewPropertyQuestionnaire from "./ViewPropertyQuestionnaire";
 
 class UploaderContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileList: []
+      fileList: [],
+      isViewOpen: false
     }
   }
+
+  onToggleViewBox = () => {
+    this.setState({isViewOpen: !this.state.isViewOpen})
+  };
 
   handleUpload = (fileObj) => {
     const file = fileObj.fileList[0].originFileObj
@@ -40,8 +46,8 @@ class UploaderContainer extends Component {
   };
 
   render() {
-    const {fileList} = this.state;
-    const {document} = this.props;
+    const {fileList, isViewOpen} = this.state;
+    const {document, caption} = this.props;
     const filePath = document && document.path ? document.path : null;
 
     return (
@@ -51,12 +57,17 @@ class UploaderContainer extends Component {
             {document && document.id ? <Icon type="check" className="gx-text-green"/> : <Icon type="close"/>}
             <span className="gx-ml-3 gx-text-black">{this.props.title}</span>
           </Col>
+
           <Col span={11} className="gx-d-flex gx-justify-content-between">
-            <a href={filePath} target="_blank" rel="noopener noreferrer">
+            {caption === "property_quest" ?
               <Tooltip title="View">
-                <Icon type="eye" className=" gx-text-black"/>
-              </Tooltip>
-            </a>
+                <Icon type="eye" className=" gx-text-black" onClick={this.onToggleViewBox}/>
+              </Tooltip> :
+              <a href={filePath} target="_blank" rel="noopener noreferrer">
+                <Tooltip title="View">
+                  <Icon type="eye" className=" gx-text-black"/>
+                </Tooltip>
+              </a>}
             <a href={filePath} download target="_blank" rel="noopener noreferrer">
               <Tooltip title="Download">
                 <Icon type="download" className="gx-text-black"/>
@@ -71,6 +82,8 @@ class UploaderContainer extends Component {
             </Upload>
           </Col>
         </Row>
+        {isViewOpen ? <ViewPropertyQuestionnaire isViewOpen={isViewOpen}
+                                                 onToggleViewBox={this.onToggleViewBox}/> : null}
       </div>
     );
   }

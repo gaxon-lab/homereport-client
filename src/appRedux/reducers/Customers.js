@@ -1,6 +1,7 @@
 import {
   ADD_NEW_CUSTOMER,
   DECREASE_QUOTE_REQUESTS,
+  DELETE_CUSTOMER,
   EDIT_CUSTOMER_DETAILS,
   GET_CUSTOMER_ADDRESS,
   GET_CUSTOMER_DETAIL,
@@ -44,6 +45,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         customersList: updatedCustomerList
+      };
+
+    case DELETE_CUSTOMER:
+      return {
+        ...state,
+        customersList: state.customersList.filter(customer => customer.id !== action.payload),
+        totalItems: state.totalItems - 1
       };
 
     case GET_CUSTOMER_DETAIL:

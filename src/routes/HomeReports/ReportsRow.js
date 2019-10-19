@@ -7,6 +7,9 @@ const onShowRowDropdown = (currentReport, context) => {
       <Menu.Item key="1" onClick={() => context.onSelectReport(currentReport)}>
         View Details
       </Menu.Item>
+      <Menu.Item key="5" onClick={() => context.onDeletePopUp(currentReport.report_id)}>
+        Delete
+      </Menu.Item>
     </Menu>
   );
   return (

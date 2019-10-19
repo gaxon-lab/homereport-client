@@ -6,7 +6,7 @@ import InfoView from "../../components/InfoView";
 import {connect} from "react-redux";
 import {onGetReportsList} from "../../appRedux/actions/HomeReports";
 import ReportsRow from "./ReportsRow";
-import {onChangeReportStatus} from "../../appRedux/actions";
+import {onChangeReportStatus, onDeleteHomeReport} from "../../appRedux/actions";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -162,6 +162,21 @@ class HomeReports extends Component {
     });
   };
 
+  onDeletePopUp = (id) => {
+    confirm({
+      title: 'Are you sure you want to delete this Report?',
+      okText: "Delete",
+      cancelText: "Cancel",
+      onOk: () => {
+        this.props.onDeleteHomeReport(id);
+        this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText, true)
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
   render() {
     const {reportsList, updatingContent} = this.props;
     const {selectedRowKeys, filterText, itemNumbers, current, selectedReports} = this.state;
@@ -228,5 +243,5 @@ const mapPropsToState = ({homeReports, common}) => {
 };
 
 export default connect(mapPropsToState, {
-  onGetReportsList, onChangeReportStatus
+  onGetReportsList, onChangeReportStatus, onDeleteHomeReport
 })(HomeReports);

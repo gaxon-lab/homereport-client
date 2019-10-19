@@ -1,4 +1,4 @@
-import {Avatar, Dropdown, Menu} from "antd";
+import {Avatar, Divider, Dropdown, Menu} from "antd";
 import React from "react";
 
 
@@ -16,6 +16,9 @@ const onShowRowDropdown = (currentCustomer, context) => {
       </Menu.Item>
       <Menu.Item key="4" onClick={() => context.onShowCustomerReports(currentCustomer)}>
         Home Reports
+      </Menu.Item>
+      <Menu.Item key="5" onClick={() => context.onDeletePopUp(currentCustomer.id)}>
+       Delete
       </Menu.Item>
     </Menu>
   );

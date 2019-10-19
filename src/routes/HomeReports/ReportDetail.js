@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Widget from "../../components/Widget";
-import {Avatar, Breadcrumb, Button, Col, DatePicker, Icon, Input, Row, Select, Tag} from "antd";
+import {Avatar, Breadcrumb, Button, Col, DatePicker, Icon, Input, message, Row, Select, Tag} from "antd";
 import {Link} from "react-router-dom";
 import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
@@ -28,6 +28,7 @@ const {Option} = Select;
 
 
 class ReportDetail extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,18 +36,6 @@ class ReportDetail extends Component {
       isShowDatePicker: false,
       inspection_date: null,
       inspection_time: "",
-    }
-  }
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.currentReport) {
-      const {inspection_date, inspection_time} = nextProps.currentReport;
-      if (nextProps.currentReport !== this.props.currentReport) {
-        this.setState({
-          inspection_date: inspection_date,
-          inspection_time: inspection_time
-        })
-      }
     }
   }
 
@@ -104,7 +93,7 @@ class ReportDetail extends Component {
   }
 
   onOpenDatePicker = () => {
-    this.setState({isShowDatePicker: !this.state.isShowDatePicker});
+    this.setState({isShowDatePicker: !this.state.isShowDatePicker, inspection_date: "", inspection_time: ""});
   };
 
   onDateChange = (value, dateString) => {
@@ -118,8 +107,14 @@ class ReportDetail extends Component {
   onSelectDateTime = () => {
     const currentReport = this.props.currentReport;
     const {inspection_date, inspection_time} = this.state;
-    this.setState({isShowDatePicker: false});
-    this.props.onSetSurveyDate(currentReport.report_id, {inspection_date, inspection_time})
+    if (inspection_date === "") {
+      message.error("Please select date first!")
+    } else if (inspection_time === "") {
+      message.error("Please select time slot first")
+    } else {
+      this.props.onSetSurveyDate(currentReport.report_id, {inspection_date, inspection_time});
+      this.setState({isShowDatePicker: false});
+    }
   };
 
   onDisabledDate = (current) => {
@@ -140,14 +135,18 @@ class ReportDetail extends Component {
     }
 
     return (
+
       <div className="gx-main-layout-content">
         {currentReport ?
           <Widget styleName="gx-card-filter">
+
             <div className="gx-mb-3 gx-border gx-rounded-circle gx-size-24 gx-d-flex gx-justify-content-center"
                  style={{borderColor: "black"}}>
               <i className="icon icon-arrow-left gx-link gx-text-black" onClick={this.onGoBackToList}/>
             </div>
+
             <h2 className="gx-text gx-mb-2">Home Report Detail</h2>
+
             <Breadcrumb className="gx-mb-4">
               <Breadcrumb.Item>
                 <Link to="/home-reports">Home Reports</Link>
@@ -157,13 +156,17 @@ class ReportDetail extends Component {
                       className="gx-text-primary">{currentReport.reference_no}</Link>
               </Breadcrumb.Item>
             </Breadcrumb>
+
             <Row>
+
               <Col xl={15} lg={12} md={12} sm={12} xs={24}>
                 <div className="gx-pr-4">
+
                   <div className="gx-mb-4">
                     <div className="gx-text-grey">Reference No.</div>
                     <div className="gx-mt-2 gx-text-black">{currentReport.reference_no}</div>
                   </div>
+
                   <div className="gx-mb-4">
                     <div className="gx-text-grey">Property</div>
                     <div className="gx-mt-2">
@@ -172,6 +175,7 @@ class ReportDetail extends Component {
                       <p className="gx-mb-1 gx-text-black"> Zip -{currentReport.postcode}</p>
                     </div>
                   </div>
+
                   <div className="gx-d-flex gx-mb-4">
                     <div className="gx-mr-5">
                       <div className="gx-text-grey">Estimated Price</div>
@@ -182,14 +186,18 @@ class ReportDetail extends Component {
                       <div className=" gx-mt-2 gx-text-black">{currentReport.property_age_value}</div>
                     </div>
                   </div>
+
                   <div style={{backgroundColor: "#eee"}} className="gx-px-5 gx-py-3 gx-mb-5">
+
                     <DocumentUploading onUploadDocument={this.onUploadDocument}
                                        reportDocuments={reportDocuments}
                                        fetchError={this.props.fetchError}
                                        fetchSuccess={this.props.fetchSuccess}
                                        fetchStart={this.props.fetchStart}/>
+
                   </div>
                   {currentReport.assigned_user_id ?
+
                     <div>
                       <div className="gx-py-1">
                         <h3 className="gx-mb-0 gx-mb-sm-1">Comments</h3>
@@ -214,11 +222,15 @@ class ReportDetail extends Component {
                       </div>
                       <Button type="primary" className=" gx-mt-2 gx-mx-5" onClick={this.onSubmitMessage}
                               disabled={comment === ""}>Send</Button>
-                    </div> : null}
+                    </div>
+
+                    : null}
                 </div>
               </Col>
+
               <Col xl={9} lg={12} md={12} sm={12} xs={24}>
                 <div className="gx-border-left gx-p-3">
+
                   <div className="gx-mb-4">
                     <div className="gx-text-grey gx-mb-2">Customer</div>
                     <div className="gx-media gx-flex-nowrap gx-align-items-center">
@@ -234,6 +246,7 @@ class ReportDetail extends Component {
                       </div>
                     </div>
                   </div>
+
                   <div className="gx-mb-4">
                     <div className="gx-text-grey">Contact Detail</div>
                     <Row className=" gx-mt-2 ">
@@ -254,25 +267,35 @@ class ReportDetail extends Component {
                       </Col>
                     </Row>
                   </div>
+
                   <ReportAssigning staffList={staffList}
                                    totalItems={totalItems}
                                    onAssignStaff={this.onAssignStaff}
                                    onGetStaffList={this.onGetStaffList}
                                    assignedTo={assignedTo}
                                    loggedUserPermissions={loggedUserPermissions}/>
+
                   <div className="gx-p-4 gx-my-4" style={{backgroundColor: "#eee"}}>
+
                     <div className="gx-d-flex">
+
                       <div className="gx-text-grey">Survey Date</div>
+
                       {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0 ?
+
                         <div className="gx-ml-auto">
                           {!isShowDatePicker ?
+
                             <div className="gx-link" onClick={this.onOpenDatePicker}><Icon type="edit"/>
                               {currentReport.inspection_date && currentReport.inspection_time ? "Change" : "Select"}
-                            </div> :
+                            </div>
+                            :
                             <div className="gx-flex-column">
+
                               <DatePicker placeholder="Select Date" disabledDate={(value) => this.onDisabledDate(value)}
                                           onChange={this.onDateChange} onOk={this.onSelectDateTime}/>
-                              <Select className="gx-my-2" value={inspection_time} placeholder="Select Time Slot"
+
+                              <Select className="gx-my-2" placeholder="Inserted are removed" value={inspection_time}
                                       onChange={this.onSelectTimeSlot}>
                                 <Option value="9am - 11am">9am - 11am</Option>
                                 <Option value="11am - 1pm">11am - 1pm</Option>
@@ -280,13 +303,19 @@ class ReportDetail extends Component {
                                 <Option value="3pm - 5pm">3pm - 5pm</Option>
                                 <Option value="5pm - 7pm">5pm - 7pm</Option>
                               </Select>
-                              <Button onClick={this.onSelectDateTime}>Save</Button>
+
+                              <div className="gx-d-flex">
+                                <Button onClick={this.onSelectDateTime}>Save</Button>
+                                <Button onClick={this.onOpenDatePicker}>Cancel</Button>
+                              </div>
+
                             </div>}
+
                         </div> : null}
                     </div>
                     <div className="gx-mt-2 gx-text-black">
                       {currentReport.inspection_date && currentReport.inspection_time ?
-                        currentReport.inspection_date + " " + currentReport.inspection_time : "NA"}</div>
+                        currentReport.inspection_date + ", " + currentReport.inspection_time : "NA"}</div>
                   </div>
 
                   <div className="gx-p-4" style={{backgroundColor: "#eee"}}>
@@ -302,11 +331,17 @@ class ReportDetail extends Component {
                       {currentReport.accept_term_date ? currentReport.accept_term_date : "NA"}
                     </div>
                   </div>
+
                 </div>
+
               </Col>
+
             </Row>
+
           </Widget> : null}
+
         <InfoView/>
+
       </div>
     )
   }

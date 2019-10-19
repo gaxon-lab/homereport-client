@@ -2,7 +2,7 @@ import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT}
 import axios from 'util/Api'
 import {
   ADD_NEW_COMMENT,
-  ASSIGN_STAFF, CHANGE_REPORT_STATUS,
+  ASSIGN_STAFF, CHANGE_REPORT_STATUS, DELETE_HOME_REPORT,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
@@ -11,6 +11,7 @@ import {
   SET_SURVEY_DATE,
   UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
+import {DELETE_CUSTOMER} from "../../constants/Customers";
 
 export const onGetReportsList = (currentPage, itemsPerPage, filterText, updatingContent, status) => {
   console.log("status", status)
@@ -158,6 +159,27 @@ export const onAddReportDocument = (reportId, file) => {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data});
         dispatch({type: SHOW_MESSAGE, payload: "The document has been uploaded successfully!"})
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onDeleteHomeReport = (reportId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.delete(`/reports/${reportId}`).then(({data}) => {
+      console.log("onDeleteHomeReport",data);
+      if (data.success) {
+        dispatch({type: DELETE_HOME_REPORT, payload: reportId});
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SHOW_MESSAGE, payload: "The Selected Report has been deleted successfully"});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Input, Select, Table} from "antd";
+import {Breadcrumb, Button, Input, Modal, Select, Table} from "antd";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import CustomersRow from "./CustomerRow";
@@ -8,13 +8,14 @@ import Widget from "../../components/Widget";
 import QuoteRequestModal from "./QuoteRequestModal";
 import InfoView from "../../components/InfoView";
 import HomeReportsModal from "./HomeReportsModal";
-import {onDownloadCustomerList} from "../../appRedux/actions";
+import {onDeleteCustomer, onDownloadCustomerList} from "../../appRedux/actions";
 import AddNewCustomer from "./AddNewCustomer";
 import AddNewQuote from "../QuoteRequests/AddNewQuote";
 import PaymentDetail from "../QuoteRequests/PaymentDetail";
 
 const {Option} = Select;
 const Search = Input.Search;
+const confirm = Modal.confirm;
 
 
 class Customers extends Component {
@@ -143,6 +144,20 @@ class Customers extends Component {
     this.props.history.push(`/customer-detail/${record.id}`);
   };
 
+  onDeletePopUp = (id) => {
+    confirm({
+      title: 'Are you sure you want to delete this Customer?',
+      okText: "Delete",
+      cancelText: "Cancel",
+      onOk: () => {
+        this.props.onDeleteCustomer(id);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
   render() {
     const {customersList, updatingContent} = this.props;
     const {
@@ -243,5 +258,5 @@ const mapPropsToState = ({customers, common}) => {
 };
 
 export default connect(mapPropsToState, {
-  onGetCustomersList, onDownloadCustomerList
+  onGetCustomersList, onDownloadCustomerList, onDeleteCustomer
 })(Customers);

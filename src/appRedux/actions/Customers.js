@@ -1,7 +1,7 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT} from "../../constants/ActionTypes";
 import axios from 'util/Api'
 import {
-  ADD_NEW_CUSTOMER,
+  ADD_NEW_CUSTOMER, DELETE_CUSTOMER,
   EDIT_CUSTOMER_DETAILS,
   GET_CUSTOMER_ADDRESS,
   GET_CUSTOMER_DETAIL,
@@ -119,6 +119,27 @@ export const onEditCustomerDetails = (details, updatingContent) => {
         dispatch({type: EDIT_CUSTOMER_DETAILS, payload: data.data});
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: SHOW_MESSAGE, payload: "The Customer details has been updated successfully"});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onDeleteCustomer = (customerId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.delete(`/customers/${customerId}`).then(({data}) => {
+      console.log("onDeleteCustomer", data);
+      if (data.success) {
+        dispatch({type: DELETE_CUSTOMER, payload: customerId});
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: SHOW_MESSAGE, payload: "The Selected Customer has been deleted successfully"});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {
