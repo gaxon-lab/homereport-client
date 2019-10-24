@@ -98,7 +98,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row gx-mb-2">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.any_structural_alteration? propertyQuestionnaire.any_structural_alteration : "NA"}</div>
               </div>
 
               <div className="gx-d-flex gx-flex-row ">
@@ -114,7 +114,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row gx-mb-2">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.obtain_planning? propertyQuestionnaire.obtain_planning : "NA"}</div>
               </div>
 
               <div className="gx-d-flex gx-flex-row ">
@@ -126,7 +126,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row gx-mb-2">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.replacement_windows? propertyQuestionnaire.replacement_windows : "NA"}</div>
               </div>
 
               <div className="gx-d-flex gx-flex-row ">
@@ -136,7 +136,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row gx-mb-2">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.replace_shape_type? propertyQuestionnaire.replace_shape_type : "NA"}</div>
               </div>
 
               <div className="gx-d-flex gx-flex-row ">
@@ -146,7 +146,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row gx-mb-2">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.involve_changes? propertyQuestionnaire.involve_changes : "NA"}</div>
               </div>
 
               <div className="gx-d-flex gx-flex-row ">
@@ -159,7 +159,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.changes_detail? propertyQuestionnaire.changes_detail : "NA"}</div>
               </div>
             </div>
 
@@ -179,7 +179,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row gx-mb-2">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.central_heating_sys? propertyQuestionnaire.central_heating_sys : "NA"}</div>
               </div>
 
               <div className="gx-d-flex gx-flex-row ">
@@ -239,7 +239,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.energy_perform_cert? propertyQuestionnaire.energy_perform_cert : "NA"}</div>
               </div>
             </div>
 
@@ -255,7 +255,7 @@ class ViewPropertyQuestionnaire extends Component {
               </div>
               <div className="gx-d-flex gx-flex-row gx-mb-2">
                 <div style={{width: "20%"}} className="gx-font-weight-bold">Answer</div>
-                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.council_tax? propertyQuestionnaire.council_tax : "NA"}</div>
+                <div style={{width: "75%"}}>{propertyQuestionnaire && propertyQuestionnaire.structural_damage? propertyQuestionnaire.structural_damage : "NA"}</div>
               </div>
 
               <div className="gx-d-flex gx-flex-row ">

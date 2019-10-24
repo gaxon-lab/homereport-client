@@ -80,7 +80,7 @@ class UploaderContainer extends Component {
               <Button type="primary" ghost>
                 Upload
               </Button>
-            </Upload> : null}
+            </Upload> : <Button style={{opacity:0,cursor:"default"}} type="primary" ghost>upload</Button>}
           </Col>
         </Row>
         {isViewOpen ? <ViewPropertyQuestionnaire isViewOpen={isViewOpen}
