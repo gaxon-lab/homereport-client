@@ -80,7 +80,7 @@ class QuoteRequestModal extends Component {
         dataIndex: 'quote',
         key: 'quote',
         render: (text, record) => {
-          return <span>£ {record.quote_amount}</span>
+          return <span className="gx-text-nowrap">£ {record.quote_amount}</span>
         },
       },
       {

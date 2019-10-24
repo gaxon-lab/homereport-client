@@ -193,7 +193,8 @@ class ReportDetail extends Component {
                                        reportDocuments={reportDocuments}
                                        fetchError={this.props.fetchError}
                                        fetchSuccess={this.props.fetchSuccess}
-                                       fetchStart={this.props.fetchStart}/>
+                                       fetchStart={this.props.fetchStart}
+                                       propertyQuestionnaire={currentReport.property_questionnaire}/>
 
                   </div>
                   {currentReport.assigned_user_id ?
@@ -302,6 +303,13 @@ class ReportDetail extends Component {
                                 <Option value="1pm - 3pm">1pm - 3pm</Option>
                                 <Option value="3pm - 5pm">3pm - 5pm</Option>
                                 <Option value="5pm - 7pm">5pm - 7pm</Option>
+                                <Option value="7pm - 9pm">7pm - 9pm</Option>
+                                <Option value="9pm - 11pm">9pm - 11pm</Option>
+                                <Option value="11pm - 1am">11pm - 1am</Option>
+                                <Option value="1am - 3am">1am - 3am</Option>
+                                <Option value="3am - 5am">3am - 5am</Option>
+                                <Option value="5am - 7am">5am - 7am</Option>
+                                <Option value="7am - 9am">7am - 9am</Option>
                               </Select>
 
                               <div className="gx-d-flex">

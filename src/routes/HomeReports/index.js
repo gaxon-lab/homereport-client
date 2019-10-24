@@ -89,6 +89,10 @@ class HomeReports extends Component {
   onSelectOption = () => {
     const menu = (
       <Menu>
+        <Menu.Item key="4" onClick={() => this.onSelectFilterOption("")}>
+          All
+        </Menu.Item>
+
         <Menu.Item key="1" onClick={() => this.onSelectFilterOption("completed")}>
           Completed
         </Menu.Item>
@@ -155,10 +159,7 @@ class HomeReports extends Component {
       cancelText: "Cancel",
       onOk: () => {
         this.props.onChangeReportStatus({report_ids: this.state.selectedReports, status: name})
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
+      }
     });
   };
 
@@ -170,10 +171,7 @@ class HomeReports extends Component {
       onOk: () => {
         this.props.onDeleteHomeReport(id);
         this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText, true)
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
+      }
     });
   };
 

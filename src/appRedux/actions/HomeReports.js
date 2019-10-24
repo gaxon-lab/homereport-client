@@ -2,7 +2,9 @@ import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT}
 import axios from 'util/Api'
 import {
   ADD_NEW_COMMENT,
-  ASSIGN_STAFF, CHANGE_REPORT_STATUS, DELETE_HOME_REPORT,
+  ASSIGN_STAFF,
+  CHANGE_REPORT_STATUS,
+  DELETE_HOME_REPORT,
   GET_HOME_REPORTS,
   GET_REPORT_COMMENTS,
   GET_REPORT_DETAIL,
@@ -11,7 +13,6 @@ import {
   SET_SURVEY_DATE,
   UPLOAD_REPORT_DOCUMENT
 } from "../../constants/HomeReports";
-import {DELETE_CUSTOMER} from "../../constants/Customers";
 
 export const onGetReportsList = (currentPage, itemsPerPage, filterText, updatingContent, status) => {
   console.log("status", status)
@@ -175,7 +176,7 @@ export const onDeleteHomeReport = (reportId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.delete(`/reports/${reportId}`).then(({data}) => {
-      console.log("onDeleteHomeReport",data);
+      console.log("onDeleteHomeReport", data);
       if (data.success) {
         dispatch({type: DELETE_HOME_REPORT, payload: reportId});
         dispatch({type: FETCH_SUCCESS});

@@ -23,7 +23,8 @@ class DocumentUploading extends Component {
                            title="Property Questionnaire"
                            fetchError={this.props.fetchError}
                            fetchSuccess={this.props.fetchSuccess}
-                           fetchStart={this.props.fetchStart}/>
+                           fetchStart={this.props.fetchStart}
+                           propertyQuestionnaire={this.props.propertyQuestionnaire}/>
 
         <UploaderContainer caption="term_cond"
                            document={termConditionDocument}

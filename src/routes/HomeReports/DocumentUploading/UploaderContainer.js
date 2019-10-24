@@ -73,17 +73,19 @@ class UploaderContainer extends Component {
                 <Icon type="download" className="gx-text-black"/>
               </Tooltip>
             </a>
+            {caption !== "property_quest" ?
             <Upload
               fileList={fileList}
               onChange={this.handleUpload}>
               <Button type="primary" ghost>
                 Upload
               </Button>
-            </Upload>
+            </Upload> : null}
           </Col>
         </Row>
         {isViewOpen ? <ViewPropertyQuestionnaire isViewOpen={isViewOpen}
-                                                 onToggleViewBox={this.onToggleViewBox}/> : null}
+                                                 onToggleViewBox={this.onToggleViewBox}
+                                                 propertyQuestionnaire={this.props.propertyQuestionnaire}/> : null}
       </div>
     );
   }
