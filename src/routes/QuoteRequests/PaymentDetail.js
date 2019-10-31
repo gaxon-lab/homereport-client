@@ -117,7 +117,7 @@ class PaymentDetail extends Component {
                 </Select>)}
               </Form.Item>}
 
-            <Form.Item label="Remark">
+            <Form.Item label="Comments">
               {getFieldDecorator('remark', {
                 initialValue: remark,
               })(<TextArea rows={4} className="gx-form-control-lg" onChange={(e) => {
