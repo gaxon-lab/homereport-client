@@ -6,10 +6,9 @@ class DocumentUploading extends Component {
 
   render() {
     const reportDocuments = this.props.reportDocuments;
-    let termConditionDocument, propertyQuestionnaire, energyDocument, surveyDocument;
+    let termConditionDocument, energyDocument, surveyDocument;
     if (reportDocuments) {
       termConditionDocument = reportDocuments.find(document => document.caption === "term_cond");
-      propertyQuestionnaire = reportDocuments.find(document => document.caption === "property_quest");
       energyDocument = reportDocuments.find(document => document.caption === "eng_cert");
       surveyDocument = reportDocuments.find(document => document.caption === "single_sur");
     }
@@ -17,13 +16,14 @@ class DocumentUploading extends Component {
       <div>
         <div className="gx-text-grey gx-mb-2">Documents:</div>
 
-        <UploaderContainer caption="property_quest"
-                           document={propertyQuestionnaire}
+        <UploaderContainer caption = "property_quest"
                            onUploadDocument={this.props.onUploadDocument}
                            title="Property Questionnaire"
+                           token={this.props.token}
                            fetchError={this.props.fetchError}
                            fetchSuccess={this.props.fetchSuccess}
                            fetchStart={this.props.fetchStart}
+                           document={this.props.propertyQuestionnaire}
                            propertyQuestionnaire={this.props.propertyQuestionnaire}/>
 
         <UploaderContainer caption="term_cond"

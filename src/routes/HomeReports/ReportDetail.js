@@ -194,7 +194,8 @@ class ReportDetail extends Component {
                                        fetchError={this.props.fetchError}
                                        fetchSuccess={this.props.fetchSuccess}
                                        fetchStart={this.props.fetchStart}
-                                       propertyQuestionnaire={currentReport.property_questionnaire}/>
+                                       propertyQuestionnaire={currentReport.property_questionnaire}
+                                       token={this.props.token}/>
 
                   </div>
                   {currentReport.assigned_user_id ?
@@ -356,10 +357,10 @@ class ReportDetail extends Component {
 }
 
 const mapStateToProps = ({staff, homeReports, auth}) => {
-  const {authUser, loggedUserPermissions} = auth;
+  const {authUser, loggedUserPermissions, token} = auth;
   const {staffList, totalItems} = staff;
   const {currentReport, reportComments, reportDocuments} = homeReports;
-  return {staffList, totalItems, currentReport, reportComments, reportDocuments, authUser, loggedUserPermissions};
+  return {staffList, totalItems, currentReport, reportComments, reportDocuments, authUser, loggedUserPermissions,token};
 };
 
 export default connect(mapStateToProps, {

@@ -49,7 +49,11 @@ class UploaderContainer extends Component {
     const {fileList, isViewOpen} = this.state;
     const {document, caption} = this.props;
     const filePath = document && document.path ? document.path : null;
-
+    let propertyQuestionnaireFilePath;
+    if (document) {
+      propertyQuestionnaireFilePath =
+        `http://homereport.wearebauercreate.design/homereport-server/public/api/property/quest/${document.id}/download?token=${this.props.token}`
+    }
     return (
       <div>
         <Row className="gx-d-flex gx-justify-content-around gx-mb-1">
@@ -68,22 +72,29 @@ class UploaderContainer extends Component {
                   <Icon type="eye" className=" gx-text-black"/>
                 </Tooltip>
               </a>}
-            <a href={filePath} download target="_blank" rel="noopener noreferrer">
-              <Tooltip title="Download">
-                <Icon type="download" className="gx-text-black"/>
-              </Tooltip>
-            </a>
+            {caption === "property_quest" ?
+              <a href={propertyQuestionnaireFilePath} download target="_blank" rel="noopener noreferrer">
+                <Tooltip title="Download">
+                  <Icon type="download" className="gx-text-black"/>
+                </Tooltip>
+              </a> :
+              <a href={filePath} download target="_blank" rel="noopener noreferrer">
+                <Tooltip title="Download">
+                  <Icon type="download" className="gx-text-black"/>
+                </Tooltip>
+              </a>}
             {caption !== "property_quest" ?
-            <Upload
-              fileList={fileList}
-              onChange={this.handleUpload}>
-              <Button type="primary" ghost>
-                Upload
-              </Button>
-            </Upload> : <Button style={{opacity:0,cursor:"default"}} type="primary" ghost>upload</Button>}
+              <Upload
+                fileList={fileList}
+                onChange={this.handleUpload}>
+                <Button type="primary" ghost>
+                  Upload
+                </Button>
+              </Upload> : <Button style={{opacity: 0, cursor: "default"}} type="primary" ghost>upload</Button>}
           </Col>
         </Row>
         {isViewOpen ? <ViewPropertyQuestionnaire isViewOpen={isViewOpen}
+                                                 token={this.props.token}
                                                  onToggleViewBox={this.onToggleViewBox}
                                                  propertyQuestionnaire={this.props.propertyQuestionnaire}/> : null}
       </div>
