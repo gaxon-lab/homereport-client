@@ -172,7 +172,7 @@ class ReportDetail extends Component {
                     <div className="gx-mt-2">
                       <p className="gx-mb-1 gx-text-black">{currentReport.address1}</p>
                       <p className="gx-mb-1 gx-text-black">{currentReport.city}, Scotland</p>
-                      <p className="gx-mb-1 gx-text-black"> Zip -{currentReport.postcode}</p>
+                      <p className="gx-mb-1 gx-text-black"> Postcode -{currentReport.postcode}</p>
                     </div>
                   </div>
 

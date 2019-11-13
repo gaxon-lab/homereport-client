@@ -16,6 +16,12 @@ class UploaderContainer extends Component {
     this.setState({isViewOpen: !this.state.isViewOpen})
   };
 
+  onClickViewPropertyQuestionnaire = () => {
+    if(document) {
+      this.setState({isViewOpen: !this.state.isViewOpen})
+    }
+  };
+
   handleUpload = (fileObj) => {
     const file = fileObj.fileList[0].originFileObj
     let formData = new FormData();
@@ -49,7 +55,7 @@ class UploaderContainer extends Component {
     const {fileList, isViewOpen} = this.state;
     const {document, caption} = this.props;
     const filePath = document && document.path ? document.path : null;
-    let propertyQuestionnaireFilePath;
+    let propertyQuestionnaireFilePath = null;
     if (document) {
       propertyQuestionnaireFilePath =
         `http://homereport.wearebauercreate.design/homereport-server/public/api/property/quest/${document.id}/download?token=${this.props.token}`
@@ -63,16 +69,16 @@ class UploaderContainer extends Component {
           </Col>
 
           <Col span={11} className="gx-d-flex gx-justify-content-between">
-            {caption === "property_quest" ?
+            {propertyQuestionnaireFilePath ?
               <Tooltip title="View">
-                <Icon type="eye" className=" gx-text-black" onClick={this.onToggleViewBox}/>
+                <Icon type="eye" className=" gx-text-black" onClick={this.onClickViewPropertyQuestionnaire}/>
               </Tooltip> :
               <a href={filePath} target="_blank" rel="noopener noreferrer">
                 <Tooltip title="View">
                   <Icon type="eye" className=" gx-text-black"/>
                 </Tooltip>
               </a>}
-            {caption === "property_quest" ?
+            {propertyQuestionnaireFilePath ?
               <a href={propertyQuestionnaireFilePath} download target="_blank" rel="noopener noreferrer">
                 <Tooltip title="Download">
                   <Icon type="download" className="gx-text-black"/>

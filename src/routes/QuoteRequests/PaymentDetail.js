@@ -86,7 +86,7 @@ class PaymentDetail extends Component {
           <Form layout="vertical">
 
             <Form.Item>
-              <Checkbox checked={isChecked} onChange={(e) => this.onChangeCheckBox(e)}>Address same as Property
+              <Checkbox checked={isChecked} onChange={(e) => this.onChangeCheckBox(e)}>Billing Address same as Property
                 Address</Checkbox>
             </Form.Item>
 
