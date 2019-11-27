@@ -31,7 +31,6 @@ class SignIn extends React.Component {
   };
 
   render() {
-    console.log("process.env.NODE_ENV", process.env.REACT_APP_API_URL)
     const {messages} = this.props.intl;
     const {getFieldDecorator} = this.props.form;
     return (

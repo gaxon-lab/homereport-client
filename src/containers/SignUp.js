@@ -14,7 +14,6 @@ class SignUp extends React.Component {
   onHandleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log("values", values);
       if (!err) {
         console.log("signup");
       }

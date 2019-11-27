@@ -23,7 +23,6 @@ export const onGetStaff = (currentPage, itemsPerPage, filterText, updatingConten
         search: filterText
       }
     }).then(({data}) => {
-      console.info("onGetStaff: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_STAFF_LIST, payload: data.data});
@@ -34,7 +33,6 @@ export const onGetStaff = (currentPage, itemsPerPage, filterText, updatingConten
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -43,7 +41,6 @@ export const onAddStaffMember = (staffMember) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('/staffs', staffMember).then(({data}) => {
-      console.log("onAddSupportStaff", data);
       if (data.success) {
         dispatch({type: ADD_NEW_STAFF, payload: data.data});
         dispatch({type: FETCH_SUCCESS});
@@ -55,7 +52,6 @@ export const onAddStaffMember = (staffMember) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -79,7 +75,6 @@ export const onEditStaffMember = (staffMember, updatingContent) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -103,7 +98,6 @@ export const onBulkDeleteStaff = (staffIds, updatingContent) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -112,7 +106,6 @@ export const onGetSelectedStaffPermission = (staffId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`/user/${staffId}/permissions`, staffId).then(({data}) => {
-      console.log("onGetSelectedStaffPermission", data);
       if (data.success) {
         dispatch({type: GET_USER_PERMISSION, payload: data.data});
         dispatch({type: FETCH_SUCCESS});
@@ -123,7 +116,6 @@ export const onGetSelectedStaffPermission = (staffId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };

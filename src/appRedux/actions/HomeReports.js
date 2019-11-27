@@ -15,7 +15,6 @@ import {
 } from "../../constants/HomeReports";
 
 export const onGetReportsList = (currentPage, itemsPerPage, filterText, updatingContent, status) => {
-  console.log("status", status)
   return (dispatch) => {
     if (updatingContent) {
       dispatch({type: UPDATING_CONTENT});
@@ -30,7 +29,6 @@ export const onGetReportsList = (currentPage, itemsPerPage, filterText, updating
         status: status
       }
     }).then(({data}) => {
-      console.info("onGetReportsList: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_HOME_REPORTS, payload: data.data});
@@ -41,7 +39,6 @@ export const onGetReportsList = (currentPage, itemsPerPage, filterText, updating
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -50,7 +47,6 @@ export const onGetReportDetail = (recordId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`/reports/${recordId}`).then(({data}) => {
-      console.info("onGetReportDetail: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_REPORT_DETAIL, payload: data.data});
@@ -61,7 +57,6 @@ export const onGetReportDetail = (recordId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -81,7 +76,6 @@ export const onAssignStaffToReport = (reportId, id) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -95,7 +89,6 @@ export const onNullifyCurrentReport = () => {
 export const onGetReportComments = (reportId) => {
   return (dispatch) => {
     axios.get(`/reports/${reportId}/comments`).then(({data}) => {
-      console.info("onGetReportComments: ", data);
       if (data.success) {
         const Comments = data.data.length > 0 ? data.data.reverse() : data.data;
         dispatch({type: GET_REPORT_COMMENTS, payload: Comments});
@@ -106,7 +99,6 @@ export const onGetReportComments = (reportId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -115,7 +107,6 @@ export const onAddNewComment = (reportId, message) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post(`/reports/${reportId}/comments/store`, message).then(({data}) => {
-      console.info("onAddNewComment: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: ADD_NEW_COMMENT, payload: data.data});
@@ -126,7 +117,6 @@ export const onAddNewComment = (reportId, message) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -135,7 +125,6 @@ export const onGetReportDocuments = (reportId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`/reports/${reportId}/media/list`).then(({data}) => {
-      console.info("onGetReportDocuments: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_REPORT_DOCUMENTS, payload: data.data});
@@ -146,7 +135,6 @@ export const onGetReportDocuments = (reportId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -155,7 +143,6 @@ export const onAddReportDocument = (reportId, file) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post(`/reports/${reportId}/media/upload`, file).then(({data}) => {
-      console.info("onAddReportDocument: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: UPLOAD_REPORT_DOCUMENT, payload: data.data});
@@ -167,7 +154,6 @@ export const onAddReportDocument = (reportId, file) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -176,7 +162,6 @@ export const onDeleteHomeReport = (reportId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.delete(`/reports/${reportId}`).then(({data}) => {
-      console.log("onDeleteHomeReport", data);
       if (data.success) {
         dispatch({type: DELETE_HOME_REPORT, payload: reportId});
         dispatch({type: FETCH_SUCCESS});
@@ -188,7 +173,6 @@ export const onDeleteHomeReport = (reportId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -197,7 +181,6 @@ export const onSetSurveyDate = (reportId, details) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post(`/reports/${reportId}/inspection/detail/store`, details).then(({data}) => {
-      console.info("onSetSurveyDate: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: SET_SURVEY_DATE, payload: data.data});
@@ -209,7 +192,6 @@ export const onSetSurveyDate = (reportId, details) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -218,7 +200,6 @@ export const onChangeReportStatus = (details) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('/reports/update/status', details).then(({data}) => {
-      console.info("onChangeReportStatus: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: CHANGE_REPORT_STATUS, payload: details});
@@ -230,7 +211,6 @@ export const onChangeReportStatus = (details) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };

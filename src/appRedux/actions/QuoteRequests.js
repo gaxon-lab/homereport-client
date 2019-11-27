@@ -24,7 +24,6 @@ export const onGetQuotesList = (currentPage, itemsPerPage, filterText, updatingC
         search: filterText
       }
     }).then(({data}) => {
-      console.info("onGetQuotesList: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_QUOTES_LIST, payload: data.data});
@@ -35,7 +34,6 @@ export const onGetQuotesList = (currentPage, itemsPerPage, filterText, updatingC
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -44,7 +42,6 @@ export const onGetQuoteRequestDetail = (recordId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`quotes/requests/${recordId}`).then(({data}) => {
-      console.info("onGetQuoteRequestDetail: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_QUOTE_DETAIL, payload: data.data});
@@ -55,7 +52,6 @@ export const onGetQuoteRequestDetail = (recordId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -64,7 +60,6 @@ export const onGetPropertyOptions = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get('/customer/property/options').then(({data}) => {
-      console.info("onGetPropertyOptions: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_PROPERTY_OPTIONS, payload: data.data});
@@ -75,7 +70,6 @@ export const onGetPropertyOptions = () => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -84,7 +78,6 @@ export const onAddNewQuote = (customerId, details) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post(`quotes/requests/customer/${customerId}`, details).then(({data}) => {
-      console.info("onAddNewQuote: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: ADD_NEW_QUOTE, payload: data.data});
@@ -97,7 +90,6 @@ export const onAddNewQuote = (customerId, details) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -106,7 +98,6 @@ export const onUpdatePaymentDetail = (quoteId, details, customerId, quoteFilterF
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post(`quotes/requests/${quoteId}/update`, details).then(({data}) => {
-      console.info("onUpdatePaymentDetail: ", data);
       if (data.success) {
         quoteFilterFunction(quoteId);
         dispatch({type: FETCH_SUCCESS});
@@ -120,7 +111,6 @@ export const onUpdatePaymentDetail = (quoteId, details, customerId, quoteFilterF
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };

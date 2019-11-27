@@ -6,7 +6,6 @@ export const onGetDashboardInfo = () => {
   return (dispatch) => {
       dispatch({type: FETCH_START});
     axios.get('/dashboard').then(({data}) => {
-      console.info("onGetDashboardInfo: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_DASHBOARD_INFO, payload: data.data});
@@ -17,7 +16,6 @@ export const onGetDashboardInfo = () => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };

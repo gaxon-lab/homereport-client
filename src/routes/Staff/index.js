@@ -123,13 +123,6 @@ class Staff extends Component {
       okText: "Yes",
       cancelText: "Cancel",
       onOk: () => {
-        // const {email, first_name, last_name, id} = staff;
-        // const staffMember = {};
-        // staffMember.status = 0;
-        // staffMember.email = email;
-        // staffMember.first_name = first_name;
-        // staffMember.last_name = last_name;
-        // staffMember.id = id;
         staff.status = 0;
         this.props.onEditStaffMember(staff, true);
       },

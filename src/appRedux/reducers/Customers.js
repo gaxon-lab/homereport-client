@@ -1,4 +1,5 @@
 import {
+  ADD_CUSTOMER_ADDRESS,
   ADD_NEW_CUSTOMER,
   DECREASE_QUOTE_REQUESTS,
   DELETE_CUSTOMER,
@@ -103,12 +104,10 @@ export default (state = initialState, action) => {
           return customer;
         }
       });
-      console.log("currentCustomer", state.currentCustomer);
       if (state.currentCustomer) {
         updatedCustomer = state.currentCustomer;
         updatedCustomer.quoteRequests = updatedCustomer.quoteRequests.filter(quote => quote.quote_request_id !== action.payload.quoteId);
       }
-      console.log("updatedCustomer", updatedCustomer);
       return {
         ...state,
         customersList: list,
@@ -132,6 +131,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         customerAddresses: action.payload
+      };
+
+    case ADD_CUSTOMER_ADDRESS:
+      return {
+        ...state,
+        customerAddresses: state.customerAddresses.concat(action.payload)
       };
 
     default:

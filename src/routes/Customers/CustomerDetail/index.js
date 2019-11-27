@@ -23,7 +23,6 @@ class CustomerDetail extends Component {
   };
 
   render() {
-    console.log("currentCustomer", this.props.currentCustomer);
     const {currentCustomer} = this.props;
     return (
       <div>

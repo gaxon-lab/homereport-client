@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Checkbox, DatePicker, Form, Input, Modal, Select} from "antd";
 import {connect} from "react-redux";
-import {onGetCustomerAddress, onUpdatePaymentDetail} from "../../appRedux/actions";
+import {onAddCustomerAddress, onGetCustomerAddress, onUpdatePaymentDetail} from "../../appRedux/actions";
+import AddCustomerAddress from "../Customers/AddCustomerAddress";
 
 const {Option} = Select;
 const {TextArea} = Input;
@@ -42,7 +43,8 @@ class PaymentDetail extends Component {
 
   onValidationCheck = () => {
     const selectedQuote = this.props.selectedQuote;
-    const quoteFilterFunction = this.props.onFilterQuoteRequest ? this.props.onFilterQuoteRequest : (() => {});
+    const quoteFilterFunction = this.props.onFilterQuoteRequest ? this.props.onFilterQuoteRequest : (() => {
+    });
     this.props.form.validateFields(err => {
       if (!err) {
         if (this.state.transaction_id === "") {
@@ -62,6 +64,14 @@ class PaymentDetail extends Component {
     });
   };
 
+  onChangeAddressId = (id) => {
+    this.setState({billing_address_id : id})
+  };
+
+  onAddAddress = (values) => {
+    this.props.onAddCustomerAddress(this.props.selectedQuote.customer_id, {...values}, "billing", this.onChangeAddressId)
+  };
+
   render() {
     const {getFieldDecorator} = this.props.form;
     const {isChecked, remark, billing_address_id, payment_date, transaction_id} = this.state;
@@ -70,18 +80,18 @@ class PaymentDetail extends Component {
 
       <div className="gx-main-layout-content">
         <Modal width="60%"
-          visible={isPaymentShow}
-          title={`Add Payment Details for Quote Reference no. ${selectedQuote.reference_no}`}
-          maskClosable={false}
-          onCancel={() => onToggleShowPayment()}
-          footer={[
-            <Button key="cancel" onClick={() => onToggleShowPayment()}>
-              Cancel
-            </Button>,
-            <Button key="submit" type="primary" onClick={this.onValidationCheck}>
-              Save
-            </Button>
-          ]}>
+               visible={isPaymentShow}
+               title={`Add Payment Details for Quote Reference no. ${selectedQuote.reference_no}`}
+               maskClosable={false}
+               onCancel={() => onToggleShowPayment()}
+               footer={[
+                 <Button key="cancel" onClick={() => onToggleShowPayment()}>
+                   Cancel
+                 </Button>,
+                 <Button key="submit" type="primary" onClick={this.onValidationCheck}>
+                   Save
+                 </Button>
+               ]}>
 
           <Form layout="vertical">
 
@@ -95,10 +105,10 @@ class PaymentDetail extends Component {
                 <div className="gx-text-grey">Address</div>
                 <div className="gx-mt-2">
                   <p className="gx-mb-1 gx-font-weight-medium">{selectedQuote.address1}</p>
-                  {selectedQuote.address1 ?
-                    <p className="gx-mb-1 gx-font-weight-medium">{selectedQuote.address1}</p> : null}
+                  {selectedQuote.address2 ?
+                    <p className="gx-mb-1 gx-font-weight-medium">{selectedQuote.address2}</p> : null}
                   <p className="gx-mb-1 gx-font-weight-medium">{selectedQuote.city}, Scotland</p>
-                  <p className="gx-mb-1 gx-font-weight-medium"> Zip -{selectedQuote.postcode}</p>
+                  <p className="gx-mb-1 gx-font-weight-medium"> Postcode -{selectedQuote.postcode}</p>
                 </div>
               </div> : <Form.Item label="Select Address">
                 {getFieldDecorator('billing_address_id', {
@@ -108,14 +118,19 @@ class PaymentDetail extends Component {
                 })(<Select className="gx-mb-4"
                            style={{width: '100%'}}
                            placeholder="Select Property Address"
-                           onChange={(value) => this.setState({billing_address_id: value})}
-                >
+                           onChange={(value) => this.onChangeAddressId(value)}>
                   {customerAddresses.map(address => {
                     return <Option value={address.id}
                                    key={address.id}>{`${address.address1}, ${address.address2}, ${address.city}, Scotland - ${address.postcode}`}</Option>
                   })}
+                  <Option value={1}>Add New Address</Option>
                 </Select>)}
               </Form.Item>}
+
+            {billing_address_id === 1 ?
+              <AddCustomerAddress onAddAddress={this.onAddAddress}
+                                  customerId={this.props.selectedQuote.customer_id}/>
+              : null}
 
             <Form.Item label="Comments">
               {getFieldDecorator('remark', {
@@ -124,7 +139,6 @@ class PaymentDetail extends Component {
                 this.setState({remark: e.target.value})
               }}/>)}
             </Form.Item>
-
 
             <Form.Item label="Payment Date & Time">
               {getFieldDecorator('payment_date', {
@@ -154,4 +168,8 @@ const mapStateToProps = ({customers}) => {
   return {customerAddresses}
 };
 
-export default connect(mapStateToProps, {onGetCustomerAddress, onUpdatePaymentDetail})((PaymentDetail));
+export default connect(mapStateToProps, {
+  onGetCustomerAddress,
+  onUpdatePaymentDetail,
+  onAddCustomerAddress
+})((PaymentDetail));

@@ -38,7 +38,6 @@ class UploaderContainer extends Component {
       }
     }).then(({data}) => {
       if (data.success) {
-        console.log("image uploaded successfully", data)
         this.props.fetchSuccess();
         this.props.onUploadDocument(data.data, this.props.caption)
         this.setState({fileList: []})
@@ -46,7 +45,6 @@ class UploaderContainer extends Component {
         this.props.fetchError(data.errors[0])
       }
     }).catch((error) => {
-      console.log("error",)
       this.props.fetchError(error)
     });
   };

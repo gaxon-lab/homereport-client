@@ -1,7 +1,9 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT} from "../../constants/ActionTypes";
 import axios from 'util/Api'
 import {
-  ADD_NEW_CUSTOMER, DELETE_CUSTOMER,
+  ADD_CUSTOMER_ADDRESS,
+  ADD_NEW_CUSTOMER,
+  DELETE_CUSTOMER,
   EDIT_CUSTOMER_DETAILS,
   GET_CUSTOMER_ADDRESS,
   GET_CUSTOMER_DETAIL,
@@ -27,7 +29,6 @@ export const onGetCustomersList = (currentPage, itemsPerPage, filterText, updati
         search: filterText
       }
     }).then(({data}) => {
-      console.info("onGetCustomersList: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_CUSTOMERS_LIST, payload: data.data});
@@ -38,7 +39,6 @@ export const onGetCustomersList = (currentPage, itemsPerPage, filterText, updati
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -50,7 +50,6 @@ export const onSearchCustomers = (filterText) => {
         search: filterText
       }
     }).then(({data}) => {
-      console.info("onGetCustomersList: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_CUSTOMERS_LIST, payload: data.data});
@@ -61,7 +60,6 @@ export const onSearchCustomers = (filterText) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -70,7 +68,6 @@ export const onGetCustomerDetail = (customerId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`/customers/${customerId}`).then(({data}) => {
-      console.info("onGetCustomerDetail: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_CUSTOMER_DETAIL, payload: data.data});
@@ -81,7 +78,6 @@ export const onGetCustomerDetail = (customerId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -90,7 +86,6 @@ export const onAddNewCustomer = (details) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('/customers', details).then(({data}) => {
-      console.log("onAddNewCustomer", data);
       if (data.success) {
         dispatch({type: ADD_NEW_CUSTOMER, payload: data.data});
         dispatch({type: FETCH_SUCCESS});
@@ -102,7 +97,6 @@ export const onAddNewCustomer = (details) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -126,7 +120,6 @@ export const onEditCustomerDetails = (details, updatingContent) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -135,7 +128,6 @@ export const onDeleteCustomer = (customerId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.delete(`/customers/${customerId}`).then(({data}) => {
-      console.log("onDeleteCustomer", data);
       if (data.success) {
         dispatch({type: DELETE_CUSTOMER, payload: customerId});
         dispatch({type: FETCH_SUCCESS});
@@ -147,7 +139,6 @@ export const onDeleteCustomer = (customerId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -156,7 +147,6 @@ export const onGetCustomerQuotes = (customerId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`/customers/${customerId}/quote/requests`).then(({data}) => {
-      console.info("onGetCustomerQuotes: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_CUSTOMER_QUOTES, payload: data.data});
@@ -167,7 +157,6 @@ export const onGetCustomerQuotes = (customerId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -176,7 +165,6 @@ export const onGetCustomerReports = (customerId) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`/customers/${customerId}/reports`).then(({data}) => {
-      console.info("onGetCustomerReports: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_CUSTOMERS_REPORTS, payload: data.data});
@@ -187,7 +175,6 @@ export const onGetCustomerReports = (customerId) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -196,10 +183,8 @@ export const onDownloadCustomerList = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get("/customers/export/data").then(({data}) => {
-      console.info("onDownloadCustomerList: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
-        // dispatch({type: GET_CUSTOMER_DETAIL, payload: data.data});
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {
@@ -207,7 +192,6 @@ export const onDownloadCustomerList = () => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
     });
   }
 };
@@ -216,7 +200,6 @@ export const onGetCustomerAddress = (customerId, type) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get(`addresses/${type}/customer/${customerId}`).then(({data}) => {
-      console.info("onGetCustomerAddress: ", data);
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: GET_CUSTOMER_ADDRESS, payload: data.data});
@@ -227,7 +210,27 @@ export const onGetCustomerAddress = (customerId, type) => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
-      console.info("Error****:", error.message);
+    });
+  }
+};
+
+export const onAddCustomerAddress = (customerId, address, type, onChangeAddressId) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    axios.post(`addresses/${type}/customer/${customerId}/add`, address).then(({data}) => {
+      if (data.success) {
+        if (onChangeAddressId) {
+          onChangeAddressId(null)
+        }
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: ADD_CUSTOMER_ADDRESS, payload: data.data});
+      } else if (data.message) {
+        dispatch({type: FETCH_ERROR, payload: data.message});
+      } else {
+        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
+      }
+    }).catch(function (error) {
+      dispatch({type: FETCH_ERROR, payload: error.message});
     });
   }
 };

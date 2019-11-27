@@ -50,7 +50,6 @@ export default (state = initialState, action) => {
       };
 
     case BULK_DELETE_SUPPORT_STAFF:
-      console.log("in staf delete redux", action.payload)
       return {
         ...state,
         staffList: state.staffList.filter(member => (action.payload.indexOf(member.id) === -1)),
