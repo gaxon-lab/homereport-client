@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Col, Icon, Row, Tooltip, Upload} from "antd";
-import axios from 'util/Api'
 import ViewPropertyQuestionnaire from "./ViewPropertyQuestionnaire";
+import {imageUpload} from "../../../util/imageUploader";
 
 class UploaderContainer extends Component {
   constructor(props) {
@@ -17,47 +17,42 @@ class UploaderContainer extends Component {
   };
 
   onClickViewPropertyQuestionnaire = () => {
-    if(document) {
+    if (document) {
       this.setState({isViewOpen: !this.state.isViewOpen})
     }
   };
 
-  handleUpload = (fileObj) => {
-    const file = fileObj.fileList[0].originFileObj
-    let formData = new FormData();
-    formData.append('file', file);
-    formData.append('title', file.name);
-    this.imageUpload(formData);
+  handleUpload =  (fileObj) => {
+    const file = fileObj.fileList[0].originFileObj;
+    imageUpload(file, this.onGetDocumentId);
   };
 
-  imageUpload = (file) => {
-    this.props.fetchStart();
-    axios.post("/uploads/temporary/media", file, {
-      headers: {
-        'Content-Type': "multipart/form-data"
-      }
-    }).then(({data}) => {
-      if (data.success) {
-        this.props.fetchSuccess();
-        this.props.onUploadDocument(data.data, this.props.caption)
-        this.setState({fileList: []})
+  onGetDocumentId = (id) => {
+    this.props.onUploadDocument(id, this.props.caption);
+    this.setState({fileList: []})
+  };
+
+  onGetFilePath = () => {
+    const {caption, document, token} = this.props;
+    if (caption === "property_quest") {
+      if (document) {
+        return `${process.env.REACT_APP_API_URL}property/quest/${document.id}/download?token=${token}`
       } else {
-        this.props.fetchError(data.errors[0])
+        return null;
       }
-    }).catch((error) => {
-      this.props.fetchError(error)
-    });
+    } else {
+      if (document && document.path) {
+        return document.path;
+      } else {
+        return null;
+      }
+    }
   };
 
   render() {
     const {fileList, isViewOpen} = this.state;
     const {document, caption} = this.props;
-    const filePath = document && document.path ? document.path : null;
-    let propertyQuestionnaireFilePath = null;
-    if (document) {
-      propertyQuestionnaireFilePath =
-        `http://homereport.wearebauercreate.design/homereport-server/public/api/property/quest/${document.id}/download?token=${this.props.token}`
-    }
+    const filePath = this.onGetFilePath();
     return (
       <div>
         <Row className="gx-d-flex gx-justify-content-around gx-mb-1">
@@ -67,7 +62,7 @@ class UploaderContainer extends Component {
           </Col>
 
           <Col span={11} className="gx-d-flex gx-justify-content-between">
-            {propertyQuestionnaireFilePath ?
+            {caption === "property_quest" && filePath ?
               <Tooltip title="View">
                 <Icon type="eye" className=" gx-text-black" onClick={this.onClickViewPropertyQuestionnaire}/>
               </Tooltip> :
@@ -76,17 +71,13 @@ class UploaderContainer extends Component {
                   <Icon type="eye" className=" gx-text-black"/>
                 </Tooltip>
               </a>}
-            {propertyQuestionnaireFilePath ?
-              <a href={propertyQuestionnaireFilePath} download target="_blank" rel="noopener noreferrer">
-                <Tooltip title="Download">
-                  <Icon type="download" className="gx-text-black"/>
-                </Tooltip>
-              </a> :
-              <a href={filePath} download target="_blank" rel="noopener noreferrer">
-                <Tooltip title="Download">
-                  <Icon type="download" className="gx-text-black"/>
-                </Tooltip>
-              </a>}
+
+            <a href={filePath} download target="_blank" rel="noopener noreferrer">
+              <Tooltip title="Download">
+                <Icon type="download" className="gx-text-black"/>
+              </Tooltip>
+            </a>
+
             {caption !== "property_quest" ?
               <Upload
                 fileList={fileList}
@@ -100,7 +91,7 @@ class UploaderContainer extends Component {
         {isViewOpen ? <ViewPropertyQuestionnaire isViewOpen={isViewOpen}
                                                  token={this.props.token}
                                                  onToggleViewBox={this.onToggleViewBox}
-                                                 propertyQuestionnaire={this.props.propertyQuestionnaire}/> : null}
+                                                 propertyQuestionnaire={this.props.document}/> : null}
       </div>
     );
   }

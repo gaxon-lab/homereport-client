@@ -22,7 +22,6 @@ export const setInitUrl = (url) => {
   };
 };
 
-
 export const onUserSignIn = ({email, password}) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -59,42 +58,35 @@ export const onGetUserPermission = (history) => {
         dispatch({type: UPDATE_USER_PERMISSION_DATA, payload: data.data});
         localStorage.setItem("settings", JSON.stringify(data.data));
         Permissions.setPermissions(data.data);
-      } else if (data.message) {
+      } else {
         dispatch({type: FETCH_ERROR, payload: data.message});
         dispatch({type: FETCH_USER_INFO_ERROR, payload: data.errors[0]});
         history.push("/signin");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-      } else {
-        dispatch({type: FETCH_ERROR, payload: data.errors[0]});
-        dispatch({type: FETCH_USER_INFO_ERROR, payload: data.errors[0]});
-        history.push("/signin");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.removeItem("settings");
+        dispatch({type: USER_TOKEN_SET, payload: null});
+        dispatch({type: USER_DATA, payload: null});
       }
     }).catch((error) => {
       if (error.response && error.response.status === 401) {
         history.push("/signin");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        dispatch({type: USER_TOKEN_SET, payload: ''});
+        localStorage.removeItem("settings");
+        dispatch({type: USER_TOKEN_SET, payload: null});
         dispatch({type: USER_DATA, payload: null});
-        dispatch({type: FETCH_ERROR, payload: error.response.data.message});
+        dispatch({type: FETCH_ERROR, payload: "Your token is expired, Please login again!"});
         dispatch({type: FETCH_USER_INFO_ERROR, payload: error.response.data.message});
       } else {
+        console.log("error: ", JSON.stringify(error));
         dispatch({type: FETCH_ERROR, payload: error.message});
         dispatch({type: FETCH_USER_INFO_ERROR, payload: error.message});
+        console.log("Error****:", error.message);
       }
     });
   }
 };
-
-// export const setUserDefaultSetting = (data) => {
-//   return (dispatch) => {
-//     dispatch({type: UPDATE_USER_PERMISSION_DATA, payload: data});
-//   }
-// };
-
 
 export const onUserSignOut = () => {
   return (dispatch) => {
@@ -118,7 +110,6 @@ export const showErrorMessage = (error) => {
     return ({type: FETCH_ERROR, payload: error.message});
   }
 };
-
 
 export const getUserProfile = () => {
   return (dispatch) => {

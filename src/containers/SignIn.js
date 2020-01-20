@@ -59,7 +59,7 @@ class SignIn extends React.Component {
               <Form onSubmit={this.handleSubmit} className="gx-signin-form gx-form-row0">
                 <FormItem>
                   {getFieldDecorator('email', {
-                    initialValue: "info@homereportscotland.scot",
+                    initialValue: "",
                     rules: [{
                       required: true, type: 'email', message: messages["validation.message.emailFormat"],
                     }],

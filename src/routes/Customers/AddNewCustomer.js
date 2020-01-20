@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Avatar, Button, Col, Form, Input, Modal, Radio, Row, Upload} from "antd";
-import axios from 'util/Api'
 import {connect} from "react-redux";
-import {fetchError, fetchStart, fetchSuccess, onAddNewCustomer, onEditCustomerDetails} from "../../appRedux/actions";
+import {onAddNewCustomer, onEditCustomerDetails} from "../../appRedux/actions";
+import {imageUpload} from "../../util/imageUploader";
 
 class AddNewCustomer extends Component {
   constructor(props) {
@@ -44,33 +44,15 @@ class AddNewCustomer extends Component {
   onImageSelect = () => {
     let file = this.state.fileList[0];
     if (file) {
-      const data = new FormData();
-      data.append('file', file);
-      data.append('title', file.name);
-      data.append('mime_type', file.type);
-      this.onAddImage(data);
+      imageUpload(file, this.onGetImageId);
     }
   };
 
-  onAddImage = (file) => {
-    this.props.fetchStart();
-    axios.post("/uploads/temporary/media", file, {
-      headers: {
-        'Content-Type': "multipart/form-data"
-      }
-    }).then(({data}) => {
-      if (data.success) {
-        this.props.fetchSuccess();
-        this.setState({profile_pic_id: data.data}, () => {
-          this.onCustomerAdd();
-          this.setState({fileList: []})
-        })
-      } else {
-        this.props.fetchError(data.errors[0])
-      }
-    }).catch(function (error) {
-      this.props.fetchError(error.Error.message)
-    });
+  onGetImageId = (id) => {
+    this.setState({profile_pic_id: id}, () => {
+      this.onCustomerAdd();
+      this.setState({fileList: []})
+    })
   };
 
   getImageURL = () => {
@@ -228,9 +210,6 @@ AddNewCustomer = Form.create({})(AddNewCustomer);
 
 
 export default connect(null, {
-  fetchStart,
-  fetchSuccess,
-  fetchError,
   onAddNewCustomer,
   onEditCustomerDetails
 })((AddNewCustomer));

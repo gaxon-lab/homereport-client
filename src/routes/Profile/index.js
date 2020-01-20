@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Widget from "../../components/Widget";
 import {connect} from "react-redux";
 import ImageUpload from "./ImageUpload";
-import {fetchError, fetchStart, fetchSuccess, getUserProfile, onUpdateUserProfile} from "../../appRedux/actions";
+import {getUserProfile, onUpdateUserProfile} from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
 
 
@@ -17,7 +17,6 @@ class Profile extends Component {
       email: "",
       profile_pic: null,
       avatar: null
-
     };
   }
 
@@ -30,7 +29,7 @@ class Profile extends Component {
           first_name: first_name,
           last_name: last_name,
           email: email,
-          profile_pic: profile_pic && profile_pic.length > 0? profile_pic[0].id : null,
+          profile_pic: profile_pic && profile_pic.length > 0 ? profile_pic[0].id : null,
           avatar: profile_pic && profile_pic.length > 0 ? profile_pic[0] : null
         });
       }
@@ -52,7 +51,6 @@ class Profile extends Component {
   onAddImage = (profile_pic) => {
     this.setState({profile_pic})
   };
-
 
   onValidationCheck = () => {
     this.props.form.validateFields(err => {
@@ -119,12 +117,8 @@ class Profile extends Component {
               </Form>
             </Col>
             <Col xl={6} lg={12} md={12} sm={12} xs={24}>
-              <ImageUpload fetchStart={this.props.fetchStart}
-                           fetchError={this.props.fetchError}
-                           fetchSuccess={this.props.fetchSuccess}
-                           onAddImage={this.onAddImage}
-                           uploadedImage={avatar}
-              />
+              <ImageUpload onAddImage={this.onAddImage}
+                           uploadedImage={avatar}/>
             </Col>
           </Row>
           <Divider/>
@@ -153,9 +147,7 @@ const mapStateToProps = ({auth}) => {
 };
 
 export default connect(mapStateToProps, {
-  getUserProfile, onUpdateUserProfile, fetchStart,
-  fetchSuccess,
-  fetchError
+  getUserProfile, onUpdateUserProfile
 })(Profile);
 
 Profile.defaultProps = {

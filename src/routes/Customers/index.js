@@ -183,7 +183,7 @@ class Customers extends Component {
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="gx-d-flex ">
-            <a href="http://gaxonlab.com/homereport-server/api/customers/export/data" target="_blank"
+            <a href={`${process.env.REACT_APP_API_URL}customers/export/data`} target="_blank"
                rel="noopener noreferrer">
               <Button type="primary" className="gx-btn-lg">
                 Export to CSV</Button>

@@ -7,9 +7,6 @@ import {connect} from "react-redux";
 import {onGetStaff} from "../../appRedux/actions/StaffList";
 import {onGetReportDetail, onNullifyCurrentReport} from "../../appRedux/actions/HomeReports";
 import {
-  fetchError,
-  fetchStart,
-  fetchSuccess,
   onAddNewComment,
   onAddReportDocument,
   onAssignStaffToReport,
@@ -35,7 +32,8 @@ class ReportDetail extends Component {
       comment: '',
       isShowDatePicker: false,
       inspection_date: null,
-      inspection_time: "",
+      startTime: "",
+      endTime: ""
     }
   }
 
@@ -79,7 +77,7 @@ class ReportDetail extends Component {
   };
 
   onUploadDocument = (documentId, documentName) => {
-    const document = {media_id: documentId, caption: documentName}
+    const document = {media_id: documentId, caption: documentName};
     this.props.onAddReportDocument(this.props.currentReport.report_id, document)
   };
 
@@ -93,27 +91,49 @@ class ReportDetail extends Component {
   }
 
   onOpenDatePicker = () => {
-    this.setState({isShowDatePicker: !this.state.isShowDatePicker, inspection_date: "", inspection_time: ""});
+    this.setState({isShowDatePicker: !this.state.isShowDatePicker, inspection_date: "", startTime: "", endTime: ""});
   };
 
   onDateChange = (value, dateString) => {
     this.setState({inspection_date: dateString})
   };
 
-  onSelectTimeSlot = value => {
-    this.setState({inspection_time: value});
+  onSelectStartTime = value => {
+    this.setState({startTime: value});
+  };
+
+  onSelectEndTime = value => {
+    this.setState({endTime: value});
   };
 
   onSelectDateTime = () => {
     const currentReport = this.props.currentReport;
-    const {inspection_date, inspection_time} = this.state;
+    const {inspection_date, startTime, endTime} = this.state;
     if (inspection_date === "") {
       message.error("Please select date first!")
-    } else if (inspection_time === "") {
-      message.error("Please select time slot first")
+    } else if (startTime === "") {
+      message.error("Please select Start Time first!")
+    } else if (endTime === "") {
+      message.error("Please select End Time first!")
     } else {
-      this.props.onSetSurveyDate(currentReport.report_id, {inspection_date, inspection_time});
-      this.setState({isShowDatePicker: false});
+      if (!this.onGetInspectionTime()) {
+        const inspection_time = startTime + 'm' + " " + "-" + " " + endTime + 'm';
+        this.props.onSetSurveyDate(currentReport.report_id, {inspection_date, inspection_time});
+        this.setState({isShowDatePicker: false});
+      } else {
+        message.error("End Time should be after Start Time!")
+      }
+    }
+  };
+
+  onGetInspectionTime = () => {
+    const {startTime, endTime} = this.state;
+    let time1 = moment(startTime, "HH:mm a");
+    let time2 = moment(endTime, "HH:mm a");
+    if (time1.isSame(time2) || time1.isAfter(time2)) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -123,7 +143,7 @@ class ReportDetail extends Component {
 
   render() {
     const {staffList, currentReport, totalItems, reportComments, reportDocuments, authUser, loggedUserPermissions} = this.props;
-    const {comment, isShowDatePicker, inspection_time} = this.state;
+    const {comment, isShowDatePicker, startTime, endTime} = this.state;
     let assignedTo = null;
     if (currentReport && currentReport.assigned_user_id) {
       assignedTo = {
@@ -191,13 +211,11 @@ class ReportDetail extends Component {
 
                     <DocumentUploading onUploadDocument={this.onUploadDocument}
                                        reportDocuments={reportDocuments}
-                                       fetchError={this.props.fetchError}
-                                       fetchSuccess={this.props.fetchSuccess}
-                                       fetchStart={this.props.fetchStart}
                                        propertyQuestionnaire={currentReport.property_questionnaire}
                                        token={this.props.token}/>
 
                   </div>
+
                   {currentReport.assigned_user_id ?
 
                     <div>
@@ -297,20 +315,32 @@ class ReportDetail extends Component {
                               <DatePicker placeholder="Select Date" disabledDate={(value) => this.onDisabledDate(value)}
                                           onChange={this.onDateChange} onOk={this.onSelectDateTime}/>
 
-                              <Select className="gx-my-2" placeholder="Inserted are removed" value={inspection_time}
-                                      onChange={this.onSelectTimeSlot}>
-                                <Option value="9am - 11am">9am - 11am</Option>
-                                <Option value="11am - 1pm">11am - 1pm</Option>
-                                <Option value="1pm - 3pm">1pm - 3pm</Option>
-                                <Option value="3pm - 5pm">3pm - 5pm</Option>
-                                <Option value="5pm - 7pm">5pm - 7pm</Option>
-                                <Option value="7pm - 9pm">7pm - 9pm</Option>
-                                <Option value="9pm - 11pm">9pm - 11pm</Option>
-                                <Option value="11pm - 1am">11pm - 1am</Option>
-                                <Option value="1am - 3am">1am - 3am</Option>
-                                <Option value="3am - 5am">3am - 5am</Option>
-                                <Option value="5am - 7am">5am - 7am</Option>
-                                <Option value="7am - 9am">7am - 9am</Option>
+                              <Select className="gx-my-2" placeholder="Start Time" value={startTime}
+                                      onChange={this.onSelectStartTime}>
+                                <Option value="8:00a">8 AM</Option>
+                                <Option value="9:00a">9 AM</Option>
+                                <Option value="10:00a">10 AM</Option>
+                                <Option value="11:00a">11 AM</Option>
+                                <Option value="12:00p">12 PM</Option>
+                                <Option value="1:00p">1 PM</Option>
+                                <Option value="2:00p">2 PM</Option>
+                                <Option value="3:00p">3 PM</Option>
+                                <Option value="4:00p">4 PM</Option>
+                                <Option value="5:00p">5 PM</Option>
+                              </Select>
+
+                              <Select className="gx-my-2" placeholder="End Time" value={endTime}
+                                      onChange={this.onSelectEndTime} disabled={startTime === ""}>
+                                <Option value="9:00a">9 AM</Option>
+                                <Option value="10:00a">10 AM</Option>
+                                <Option value="11:00a">11 AM</Option>
+                                <Option value="12:00p">12 PM</Option>
+                                <Option value="1:00p">1 PM</Option>
+                                <Option value="2:00p">2 PM</Option>
+                                <Option value="3:00p">3 PM</Option>
+                                <Option value="4:00p">4 PM</Option>
+                                <Option value="5:00p">5 PM</Option>
+                                <Option value="6:00p">6 PM</Option>
                               </Select>
 
                               <div className="gx-d-flex">
@@ -341,6 +371,13 @@ class ReportDetail extends Component {
                     </div>
                   </div>
 
+                  <div className="gx-p-4 gx-my-4" style={{backgroundColor: "#eee"}}>
+                    <div className="gx-text-grey">Single Survey Accepted</div>
+                    <div className="gx-mt-2 gx-text-black">
+                      {currentReport.survey_accept_date ? currentReport.survey_accept_date : "NA"}
+                    </div>
+                  </div>
+
                 </div>
 
               </Col>
@@ -360,7 +397,16 @@ const mapStateToProps = ({staff, homeReports, auth}) => {
   const {authUser, loggedUserPermissions, token} = auth;
   const {staffList, totalItems} = staff;
   const {currentReport, reportComments, reportDocuments} = homeReports;
-  return {staffList, totalItems, currentReport, reportComments, reportDocuments, authUser, loggedUserPermissions,token};
+  return {
+    staffList,
+    totalItems,
+    currentReport,
+    reportComments,
+    reportDocuments,
+    authUser,
+    loggedUserPermissions,
+    token
+  };
 };
 
 export default connect(mapStateToProps, {
@@ -370,9 +416,6 @@ export default connect(mapStateToProps, {
   onAssignStaffToReport,
   onGetReportComments,
   onAddNewComment,
-  fetchStart,
-  fetchSuccess,
-  fetchError,
   onAddReportDocument,
   onGetReportDocuments,
   onSetSurveyDate

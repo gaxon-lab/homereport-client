@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
 import {Avatar, Button, Checkbox, Col, Form, Input, Modal, Radio, Row, Upload} from "antd";
-import axios from 'util/Api'
 import {connect} from "react-redux";
-import {
-  fetchError,
-  fetchStart,
-  fetchSuccess,
-  onAddStaffMember,
-  onEditStaffMember,
-  onGetSelectedStaffPermission
-} from "../../appRedux/actions";
+import {onAddStaffMember, onEditStaffMember, onGetSelectedStaffPermission} from "../../appRedux/actions";
+import {imageUpload} from "../../util/imageUploader";
 
 class AddNewStaff extends Component {
   constructor(props) {
@@ -74,33 +67,15 @@ class AddNewStaff extends Component {
   onImageSelect = () => {
     let file = this.state.fileList[0];
     if (file) {
-      const data = new FormData();
-      data.append('file', file);
-      data.append('title', file.name);
-      data.append('mime_type', file.type);
-      this.onAddImage(data);
+      imageUpload(file, this.onGetImageId);
     }
   };
 
-  onAddImage = (file) => {
-    this.props.fetchStart();
-    axios.post("/uploads/temporary/media", file, {
-      headers: {
-        'Content-Type': "multipart/form-data"
-      }
-    }).then(({data}) => {
-      if (data.success) {
-        this.props.fetchSuccess();
-        this.setState({profile_pic_id: data.data}, () => {
-          this.onStaffAdd();
-          this.setState({fileList: []})
-        })
-      } else {
-        this.props.fetchError(data.errors[0])
-      }
-    }).catch(function (error) {
-      this.props.fetchError(error.Error.message)
-    });
+  onGetImageId = (id) => {
+    this.setState({profile_pic_id: id}, () => {
+      this.onStaffAdd();
+      this.setState({fileList: []})
+    })
   };
 
   getImageURL = () => {
@@ -236,8 +211,10 @@ class AddNewStaff extends Component {
                     initialValue: mobile_no,
                     validateTrigger: 'onBlur',
                     rules: [{required: true, message: 'Please Enter Mobile number!'},
-                      {pattern: /^[0-9\b]+$/,
-                        message: "Please enter only numerical values!"}],
+                      {
+                        pattern: /^[0-9\b]+$/,
+                        message: "Please enter only numerical values!"
+                      }],
                   })(<Input type="text" onChange={(e) => {
                     this.setState({mobile_no: e.target.value})
                   }}/>)}
@@ -301,8 +278,5 @@ const mapStateToProps = ({staff, auth}) => {
 export default connect(mapStateToProps, {
   onAddStaffMember,
   onEditStaffMember,
-  fetchStart,
-  fetchSuccess,
-  fetchError,
   onGetSelectedStaffPermission
 })((AddNewStaff));

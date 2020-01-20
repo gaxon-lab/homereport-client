@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Avatar, Button, message, Upload} from "antd/lib/index";
 import PropTypes from "prop-types";
-import axios from 'util/Api'
+import {imageUpload} from "../../util/imageUploader";
 
 
 class ImageUpload extends Component {
@@ -15,32 +15,15 @@ class ImageUpload extends Component {
   onLogoSelect = () => {
     let file = this.state.fileList[0];
     if (file) {
-      const data = new FormData();
-      data.append('file', file);
-      data.append('title', file.name);
-      this.onAddProfilePic(data);
+      imageUpload(file, this.onGetImageId);
     } else {
       message.warning("Please select Image First!")
     }
   };
 
-  onAddProfilePic = (file) => {
-    this.props.fetchStart();
-    axios.post("/uploads/temporary/media", file, {
-      headers: {
-        'Content-Type': "multipart/form-data"
-      }
-    }).then(({data}) => {
-      if (data.success) {
-        this.props.fetchSuccess();
-        this.props.onAddImage(data.data)
-        message.success("The profile picture has been uploaded successfully.")
-      } else {
-        this.props.fetchError(data.errors[0])
-      }
-    }).catch(function (error) {
-      this.props.fetchError(error.message)
-    });
+  onGetImageId = (id) => {
+    this.props.onAddImage(id);
+    message.success("The profile picture has been uploaded successfully.")
   };
 
   getImageURL = () => {

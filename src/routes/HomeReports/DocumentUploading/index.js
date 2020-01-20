@@ -5,7 +5,7 @@ import UploaderContainer from "./UploaderContainer";
 class DocumentUploading extends Component {
 
   render() {
-    const reportDocuments = this.props.reportDocuments;
+    const {reportDocuments, propertyQuestionnaire} = this.props;
     let termConditionDocument, energyDocument, surveyDocument;
     if (reportDocuments) {
       termConditionDocument = reportDocuments.find(document => document.caption === "term_cond");
@@ -17,38 +17,24 @@ class DocumentUploading extends Component {
         <div className="gx-text-grey gx-mb-2">Documents:</div>
 
         <UploaderContainer caption = "property_quest"
-                           onUploadDocument={this.props.onUploadDocument}
                            title="Property Questionnaire"
                            token={this.props.token}
-                           fetchError={this.props.fetchError}
-                           fetchSuccess={this.props.fetchSuccess}
-                           fetchStart={this.props.fetchStart}
-                           document={this.props.propertyQuestionnaire}
-                           propertyQuestionnaire={this.props.propertyQuestionnaire}/>
+                           document={propertyQuestionnaire}/>
 
         <UploaderContainer caption="term_cond"
                            document={termConditionDocument}
                            onUploadDocument={this.props.onUploadDocument}
-                           title="Terms and Conditions"
-                           fetchError={this.props.fetchError}
-                           fetchSuccess={this.props.fetchSuccess}
-                           fetchStart={this.props.fetchStart}/>
+                           title="Terms and Conditions"/>
 
         <UploaderContainer caption="eng_cert"
                            document={energyDocument}
                            onUploadDocument={this.props.onUploadDocument}
-                           title="Energy Performance Certificate"
-                           fetchError={this.props.fetchError}
-                           fetchSuccess={this.props.fetchSuccess}
-                           fetchStart={this.props.fetchStart}/>
+                           title="Energy Performance Certificate"/>
 
         <UploaderContainer caption="single_sur"
                            document={surveyDocument}
                            onUploadDocument={this.props.onUploadDocument}
-                           title="The Single Survey"
-                           fetchError={this.props.fetchError}
-                           fetchSuccess={this.props.fetchSuccess}
-                           fetchStart={this.props.fetchStart}/>
+                           title="The Single Survey"/>
       </div>
     );
   }
