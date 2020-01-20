@@ -315,7 +315,8 @@ class ReportDetail extends Component {
                               <DatePicker placeholder="Select Date" disabledDate={(value) => this.onDisabledDate(value)}
                                           onChange={this.onDateChange} onOk={this.onSelectDateTime}/>
 
-                              <Select className="gx-my-2" placeholder="Start Time" value={startTime}
+                              <div className=" gx-mt-4 gx-mb-1">Select Start Time</div>
+                              <Select className="gx-mb-2" placeholder="Start Time" value={startTime}
                                       onChange={this.onSelectStartTime}>
                                 <Option value="8:00a">8 AM</Option>
                                 <Option value="9:00a">9 AM</Option>
@@ -329,7 +330,8 @@ class ReportDetail extends Component {
                                 <Option value="5:00p">5 PM</Option>
                               </Select>
 
-                              <Select className="gx-my-2" placeholder="End Time" value={endTime}
+                              <div className="gx-mt-2 gx-mb-1"> Select End Time</div>
+                              <Select className="gx-mb-2" placeholder="End Time" value={endTime}
                                       onChange={this.onSelectEndTime} disabled={startTime === ""}>
                                 <Option value="9:00a">9 AM</Option>
                                 <Option value="10:00a">10 AM</Option>
