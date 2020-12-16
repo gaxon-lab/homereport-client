@@ -10,7 +10,6 @@
     "axios": "^0.18.0",
     "dotenv": "^8.1.0",
     "draftjs-to-html": "^0.8.4",
-    "firebase": "^5.2.0",
     "instantsearch.css": "^7.1.0",
     "less": "2.7.3",
     "less-loader": "^4.1.0",
