@@ -35,6 +35,10 @@ class AddNewStaff extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.requestSuccess) {
+      this.props.onToggleAddStaff();
+    }
+
     if (this.props.selectedStaff) {
       if (nextProps.selectedStaffPermissions && nextProps.selectedStaffPermissions !== this.props.selectedStaffPermissions) {
         const permissions = nextProps.selectedStaffPermissions.map(permission => permission.name);
@@ -61,7 +65,6 @@ class AddNewStaff extends Component {
     } else {
       this.props.onEditStaffMember({...this.state});
     }
-    this.props.onToggleAddStaff();
   };
 
   onImageSelect = () => {
@@ -268,10 +271,11 @@ class AddNewStaff extends Component {
 AddNewStaff = Form.create({})(AddNewStaff);
 
 
-const mapStateToProps = ({staff, auth}) => {
+const mapStateToProps = ({staff, auth, common}) => {
+  const {message} = common;
   const {selectedStaffPermissions} = staff;
   const {userPermissions, loggedUserPermissions} = auth;
-  return {selectedStaffPermissions, userPermissions, loggedUserPermissions};
+  return {selectedStaffPermissions, userPermissions, loggedUserPermissions, requestSuccess: message};
 };
 
 

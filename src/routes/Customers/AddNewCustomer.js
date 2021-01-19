@@ -23,6 +23,11 @@ class AddNewCustomer extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.requestSuccess) {
+      this.props.onToggleAddCustomer();
+    }
+  }
 
   onSubmitForm = () => {
     if (this.state.fileList.length > 0) {
@@ -38,7 +43,6 @@ class AddNewCustomer extends Component {
     } else {
       this.props.onEditCustomerDetails({...this.state});
     }
-    this.props.onToggleAddCustomer();
   };
 
   onImageSelect = () => {
@@ -208,8 +212,11 @@ class AddNewCustomer extends Component {
 
 AddNewCustomer = Form.create({})(AddNewCustomer);
 
-
-export default connect(null, {
+const mapStateToProps = ({common}) => {
+  const {message} = common;
+  return {requestSuccess: message};
+}
+export default connect(mapStateToProps, {
   onAddNewCustomer,
   onEditCustomerDetails
 })((AddNewCustomer));

@@ -3,7 +3,7 @@ import {Breadcrumb, Button, Input, Modal, Select, Table} from "antd";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import CustomersRow from "./CustomerRow";
-import {onGetCustomersList} from "../../appRedux/actions/Customers";
+import {onGetCustomersList} from "../../appRedux/actions";
 import Widget from "../../components/Widget";
 import QuoteRequestModal from "./QuoteRequestModal";
 import InfoView from "../../components/InfoView";
@@ -36,7 +36,7 @@ class Customers extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText);
   }
 

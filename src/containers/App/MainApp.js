@@ -1,18 +1,16 @@
-import React, {Component, Suspense} from "react";
+import React, {Component} from "react";
 import {Layout} from "antd";
 
 import Sidebar from "../Sidebar/index";
 
 import Topbar from "../Topbar/index";
-import {footerText} from "util/config";
 import App from "routes/index";
 import {connect} from "react-redux";
-import CircularProgress from "../../components/CircularProgress";
 
 const {Content, Footer} = Layout;
+const today = new Date();
 
 export class MainApp extends Component {
-
   render() {
     const {match} = this.props;
 
@@ -22,12 +20,10 @@ export class MainApp extends Component {
         <Layout>
           <Topbar/>
           <Content className="gx-layout-content">
-            <Suspense fallback={<CircularProgress/>}>
-              <App match={match}/>
-            </Suspense>
+            <App match={match}/>
             <Footer>
               <div className="gx-layout-footer-content">
-                {footerText}
+                Copyright Home Report Scotland © {today.getFullYear()}
               </div>
             </Footer>
           </Content>
