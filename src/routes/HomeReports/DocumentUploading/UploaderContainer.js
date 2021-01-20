@@ -36,7 +36,7 @@ class UploaderContainer extends Component {
     const {caption, document, token} = this.props;
     if (caption === "property_quest") {
       if (document) {
-        return `${process.env.REACT_APP_API_URL}property/quest/${document.id}/download?token=${token}`
+        return `${process.env.REACT_APP_API_URL}/property/quest/${document.id}/download?token=${token}`
       } else {
         return null;
       }
