@@ -163,7 +163,6 @@ class ReportDetail extends Component {
     }
 
     return (
-
       <div className="gx-main-layout-content">
         {currentReport ?
           <Widget styleName="gx-card-filter">

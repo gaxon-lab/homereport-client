@@ -7,7 +7,7 @@ class ViewPropertyQuestionnaire extends Component {
   render() {
     const {isViewOpen, onToggleViewBox, propertyQuestionnaire} = this.props;
     let propertyQuestionnaireFilePath = propertyQuestionnaire && propertyQuestionnaire.id ?
-      `${process.env.REACT_APP_API_URL}property/quest/${propertyQuestionnaire.id}/view?token=${this.props.token}`
+      `${process.env.REACT_APP_API_URL}/property/quest/${propertyQuestionnaire.id}/view?token=${this.props.token}`
       : null;
     return (
       <div className="gx-main-layout-content">

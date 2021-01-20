@@ -122,6 +122,7 @@ class UploaderContainer extends Component {
               </Upload> : <Button style={{opacity: 0, cursor: "default"}} type="primary" ghost>upload</Button>}
           </Col>
         </Row>
+
         {isViewOpen ? <ViewPropertyQuestionnaire isViewOpen={isViewOpen}
                                                  token={this.props.token}
                                                  onToggleViewBox={this.onToggleViewBox}
