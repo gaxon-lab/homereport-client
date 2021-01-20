@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import {Button, Col, Icon, Row, Tooltip, Upload} from "antd";
 import ViewPropertyQuestionnaire from "./ViewPropertyQuestionnaire";
-import {imageUpload} from "../../../util/imageUploader";
+import {connect} from "react-redux";
+import axios from 'util/Api'
+import {fetchError, fetchStart, fetchSuccess} from "../../../appRedux/actions";
 
 class UploaderContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fileList: [],
+      uploading: false,
       isViewOpen: false
     }
   }
@@ -22,15 +25,40 @@ class UploaderContainer extends Component {
     }
   };
 
-  handleUpload =  (fileObj) => {
+  handleUpload = (fileObj) => {
     const file = fileObj.fileList[0].originFileObj;
-    imageUpload(file, this.onGetDocumentId);
+    this.uploadFileToServer(file);
   };
 
-  onGetDocumentId = (id) => {
-    this.props.onUploadDocument(id, this.props.caption);
-    this.setState({fileList: []})
-  };
+  uploadFileToServer = (file) => {
+    const {fetchError, fetchStart, fetchSuccess} = this.props;
+
+    fetchStart();
+    this.setState({uploading: true});
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('title', file.name);
+    formData.append('mime_type', file.type);
+
+    axios.post("/uploads/temporary/media", formData, {
+      headers: {
+        'Content-Type': "multipart/form-data"
+      }
+    }).then(({data}) => {
+      if (data.success) {
+        fetchSuccess();
+        this.props.onUploadDocument(data.data, this.props.caption);
+        this.setState({fileList: [], uploading: false});
+      } else {
+        fetchError(data.errors[0]);
+        this.setState({uploading: false});
+      }
+    }).catch((error) => {
+      fetchError(error);
+      this.setState({uploading: false});
+    });
+  }
 
   onGetFilePath = () => {
     const {caption, document, token} = this.props;
@@ -49,8 +77,12 @@ class UploaderContainer extends Component {
     }
   };
 
+  beforeFileUpload = (file) => {
+    return false;
+  }
+
   render() {
-    const {fileList, isViewOpen} = this.state;
+    const {fileList, uploading, isViewOpen} = this.state;
     const {document, caption} = this.props;
     const filePath = this.onGetFilePath();
     return (
@@ -80,10 +112,12 @@ class UploaderContainer extends Component {
 
             {caption !== "property_quest" ?
               <Upload
+                accept="image/*,.pdf,.doc,.docx,.zip"
+                beforeUpload={this.beforeFileUpload}
                 fileList={fileList}
                 onChange={this.handleUpload}>
-                <Button type="primary" ghost>
-                  Upload
+                <Button type="primary" loading={uploading} ghost>
+                  {uploading ? 'Uploading' : 'Upload'}
                 </Button>
               </Upload> : <Button style={{opacity: 0, cursor: "default"}} type="primary" ghost>upload</Button>}
           </Col>
@@ -97,4 +131,6 @@ class UploaderContainer extends Component {
   }
 }
 
-export default UploaderContainer;
+export default connect(null, {
+  fetchError, fetchStart, fetchSuccess
+})(UploaderContainer);

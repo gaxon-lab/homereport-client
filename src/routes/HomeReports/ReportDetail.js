@@ -4,8 +4,8 @@ import {Avatar, Breadcrumb, Button, Col, DatePicker, Icon, Input, message, Row, 
 import {Link} from "react-router-dom";
 import ReportAssigning from "./ReportAssigning";
 import {connect} from "react-redux";
-import {onGetStaff} from "../../appRedux/actions/StaffList";
-import {onGetReportDetail, onNullifyCurrentReport} from "../../appRedux/actions/HomeReports";
+import {onGetStaff} from "../../appRedux/actions";
+import {onGetReportDetail, onNullifyCurrentReport} from "../../appRedux/actions";
 import {
   onAddNewComment,
   onAddReportDocument,
@@ -142,7 +142,15 @@ class ReportDetail extends Component {
   };
 
   render() {
-    const {staffList, currentReport, totalItems, reportComments, reportDocuments, authUser, loggedUserPermissions} = this.props;
+    const {
+      staffList,
+      currentReport,
+      totalItems,
+      reportComments,
+      reportDocuments,
+      authUser,
+      loggedUserPermissions
+    } = this.props;
     const {comment, isShowDatePicker, startTime, endTime} = this.state;
     let assignedTo = null;
     if (currentReport && currentReport.assigned_user_id) {
@@ -178,7 +186,6 @@ class ReportDetail extends Component {
             </Breadcrumb>
 
             <Row>
-
               <Col xl={15} lg={12} md={12} sm={12} xs={24}>
                 <div className="gx-pr-4">
 
@@ -190,7 +197,8 @@ class ReportDetail extends Component {
                   <div className="gx-mb-4">
                     <div className="gx-text-grey">Property</div>
                     <div className="gx-mt-2">
-                      <p className="gx-mb-1 gx-text-black">{currentReport.address1}</p>
+                      {currentReport.address1 && <p className="gx-mb-1 gx-text-black">{currentReport.address1}</p>}
+                      {currentReport.address2 && <p className="gx-mb-1 gx-text-black">{currentReport.address2}</p>}
                       <p className="gx-mb-1 gx-text-black">{currentReport.city}, Scotland</p>
                       <p className="gx-mb-1 gx-text-black"> Postcode -{currentReport.postcode}</p>
                     </div>
@@ -260,8 +268,7 @@ class ReportDetail extends Component {
                                 style={{backgroundColor: '#00CED1'}}>{currentReport.customer_name[0].toUpperCase()}</Avatar>}
 
                       <div className="gx-media-body gx-mt-2">
-              <span
-                className="gx-mb-0 gx-text-capitalize gx-text-black">{currentReport.customer_name}</span>
+                        <span className="gx-mb-0 gx-text-capitalize gx-text-black">{currentReport.customer_name}</span>
                         <div className="gx-mb-2">{currentReport.customer_email}</div>
                       </div>
                     </div>
@@ -393,33 +400,37 @@ class ReportDetail extends Component {
       </div>
     )
   }
+
 }
 
 const mapStateToProps = ({staff, homeReports, auth}) => {
-  const {authUser, loggedUserPermissions, token} = auth;
-  const {staffList, totalItems} = staff;
-  const {currentReport, reportComments, reportDocuments} = homeReports;
-  return {
-    staffList,
-    totalItems,
-    currentReport,
-    reportComments,
-    reportDocuments,
-    authUser,
-    loggedUserPermissions,
-    token
-  };
-};
+    const {authUser, loggedUserPermissions, token} = auth;
+    const {staffList, totalItems} = staff;
+    const {currentReport, reportComments, reportDocuments} = homeReports;
+    return {
+      staffList,
+      totalItems,
+      currentReport,
+      reportComments,
+      reportDocuments,
+      authUser,
+      loggedUserPermissions,
+      token
+    };
+  }
+;
 
-export default connect(mapStateToProps, {
-  onGetStaff,
-  onGetReportDetail,
-  onNullifyCurrentReport,
-  onAssignStaffToReport,
-  onGetReportComments,
-  onAddNewComment,
-  onAddReportDocument,
-  onGetReportDocuments,
-  onSetSurveyDate
-})(ReportDetail);
+export default connect(mapStateToProps,
+  {
+    onGetStaff,
+    onGetReportDetail,
+    onNullifyCurrentReport,
+    onAssignStaffToReport,
+    onGetReportComments,
+    onAddNewComment,
+    onAddReportDocument,
+    onGetReportDocuments,
+    onSetSurveyDate
+  }
+)(ReportDetail);
 
