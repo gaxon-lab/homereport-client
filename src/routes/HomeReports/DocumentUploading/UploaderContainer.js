@@ -20,7 +20,7 @@ class UploaderContainer extends Component {
   };
 
   onClickViewPropertyQuestionnaire = () => {
-    if (document) {
+    if (this.props.document && this.props.document.id) {
       this.setState({isViewOpen: !this.state.isViewOpen})
     }
   };
@@ -62,19 +62,16 @@ class UploaderContainer extends Component {
 
   onGetFilePath = () => {
     const {caption, document, token} = this.props;
-    if (caption === "property_quest") {
-      if (document) {
+
+    if (document && document.id) {
+      if (caption === "property_quest") {
         return `${process.env.REACT_APP_API_URL}/property/quest/${document.id}/download?token=${token}`
-      } else {
-        return null;
       }
-    } else {
-      if (document && document.path) {
-        return document.path;
-      } else {
-        return null;
-      }
+
+      return document.path;
     }
+
+    return null;
   };
 
   beforeFileUpload = (file) => {
