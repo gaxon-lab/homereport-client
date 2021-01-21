@@ -1,7 +1,7 @@
 import {FETCH_ERROR, FETCH_START, FETCH_SUCCESS, SHOW_MESSAGE, UPDATING_CONTENT} from "../../constants/ActionTypes";
 import axios from 'util/Api'
 import {
-  ADD_NEW_QUOTE, CHANGE_QUOTE_REPORTS_STATUS,
+  ADD_NEW_QUOTE, CHANGE_QUOTE_REQUESTS_STATUS,
   FILTER_QUOTE_LIST,
   GET_PROPERTY_OPTIONS,
   GET_QUOTE_DETAIL,
@@ -121,14 +121,14 @@ export const onNullifyCurrentQuote = () => {
   }
 };
 
-export const changeQuoteReportsStatus = (postData) => {
+export const changeQuoteRequestsStatus = (postData) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.post('/quotes/update/status', postData).then(({data}) => {
       if (data.success) {
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: CHANGE_QUOTE_REPORTS_STATUS, payload: postData});
-        dispatch({type: SHOW_MESSAGE, payload: "The status of selected Reports has been updated successfully!"})
+        dispatch({type: CHANGE_QUOTE_REQUESTS_STATUS, payload: postData});
+        dispatch({type: SHOW_MESSAGE, payload: "The status of selected Quote requests has been updated successfully!"})
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {

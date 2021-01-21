@@ -1,5 +1,5 @@
 import {
-  ADD_NEW_QUOTE, CHANGE_QUOTE_REPORTS_STATUS, FILTER_QUOTE_LIST,
+  ADD_NEW_QUOTE, CHANGE_QUOTE_REQUESTS_STATUS, FILTER_QUOTE_LIST,
   GET_PROPERTY_OPTIONS,
   GET_QUOTE_DETAIL,
   GET_QUOTES_LIST,
@@ -26,10 +26,9 @@ export default (state = initialState, action) => {
         totalItems: action.payload.total
       };
 
-    case CHANGE_QUOTE_REPORTS_STATUS:
+    case CHANGE_QUOTE_REQUESTS_STATUS:
       const updatedList = state.quotesList.map(item => {
         if (action.payload.quote_ids.includes(item.quote_request_id)) {
-
           item.status = action.payload.status;
           return item;
         } else {

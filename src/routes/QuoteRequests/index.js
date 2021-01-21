@@ -4,7 +4,7 @@ import Widget from "../../components/Widget";
 import {Link} from "react-router-dom";
 import InfoView from "../../components/InfoView";
 import QuotesRow from "./QuotesRow";
-import {changeQuoteReportsStatus, onGetQuotesList} from "../../appRedux/actions";
+import {changeQuoteRequestsStatus, onGetQuotesList} from "../../appRedux/actions";
 import {connect} from "react-redux";
 import PaymentDetail from "./PaymentDetail";
 
@@ -121,7 +121,7 @@ class QuoteRequests extends Component {
       okText: "Change",
       cancelText: "Cancel",
       onOk: () => {
-        this.props.changeQuoteReportsStatus({quote_ids: this.state.selectedCustomers, status: item.identifier})
+        this.props.changeQuoteRequestsStatus({quote_ids: this.state.selectedCustomers, status: item.identifier})
       }
     });
   }
@@ -208,5 +208,5 @@ const mapPropsToState = ({quoteRequests, common}) => {
 };
 
 export default connect(mapPropsToState, {
-  onGetQuotesList, changeQuoteReportsStatus
+  onGetQuotesList, changeQuoteRequestsStatus
 })(QuoteRequests);
