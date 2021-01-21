@@ -3,7 +3,7 @@ import Widget from "../../components/Widget";
 import {Breadcrumb, Button, Col, Row, Tag} from "antd";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {onGetQuoteRequestDetail, onNullifyCurrentQuote} from "../../appRedux/actions/QuoteRequests";
+import {onGetQuoteRequestDetail, onNullifyCurrentQuote} from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
 import PaymentDetail from "./PaymentDetail";
 

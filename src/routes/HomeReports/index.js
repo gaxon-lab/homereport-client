@@ -14,7 +14,6 @@ const {Option} = Select;
 const Search = Input.Search;
 const confirm = Modal.confirm;
 
-
 class HomeReports extends Component {
   constructor(props) {
     super(props);
@@ -145,7 +144,6 @@ class HomeReports extends Component {
         <Menu.Item key="4" onClick={() => this.onChangeStatusPopUp("cancelled")}>
           Cancelled
         </Menu.Item>
-
       </Menu>
     );
     return <Dropdown overlay={menu} trigger={['click']}>

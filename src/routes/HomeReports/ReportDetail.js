@@ -130,11 +130,7 @@ class ReportDetail extends Component {
     const {startTime, endTime} = this.state;
     let time1 = moment(startTime, "HH:mm a");
     let time2 = moment(endTime, "HH:mm a");
-    if (time1.isSame(time2) || time1.isAfter(time2)) {
-      return true;
-    } else {
-      return false;
-    }
+    return time1.isSame(time2) || time1.isAfter(time2);
   };
 
   onDisabledDate = (current) => {

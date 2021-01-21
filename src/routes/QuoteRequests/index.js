@@ -1,15 +1,22 @@
 import React, {Component} from 'react';
-import {Breadcrumb, Button, Input, Select, Table} from "antd";
+import {Breadcrumb, Button, Dropdown, Icon, Input, Menu, Modal, Select, Table} from "antd";
 import Widget from "../../components/Widget";
 import {Link} from "react-router-dom";
 import InfoView from "../../components/InfoView";
 import QuotesRow from "./QuotesRow";
-import {onGetQuotesList} from "../../appRedux/actions/QuoteRequests";
+import {changeQuoteReportsStatus, onGetQuotesList} from "../../appRedux/actions";
 import {connect} from "react-redux";
 import PaymentDetail from "./PaymentDetail";
 
 const {Option} = Select;
 const Search = Input.Search;
+const confirm = Modal.confirm;
+
+const filterStatus = [
+  {title: 'Pending', identifier: 'pending'},
+  {title: 'Contacted', identifier: 'contacted'},
+  {title: 'Lost', identifier: 'lost'},
+]
 
 class QuoteRequests extends Component {
   constructor(props) {
@@ -17,6 +24,7 @@ class QuoteRequests extends Component {
     this.state = {
       filterText: "",
       selectedRowKeys: [],
+      selectedCustomers: [],
       itemNumbers: 10,
       current: 1,
       isPaymentShow: false,
@@ -92,15 +100,49 @@ class QuoteRequests extends Component {
     this.props.history.push(`/quote-detail/${record.quote_request_id}`);
   };
 
-  render() {
+  getStatusBox = () => {
+    const menu = (
+      <Menu>
+        {filterStatus.map((item, index) => (
+          <Menu.Item key={index} onClick={() => this.onChangeStatus(item)}>{item.title}</Menu.Item>
+        ))}
+      </Menu>
+    );
+    return <Dropdown overlay={menu} trigger={['click']}>
+      <Button>
+        Change Status <Icon type="down"/>
+      </Button>
+    </Dropdown>
+  }
 
+  onChangeStatus = (item) => {
+    confirm({
+      title: `Are you sure you want to change the status to "${item.title}"`,
+      okText: "Change",
+      cancelText: "Cancel",
+      onOk: () => {
+        this.props.changeQuoteReportsStatus({quote_ids: this.state.selectedCustomers, status: item.identifier})
+      }
+    });
+  }
+
+  render() {
     const {quotesList, updatingContent} = this.props;
-    const {selectedRowKeys, filterText, itemNumbers, current, isPaymentShow, selectedQuote} = this.state;
+
+    const {
+      selectedRowKeys,
+      filterText,
+      itemNumbers,
+      current,
+      isPaymentShow,
+      selectedQuote,
+      selectedCustomers
+    } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         const ids = selectedRows.map(selectedRow => {
-          return selectedRow.id
+          return selectedRow.quote_request_id
         });
         this.setState({selectedCustomers: ids, selectedRowKeys: selectedRowKeys})
       }
@@ -116,6 +158,9 @@ class QuoteRequests extends Component {
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="gx-d-flex gx-justify-content-end">
+            {
+              selectedCustomers.length > 0 && this.getStatusBox()
+            }
             <Search
               placeholder="Enter keywords to search Quotes"
               value={filterText}
@@ -131,18 +176,21 @@ class QuoteRequests extends Component {
               </Button>
             </Button.Group>
           </div>
-          <Table rowKey="quote_request_id" rowSelection={rowSelection} columns={QuotesRow(this)}
-                 dataSource={quotesList}
-                 loading={updatingContent}
-                 pagination={{
-                   pageSize: itemNumbers,
-                   current: current,
-                   total: this.props.totalItems,
-                   showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
-                   onChange: this.onPageChange
-                 }}
-                 className="gx-table-responsive"
-          />
+          <Table
+            rowKey="quote_request_id"
+            rowSelection={rowSelection}
+            columns={QuotesRow(this)}
+            dataSource={quotesList}
+            loading={updatingContent}
+            pagination={{
+              pageSize: itemNumbers,
+              current: current,
+              total: this.props.totalItems,
+              showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
+              onChange: this.onPageChange
+            }}
+            className="gx-table-responsive"/>
+
         </Widget>
         {isPaymentShow ?
           <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}
@@ -160,5 +208,5 @@ const mapPropsToState = ({quoteRequests, common}) => {
 };
 
 export default connect(mapPropsToState, {
-  onGetQuotesList
+  onGetQuotesList, changeQuoteReportsStatus
 })(QuoteRequests);

@@ -85,6 +85,14 @@ const QuotesRow = (context) => {
       },
     },
     {
+      title: "Status",
+      dataIndex: 'status',
+      key: 'status',
+      render: (text, record) => {
+        return <Tag> {record.status}</Tag>
+      },
+    },
+    {
       title: '',
       dataIndex: '',
       key: 'empty',
