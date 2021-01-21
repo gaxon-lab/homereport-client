@@ -4,9 +4,11 @@ import Widget from "../../components/Widget";
 import {Link} from "react-router-dom";
 import InfoView from "../../components/InfoView";
 import {connect} from "react-redux";
-import {onGetReportsList} from "../../appRedux/actions/HomeReports";
+import {onGetReportsList} from "../../appRedux/actions";
 import ReportsRow from "./ReportsRow";
 import {onChangeReportStatus, onDeleteHomeReport} from "../../appRedux/actions";
+import Permissions from "../../util/Permissions";
+import Error404 from "../errorPages/404";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -27,7 +29,8 @@ class HomeReports extends Component {
   }
 
   componentDidMount() {
-    this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText);
+    if (Permissions.canAccessAssignedHomeReports())
+      this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText);
   }
 
   onGetPaginatedData = (currentPage, itemsPerPage, filterText, updatingContent, status) => {
@@ -176,61 +179,65 @@ class HomeReports extends Component {
   };
 
   render() {
-    const {reportsList, updatingContent} = this.props;
-    const {selectedRowKeys, filterText, itemNumbers, current, selectedReports} = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: (selectedRowKeys, selectedRows) => {
-        const ids = selectedRows.map(selectedRow => {
-          return selectedRow.report_id
-        });
-        this.setState({selectedReports: ids, selectedRowKeys: selectedRowKeys})
-      }
-    };
+    if (Permissions.canAccessAssignedHomeReports()) {
+      const {reportsList, updatingContent} = this.props;
+      const {selectedRowKeys, filterText, itemNumbers, current, selectedReports} = this.state;
+      const rowSelection = {
+        selectedRowKeys,
+        onChange: (selectedRowKeys, selectedRows) => {
+          const ids = selectedRows.map(selectedRow => {
+            return selectedRow.report_id
+          });
+          this.setState({selectedReports: ids, selectedRowKeys: selectedRowKeys})
+        }
+      };
 
-    return (
-      <div className="gx-main-content">
-        <Widget styleName="gx-card-filter">
-          <h2 className="gx-widget-heading">Home Reports</h2>
-          <Breadcrumb className="gx-mb-4">
-            <Breadcrumb.Item>
-              <Link to="/quote-requests" className="gx-text-primary">Home Reports</Link>
-            </Breadcrumb.Item>
-          </Breadcrumb>
-          <div className="gx-d-flex gx-justify-content-end">
-            {selectedReports.length > 0 ? this.onChangeStatus() : null}
-            {this.onSelectOption()}
-            <Search
-              placeholder="Enter keywords to search Home Reports"
-              value={filterText}
-              onChange={this.onFilterTextChange}
-              style={{width: 350}}/>
-            {this.onGetCustomersShowOptions()}
-            <Button.Group>
-              <Button type="default" onClick={this.onCurrentDecrement}>
-                <i className="icon icon-long-arrow-left"/>
-              </Button>
-              <Button type="default" onClick={this.onCurrentIncrement}>
-                <i className="icon icon-long-arrow-right"/>
-              </Button>
-            </Button.Group>
-          </div>
-          <Table rowKey="report_id" rowSelection={rowSelection} columns={ReportsRow(this)}
-                 dataSource={reportsList}
-                 loading={updatingContent}
-                 pagination={{
-                   pageSize: itemNumbers,
-                   current: current,
-                   total: this.props.totalItems,
-                   showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
-                   onChange: this.onPageChange
-                 }}
-                 className="gx-table-responsive"
-          />
-        </Widget>
-        <InfoView/>
-      </div>
-    )
+      return (
+        <div className="gx-main-content">
+          <Widget styleName="gx-card-filter">
+            <h2 className="gx-widget-heading">Home Reports</h2>
+            <Breadcrumb className="gx-mb-4">
+              <Breadcrumb.Item>
+                <Link to="/quote-requests" className="gx-text-primary">Home Reports</Link>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+            <div className="gx-d-flex gx-justify-content-end">
+              {selectedReports.length > 0 ? this.onChangeStatus() : null}
+              {this.onSelectOption()}
+              <Search
+                placeholder="Enter keywords to search Home Reports"
+                value={filterText}
+                onChange={this.onFilterTextChange}
+                style={{width: 350}}/>
+              {this.onGetCustomersShowOptions()}
+              <Button.Group>
+                <Button type="default" onClick={this.onCurrentDecrement}>
+                  <i className="icon icon-long-arrow-left"/>
+                </Button>
+                <Button type="default" onClick={this.onCurrentIncrement}>
+                  <i className="icon icon-long-arrow-right"/>
+                </Button>
+              </Button.Group>
+            </div>
+            <Table rowKey="report_id" rowSelection={rowSelection} columns={ReportsRow(this)}
+                   dataSource={reportsList}
+                   loading={updatingContent}
+                   pagination={{
+                     pageSize: itemNumbers,
+                     current: current,
+                     total: this.props.totalItems,
+                     showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
+                     onChange: this.onPageChange
+                   }}
+                   className="gx-table-responsive"
+            />
+          </Widget>
+          <InfoView/>
+        </div>
+      )
+    } else {
+      return <Error404/>
+    }
   }
 }
 

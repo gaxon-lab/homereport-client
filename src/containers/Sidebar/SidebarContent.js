@@ -9,7 +9,7 @@ import Auxiliary from "util/Auxiliary";
 import {THEME_TYPE_LITE} from "../../constants/ThemeSetting";
 import {connect} from "react-redux";
 import {onGetLoggedUserPermission} from "../../appRedux/actions";
-
+import Permissions from "../../util/Permissions";
 
 class SidebarContent extends Component {
 
@@ -26,7 +26,7 @@ class SidebarContent extends Component {
   }
 
   render() {
-    const {themeType, pathname, loggedUserPermissions} = this.props;
+    const {themeType, pathname} = this.props;
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split('/')[1];
     return (
@@ -40,21 +40,29 @@ class SidebarContent extends Component {
               theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
               mode="inline">
 
-              <Menu.Item key="dashboard">
-                <Link to="/dashboard"><i className="icon icon-dasbhoard"/>
-                  <span>Dashboard</span></Link>
-              </Menu.Item>
-              {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can access all customers").length > 0 ?
+              {
+                Permissions.canAccessDashboard() &&
+                <Menu.Item key="dashboard">
+                  <Link to="/dashboard"><i className="icon icon-dasbhoard"/>
+                    <span>Dashboard</span></Link>
+                </Menu.Item>
+              }
+
+              {
+                Permissions.canAccessCustomers() &&
                 <Menu.Item key="customers">
                   <Link to="/customers"><i className="icon icon-tag"/>
                     <span>Customers</span></Link>
-                </Menu.Item> : null}
+                </Menu.Item>
+              }
 
-              {loggedUserPermissions && loggedUserPermissions.filter((key) => key.name === "can manage staff").length > 0 ?
+              {
+                Permissions.canManageStaff() &&
                 <Menu.Item key="staff">
                   <Link to="/staff"><i className="icon icon-user"/>
                     <span>Staff</span></Link>
-                </Menu.Item> : null}
+                </Menu.Item>
+              }
 
 
               <Menu.Item key="quote-requests">
@@ -62,10 +70,13 @@ class SidebarContent extends Component {
                   <span>Quote Requests</span></Link>
               </Menu.Item>
 
-              <Menu.Item key="home-reports">
-                <Link to="/home-reports"><i className="icon icon-lock-screen"/>
-                  <span>Home Reports</span></Link>
-              </Menu.Item>
+              {
+                Permissions.canAccessAssignedHomeReports() &&
+                <Menu.Item key="home-reports">
+                  <Link to="/home-reports"><i className="icon icon-lock-screen"/>
+                    <span>Home Reports</span></Link>
+                </Menu.Item>
+              }
 
             </Menu>
           </CustomScrollbars>
@@ -78,8 +89,8 @@ class SidebarContent extends Component {
 SidebarContent.propTypes = {};
 const mapStateToProps = ({settings, auth}) => {
   const {navStyle, themeType, locale, pathname} = settings;
-  const {authUser, loggedUserPermissions} = auth;
-  return {navStyle, themeType, locale, pathname, authUser, loggedUserPermissions}
+  const {authUser} = auth;
+  return {navStyle, themeType, locale, pathname, authUser}
 };
 export default connect(mapStateToProps, {onGetLoggedUserPermission})(SidebarContent);
 

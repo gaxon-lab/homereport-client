@@ -22,8 +22,12 @@ class Permissions {
     return this.permissions.filter((key) => key.name === "can access dashboard").length > 0
   };
 
-  static canAccessAssignedProjects = () => {
+  static canAccessAssignedHomeReports = () => {
     return this.permissions.filter((key) => key.name === "can access only assigned reports").length > 0
+  };
+
+  static canDeleteHomeReport = () => {
+    return this.permissions.filter((key) => key.name === "can delete report").length > 0
   };
 }
 

@@ -12,6 +12,8 @@ import {onDeleteCustomer, onDownloadCustomerList} from "../../appRedux/actions";
 import AddNewCustomer from "./AddNewCustomer";
 import AddNewQuote from "../QuoteRequests/AddNewQuote";
 import PaymentDetail from "../QuoteRequests/PaymentDetail";
+import Permissions from "../../util/Permissions";
+import Error404 from "../errorPages/404";
 
 const {Option} = Select;
 const Search = Input.Search;
@@ -37,7 +39,8 @@ class Customers extends Component {
   }
 
   componentWillMount() {
-    this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText);
+    if (Permissions.canAccessCustomers())
+      this.onGetPaginatedData(this.state.current, this.state.itemNumbers, this.state.filterText);
   }
 
   onGetPaginatedData = (currentPage, itemsPerPage, filterText, updatingContent) => {
@@ -159,95 +162,99 @@ class Customers extends Component {
   };
 
   render() {
-    const {customersList, updatingContent} = this.props;
-    const {
-      selectedRowKeys, filterText, itemNumbers, current, isShowQuotes, isShowHomeRecords,
-      selectedCustomer, isAddCustomer, isAddQuote, isPaymentShow, selectedQuote
-    } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: (selectedRowKeys, selectedRows) => {
-        const ids = selectedRows.map(selectedRow => {
-          return selectedRow.id
-        });
-        this.setState({selectedCustomers: ids, selectedRowKeys: selectedRowKeys})
-      }
-    };
-    return (
-      <div className="gx-main-content">
-        <Widget styleName="gx-card-filter">
-          <h2 className="gx-widget-heading">Customers</h2>
-          <Breadcrumb className="gx-mb-4">
-            <Breadcrumb.Item>
-              <Link to="/customers" className="gx-text-primary">Customers</Link>
-            </Breadcrumb.Item>
-          </Breadcrumb>
-          <div className="gx-d-flex ">
-            <a href={`${process.env.REACT_APP_API_URL}customers/export/data`} target="_blank"
-               rel="noopener noreferrer">
-              <Button type="primary" className="gx-btn-lg">
-                Export to CSV</Button>
-            </a>
-            <Button type="primary" className="gx-btn-lg gx-ml-3" onClick={this.onAddButtonClick}>
-              Add New Customer</Button>
+    if (Permissions.canAccessCustomers()) {
+      const {customersList, updatingContent} = this.props;
+      const {
+        selectedRowKeys, filterText, itemNumbers, current, isShowQuotes, isShowHomeRecords,
+        selectedCustomer, isAddCustomer, isAddQuote, isPaymentShow, selectedQuote
+      } = this.state;
+      const rowSelection = {
+        selectedRowKeys,
+        onChange: (selectedRowKeys, selectedRows) => {
+          const ids = selectedRows.map(selectedRow => {
+            return selectedRow.id
+          });
+          this.setState({selectedCustomers: ids, selectedRowKeys: selectedRowKeys})
+        }
+      };
+      return (
+        <div className="gx-main-content">
+          <Widget styleName="gx-card-filter">
+            <h2 className="gx-widget-heading">Customers</h2>
+            <Breadcrumb className="gx-mb-4">
+              <Breadcrumb.Item>
+                <Link to="/customers" className="gx-text-primary">Customers</Link>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+            <div className="gx-d-flex ">
+              <a href={`${process.env.REACT_APP_API_URL}customers/export/data`} target="_blank"
+                 rel="noopener noreferrer">
+                <Button type="primary" className="gx-btn-lg">
+                  Export to CSV</Button>
+              </a>
+              <Button type="primary" className="gx-btn-lg gx-ml-3" onClick={this.onAddButtonClick}>
+                Add New Customer</Button>
 
-            <div className="gx-d-flex gx-ml-auto">
-              <Search
-                placeholder="Enter keywords to search Customers"
-                value={filterText}
-                onChange={this.onFilterTextChange}
-                style={{width: 350}}/>
-              {this.onGetCustomersShowOptions()}
-              <Button.Group>
-                <Button type="default" onClick={this.onCurrentDecrement}>
-                  <i className="icon icon-long-arrow-left"/>
-                </Button>
-                <Button type="default" onClick={this.onCurrentIncrement}>
-                  <i className="icon icon-long-arrow-right"/>
-                </Button>
-              </Button.Group>
+              <div className="gx-d-flex gx-ml-auto">
+                <Search
+                  placeholder="Enter keywords to search Customers"
+                  value={filterText}
+                  onChange={this.onFilterTextChange}
+                  style={{width: 350}}/>
+                {this.onGetCustomersShowOptions()}
+                <Button.Group>
+                  <Button type="default" onClick={this.onCurrentDecrement}>
+                    <i className="icon icon-long-arrow-left"/>
+                  </Button>
+                  <Button type="default" onClick={this.onCurrentIncrement}>
+                    <i className="icon icon-long-arrow-right"/>
+                  </Button>
+                </Button.Group>
+              </div>
             </div>
-          </div>
-          <Table rowKey="id" rowSelection={rowSelection} columns={CustomersRow(this)}
-                 dataSource={customersList}
-                 loading={updatingContent}
-                 pagination={{
-                   pageSize: itemNumbers,
-                   current: current,
-                   total: this.props.totalItems,
-                   showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
-                   onChange: this.onPageChange
-                 }}
-                 className="gx-table-responsive"
-                 rowClassName="gx-pointer"
-                 onRow={(record) => ({
-                   onClick: () => this.onSelectCustomer(record)
-                 })}
-          />
-        </Widget>
-        {isShowQuotes ? <QuoteRequestModal isShowQuotes={isShowQuotes}
-                                           onToggleShowQuotes={this.onToggleShowQuotes}
-                                           selectedCustomer={selectedCustomer}
-                                           history={this.props.history}
-                                           onRaiseNewQuote={this.onRaiseNewQuote}
-                                           onOpenPaymentModal={this.onOpenPaymentModal}
-        /> : null}
-        {isShowHomeRecords ? <HomeReportsModal isShowHomeRecords={isShowHomeRecords}
-                                               onToggleHomeRecords={this.onToggleHomeRecords}
-                                               selectedCustomer={selectedCustomer}
-                                               history={this.props.history}
-        /> : null}
-        {isAddCustomer ? <AddNewCustomer isAddCustomer={isAddCustomer}
-                                         onToggleAddCustomer={this.onToggleAddCustomer}
-                                         selectedCustomer={selectedCustomer}/> : null}
-        {isAddQuote ? <AddNewQuote isAddQuote={isAddQuote} onToggleAddQuote={this.onToggleAddQuote}
-                                   selectedCustomer={selectedCustomer}/> : null}
-        {isPaymentShow ?
-          <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}
-                         selectedQuote={selectedQuote} /> : null}
-        <InfoView/>
-      </div>
-    )
+            <Table rowKey="id" rowSelection={rowSelection} columns={CustomersRow(this)}
+                   dataSource={customersList}
+                   loading={updatingContent}
+                   pagination={{
+                     pageSize: itemNumbers,
+                     current: current,
+                     total: this.props.totalItems,
+                     showTotal: ((total, range) => `Showing ${range[0]}-${range[1]} of ${total} items`),
+                     onChange: this.onPageChange
+                   }}
+                   className="gx-table-responsive"
+                   rowClassName="gx-pointer"
+                   onRow={(record) => ({
+                     onClick: () => this.onSelectCustomer(record)
+                   })}
+            />
+          </Widget>
+          {isShowQuotes ? <QuoteRequestModal isShowQuotes={isShowQuotes}
+                                             onToggleShowQuotes={this.onToggleShowQuotes}
+                                             selectedCustomer={selectedCustomer}
+                                             history={this.props.history}
+                                             onRaiseNewQuote={this.onRaiseNewQuote}
+                                             onOpenPaymentModal={this.onOpenPaymentModal}
+          /> : null}
+          {isShowHomeRecords ? <HomeReportsModal isShowHomeRecords={isShowHomeRecords}
+                                                 onToggleHomeRecords={this.onToggleHomeRecords}
+                                                 selectedCustomer={selectedCustomer}
+                                                 history={this.props.history}
+          /> : null}
+          {isAddCustomer ? <AddNewCustomer isAddCustomer={isAddCustomer}
+                                           onToggleAddCustomer={this.onToggleAddCustomer}
+                                           selectedCustomer={selectedCustomer}/> : null}
+          {isAddQuote ? <AddNewQuote isAddQuote={isAddQuote} onToggleAddQuote={this.onToggleAddQuote}
+                                     selectedCustomer={selectedCustomer}/> : null}
+          {isPaymentShow ?
+            <PaymentDetail isPaymentShow={isPaymentShow} onToggleShowPayment={this.onToggleShowPayment}
+                           selectedQuote={selectedQuote}/> : null}
+          <InfoView/>
+        </div>
+      )
+    } else {
+      return <Error404/>
+    }
   }
 }
 

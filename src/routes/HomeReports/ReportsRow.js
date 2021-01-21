@@ -1,5 +1,6 @@
 import {Dropdown, Menu, Tag} from "antd";
 import React from "react";
+import Permissions from "../../util/Permissions";
 
 const onShowRowDropdown = (currentReport, context) => {
   const menu = (
@@ -7,9 +8,11 @@ const onShowRowDropdown = (currentReport, context) => {
       <Menu.Item key="1" onClick={() => context.onSelectReport(currentReport)}>
         View Details
       </Menu.Item>
+      {Permissions.canDeleteHomeReport() &&
       <Menu.Item key="5" onClick={() => context.onDeletePopUp(currentReport.report_id)}>
         Delete
       </Menu.Item>
+      }
     </Menu>
   );
   return (

@@ -8,19 +8,26 @@ import AppLocale from "lngProvider";
 import MainApp from "./MainApp";
 import SignIn from "../SignIn";
 import SignUp from "../SignUp";
-import {setInitUrl} from "appRedux/actions/Auth";
-import {onLayoutTypeChange, onNavStyleChange, setThemeType} from "appRedux/actions/Setting";
 import axios from 'util/Api';
 import ForgetPassword from "../PasswordReset/ForgetPassword";
 import VerifyPassword from "../PasswordReset/VerifyPassword";
-import {getUserProfile, onGetUserPermission, updateAuthUser} from "../../appRedux/actions";
+import {
+  getUserProfile,
+  onGetLoggedUserPermission,
+  onLayoutTypeChange,
+  onNavStyleChange,
+  setInitUrl,
+  setThemeType,
+  updateAuthUser
+} from "../../appRedux/actions";
 import CircularProgress from "../../components/CircularProgress";
+import Permissions from "../../util/Permissions";
 
-const RestrictedRoute = ({component: Component, token, ...rest}) =>
+const RestrictedRoute = ({component: Component, authUser, ...rest}) =>
   <Route
     {...rest}
     render={props =>
-      token
+      authUser
         ? <Component {...props} />
         : <Redirect
           to={{
@@ -33,14 +40,11 @@ const RestrictedRoute = ({component: Component, token, ...rest}) =>
 
 class App extends Component {
 
-  componentWillMount() {
-    if (this.props.initURL === '') {
-      this.props.setInitUrl(this.props.history.location.pathname);
-    }
+  componentDidMount() {
     if (this.props.token) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
       this.props.getUserProfile();
-      this.props.onGetUserPermission(this.props.history);
+      this.props.onGetLoggedUserPermission();
     } else {
       this.props.updateAuthUser(null);
     }
@@ -49,12 +53,12 @@ class App extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     if (this.props.token === null && nextProps.token !== this.props.token) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
-      this.props.onGetUserPermission(this.props.history);
+      this.props.onGetLoggedUserPermission(this.props.history);
     }
   }
 
   render() {
-    const {match, location, locale, authUser, loadUser, initURL, token} = this.props;
+    const {match, location, locale, authUser, loadUser, initURL} = this.props;
 
     if (!loadUser) {
       return <CircularProgress/>;
@@ -64,14 +68,13 @@ class App extends Component {
       if (initURL) {
         return (<Redirect to={initURL}/>);
       }
-      return (<Redirect to={'/dashboard'}/>);
+      return (<Redirect to={Permissions.canAccessDashboard() ? '/dashboard' : '/profile'}/>);
     } else if (authUser && (location.pathname === '/signin' || location.pathname === '/signup' || location.pathname === '/reset-password' || location.pathname === '/reset/password')) {
-      if (initURL) {
+      if (initURL && location.pathname !== '/signin' && location.pathname !== '/signup' && location.pathname !== '/reset-password' && location.pathname !== '/reset/password') {
         return (<Redirect to={initURL}/>);
       }
-      return (<Redirect to={'/dashboard'}/>);
-    } else if (!authUser && location.pathname !== '/signin' && location.pathname !== '/signup' && location.pathname !== '/reset-password' && location.pathname !== '/reset/password') {
-      return (<Redirect to={'/signin'}/>);
+
+      return (<Redirect to={Permissions.canAccessDashboard() ? '/dashboard' : '/profile'}/>);
     }
 
     const currentAppLocale = AppLocale[locale.locale];
@@ -86,8 +89,7 @@ class App extends Component {
             <Route exact path='/signup' component={SignUp}/>
             <Route exact path='/reset-password' component={ForgetPassword}/>
             <Route exact path='/reset/password' component={VerifyPassword}/>
-            <RestrictedRoute path={`${match.url}`} token={token}
-                             component={MainApp}/>
+            <RestrictedRoute path={`${match.url}`} authUser={authUser} component={MainApp}/>
           </Switch>
         </IntlProvider>
       </ConfigProvider>
@@ -107,5 +109,5 @@ export default connect(mapStateToProps, {
   onLayoutTypeChange,
   getUserProfile,
   updateAuthUser,
-  onGetUserPermission
+  onGetLoggedUserPermission
 })(App);
