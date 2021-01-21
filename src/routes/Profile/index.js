@@ -4,19 +4,21 @@ import PropTypes from "prop-types";
 import Widget from "../../components/Widget";
 import {connect} from "react-redux";
 import ImageUpload from "./ImageUpload";
-import {getUserProfile, onUpdateUserProfile} from "../../appRedux/actions";
+import {onUpdateUserProfile} from "../../appRedux/actions";
 import InfoView from "../../components/InfoView";
 
 
 class Profile extends Component {
   constructor(props) {
     super(props);
+    const {first_name, last_name, email, profile_pic} = props.authUser;
+
     this.state = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      profile_pic: null,
-      avatar: null
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      profile_pic: profile_pic && profile_pic.length > 0 ? profile_pic[0].id : null,
+      avatar: profile_pic && profile_pic.length > 0 ? profile_pic[0] : null
     };
   }
 
@@ -34,10 +36,6 @@ class Profile extends Component {
         });
       }
     }
-  }
-
-  componentDidMount() {
-    this.props.getUserProfile();
   }
 
   goPreviousScreen = () => {
@@ -146,9 +144,7 @@ const mapStateToProps = ({auth}) => {
   return {authUser};
 };
 
-export default connect(mapStateToProps, {
-  getUserProfile, onUpdateUserProfile
-})(Profile);
+export default connect(mapStateToProps, {onUpdateUserProfile})(Profile);
 
 Profile.defaultProps = {
   authUser: null,

@@ -13,7 +13,8 @@ import {
 const INIT_STATE = {
   token: localStorage.getItem('token'),
   initURL: '',
-  authUser: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {},
+  authUser: null,
+  loadUser: false,
   userPermissions: [],
   userSettings: {},
   loadingUser: true,
@@ -66,6 +67,7 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         authUser: action.payload,
+        loadUser: true
       };
     }
 

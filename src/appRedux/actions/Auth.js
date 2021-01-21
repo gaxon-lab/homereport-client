@@ -95,9 +95,16 @@ export const onUserSignOut = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("settings");
       localStorage.removeItem("user");
+      dispatch({type: USER_DATA, payload: null});
       dispatch({type: FETCH_SUCCESS});
       dispatch({type: SIGNOUT_USER_SUCCESS});
     }, 2000);
+  }
+};
+
+export const updateAuthUser = (user) => {
+  return (dispatch) => {
+    dispatch({type: USER_DATA, payload: user});
   }
 };
 

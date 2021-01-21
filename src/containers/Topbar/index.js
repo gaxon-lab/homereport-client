@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Layout} from "antd";
 import {Link} from "react-router-dom";
-import {toggleCollapsedSideNav} from "../../appRedux/actions/Setting";
+import {toggleCollapsedSideNav} from "../../appRedux/actions";
 import UserInfo from "../../components/UserInfo";
 import Auxiliary from "util/Auxiliary";
 
@@ -33,7 +33,8 @@ class Topbar extends Component {
               />
             </div> : null}
           <Link to="/" className="gx-d-block gx-d-lg-none gx-pointer">
-            <img alt="" src={require("assets/images/logo.png")}/></Link>
+            <img alt="" src={require("assets/images/logo.png")}/>
+          </Link>
 
           <ul className="gx-header-notifications gx-ml-auto">
             <li className="gx-language gx-py-3">

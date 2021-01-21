@@ -13,7 +13,8 @@ import {onLayoutTypeChange, onNavStyleChange, setThemeType} from "appRedux/actio
 import axios from 'util/Api';
 import ForgetPassword from "../PasswordReset/ForgetPassword";
 import VerifyPassword from "../PasswordReset/VerifyPassword";
-import {onGetUserPermission} from "../../appRedux/actions";
+import {getUserProfile, onGetUserPermission, updateAuthUser} from "../../appRedux/actions";
+import CircularProgress from "../../components/CircularProgress";
 
 const RestrictedRoute = ({component: Component, token, ...rest}) =>
   <Route
@@ -38,27 +39,39 @@ class App extends Component {
     }
     if (this.props.token) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
-      this.props.onGetUserPermission(this.props.history)
+      this.props.getUserProfile();
+      this.props.onGetUserPermission(this.props.history);
+    } else {
+      this.props.updateAuthUser(null);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (this.props.token === null && nextProps.token !== this.props.token) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
-      this.props.onGetUserPermission(this.props.history)
+      this.props.onGetUserPermission(this.props.history);
     }
   }
 
   render() {
-    const {match, location, locale, initURL, token} = this.props;
+    const {match, location, locale, authUser, loadUser, initURL, token} = this.props;
+
+    if (!loadUser) {
+      return <CircularProgress/>;
+    }
+
     if (location.pathname === '/' || location.pathname === '') {
-      if (token === null) {
-        return (<Redirect to={'/signin'}/>);
-      } else if (initURL === '' || initURL === '/' || initURL === '/signin') {
-        return (<Redirect to={'/dashboard'}/>);
-      } else {
+      if (initURL) {
         return (<Redirect to={initURL}/>);
       }
+      return (<Redirect to={'/dashboard'}/>);
+    } else if (authUser && (location.pathname === '/signin' || location.pathname === '/signup' || location.pathname === '/reset-password' || location.pathname === '/reset/password')) {
+      if (initURL) {
+        return (<Redirect to={initURL}/>);
+      }
+      return (<Redirect to={'/dashboard'}/>);
+    } else if (!authUser && location.pathname !== '/signin' && location.pathname !== '/signup' && location.pathname !== '/reset-password' && location.pathname !== '/reset/password') {
+      return (<Redirect to={'/signin'}/>);
     }
 
     const currentAppLocale = AppLocale[locale.locale];
@@ -84,13 +97,15 @@ class App extends Component {
 
 const mapStateToProps = ({settings, auth}) => {
   const {locale, navStyle, layoutType} = settings;
-  const { initURL, token} = auth;
-  return {locale, navStyle, layoutType,  initURL, token}
+  const {authUser, loadUser, initURL, token} = auth;
+  return {locale, navStyle, layoutType, authUser, loadUser, initURL, token}
 };
 export default connect(mapStateToProps, {
   setInitUrl,
   setThemeType,
   onNavStyleChange,
   onLayoutTypeChange,
+  getUserProfile,
+  updateAuthUser,
   onGetUserPermission
 })(App);
