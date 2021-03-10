@@ -7,7 +7,7 @@ import {
   FETCH_USER_INFO_SUCCESS,
   INIT_URL, LOGGED_USER_PERMISSION,
   SHOW_MESSAGE,
-  SIGNOUT_USER_SUCCESS,
+  SIGNOUT_USER_SUCCESS, UPDATE_LOAD_USER,
   UPDATE_USER_PERMISSION_DATA,
   USER_DATA,
   USER_TOKEN_SET
@@ -124,6 +124,7 @@ export const getUserProfile = () => {
       }
     }).catch(function (error) {
       dispatch({type: FETCH_ERROR, payload: error.message});
+      dispatch({type: UPDATE_LOAD_USER, payload: true});
     });
   }
 };

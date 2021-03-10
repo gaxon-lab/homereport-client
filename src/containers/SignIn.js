@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Checkbox, Form, Input} from "antd";
 import {connect} from "react-redux";
-import {onUserSignIn} from "../appRedux/actions/Auth";
+import {onUserSignIn} from "../appRedux/actions";
 import IntlMessages from "util/IntlMessages";
 import InfoView from "../components/InfoView";
 import {injectIntl} from "react-intl";
@@ -21,7 +21,7 @@ class SignIn extends React.Component {
   };
 
   componentDidUpdate() {
-    if (this.props.token !== null) {
+    if (this.props.authUser) {
       this.props.history.push('/dashboard');
     }
   }
@@ -33,6 +33,7 @@ class SignIn extends React.Component {
   render() {
     const {messages} = this.props.intl;
     const {getFieldDecorator} = this.props.form;
+
     return (
       <div className="gx-app-login-wrap" style={{backgroundColor:"#2ba7b7",backgroundImage:`url(${BackgroundImage})`, backgroundPosition: 'center',
         backgroundSize: 'cover',
@@ -61,7 +62,9 @@ class SignIn extends React.Component {
                   {getFieldDecorator('email', {
                     initialValue: "",
                     rules: [{
-                      required: true, type: 'email', message: messages["validation.message.emailFormat"],
+                      required: true,
+                      type: 'email',
+                      message: messages["validation.message.emailFormat"],
                     }],
                   })(
                     <Input placeholder="Email"/>

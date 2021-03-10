@@ -4,7 +4,7 @@ import {
   FETCH_USER_INFO_SUCCESS,
   INIT_URL, LOGGED_USER_PERMISSION,
   ON_HIDE_LOADER,
-  SIGNOUT_USER_SUCCESS,
+  SIGNOUT_USER_SUCCESS, UPDATE_LOAD_USER,
   UPDATE_USER_PERMISSION_DATA,
   USER_DATA,
   USER_TOKEN_SET
@@ -68,6 +68,12 @@ export default (state = INIT_STATE, action) => {
         ...state,
         authUser: action.payload,
         loadUser: true
+      };
+    }
+    case UPDATE_LOAD_USER: {
+      return {
+        ...state,
+        loadUser: action.payload,
       };
     }
 

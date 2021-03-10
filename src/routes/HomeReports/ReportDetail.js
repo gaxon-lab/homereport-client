@@ -117,7 +117,7 @@ class ReportDetail extends Component {
       message.error("Please select End Time first!")
     } else {
       if (!this.onGetInspectionTime()) {
-        const inspection_time = startTime + 'm' + " " + "-" + " " + endTime + 'm';
+        const inspection_time = `${startTime}m - ${endTime}m`;
         this.props.onSetSurveyDate(currentReport.report_id, {inspection_date, inspection_time});
         this.setState({isShowDatePicker: false});
       } else {

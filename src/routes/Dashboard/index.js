@@ -46,10 +46,11 @@ class Dashboard extends Component {
   }
 }
 
-const mapPropsToState = ({dashboard, common}) => {
+const mapPropsToState = ({dashboard, common, auth}) => {
   const {dashboardData} = dashboard;
   const {updatingContent} = common;
-  return {dashboardData, updatingContent};
+  const {loggedUserPermissions} = auth;
+  return {dashboardData, updatingContent, loggedUserPermissions};
 };
 
 export default connect(mapPropsToState, {

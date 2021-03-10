@@ -89,8 +89,8 @@ class SidebarContent extends Component {
 SidebarContent.propTypes = {};
 const mapStateToProps = ({settings, auth}) => {
   const {navStyle, themeType, locale, pathname} = settings;
-  const {authUser} = auth;
-  return {navStyle, themeType, locale, pathname, authUser}
+  const {authUser, loggedUserPermissions} = auth;
+  return {navStyle, themeType, locale, pathname, authUser, loggedUserPermissions}
 };
 export default connect(mapStateToProps, {onGetLoggedUserPermission})(SidebarContent);
 

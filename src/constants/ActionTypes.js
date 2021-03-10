@@ -12,6 +12,7 @@ export const HIDE_MESSAGE = 'HIDE_MESSAGE';
 export const ON_SHOW_LOADER = 'ON_SHOW_LOADER';
 export const ON_HIDE_LOADER = 'ON_HIDE_LOADER';
 export const USER_DATA = 'USER_DATA';
+export const UPDATE_LOAD_USER = 'UPDATE_LOAD_USER';
 export const USER_TOKEN_SET = 'USER_TOKEN_SET';
 
 //Auth const
