@@ -6,11 +6,12 @@ class DocumentUploading extends Component {
 
   render() {
     const {reportDocuments, propertyQuestionnaire} = this.props;
-    let termConditionDocument, energyDocument, surveyDocument;
+    let termConditionDocument, energyDocument, surveyDocument, concatenatedReport;
     if (reportDocuments) {
       termConditionDocument = reportDocuments.find(document => document.caption === "term_cond");
       energyDocument = reportDocuments.find(document => document.caption === "eng_cert");
       surveyDocument = reportDocuments.find(document => document.caption === "single_sur");
+      concatenatedReport = reportDocuments.find(document => document.caption === "concatenated_report");
     }
     return (
       <div>
@@ -35,6 +36,11 @@ class DocumentUploading extends Component {
                            document={surveyDocument}
                            onUploadDocument={this.props.onUploadDocument}
                            title="The Single Survey"/>
+
+        <UploaderContainer caption="concatenated_report"
+                           document={concatenatedReport}
+                           onUploadDocument={this.props.onUploadDocument}
+                           title="Concatenated Report"/>
       </div>
     );
   }
