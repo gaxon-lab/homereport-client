@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Checkbox, Form, Input} from "antd";
 import {connect} from "react-redux";
-import {onUserSignIn} from "../appRedux/actions";
+import {onGetLoggedUserPermission, onUserSignIn} from "../appRedux/actions";
 import IntlMessages from "util/IntlMessages";
 import InfoView from "../components/InfoView";
 import {injectIntl} from "react-intl";
@@ -22,7 +22,7 @@ class SignIn extends React.Component {
 
   componentDidUpdate() {
     if (this.props.authUser) {
-      this.props.history.push('/dashboard');
+      this.props.onGetLoggedUserPermission(() => this.props.history.push('/dashboard'));
     }
   }
 
@@ -109,4 +109,4 @@ const mapStateToProps = ({auth}) => {
   return {token}
 };
 
-export default connect(mapStateToProps, {onUserSignIn})(injectIntl(WrappedNormalLoginForm));
+export default connect(mapStateToProps, {onUserSignIn, onGetLoggedUserPermission})(injectIntl(WrappedNormalLoginForm));

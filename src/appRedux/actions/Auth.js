@@ -197,7 +197,7 @@ export const onUpdateUserProfile = ({first_name, last_name, profile_pic, passwor
   }
 };
 
-export const onGetLoggedUserPermission = () => {
+export const onGetLoggedUserPermission = (callbackFun) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     axios.get('/user/permissions',).then(({data}) => {
@@ -205,6 +205,7 @@ export const onGetLoggedUserPermission = () => {
         dispatch({type: FETCH_SUCCESS});
         dispatch({type: LOGGED_USER_PERMISSION, payload: data.data});
         Permissions.setPermissions(data.data);
+        if (callbackFun) callbackFun();
       } else if (data.message) {
         dispatch({type: FETCH_ERROR, payload: data.message});
       } else {
